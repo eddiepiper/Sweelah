@@ -28,3 +28,16 @@
 ## Decision control
 
 Do not mark any gate PASS solely on the basis of an assistant-generated checklist or self-authored tests. Record who reviewed what, against which exact commit and evidence, on which date.
+
+
+## Product-owner approved v2.7 decisions (2026-11-04)
+
+See [APPROVED_DECISIONS_v2.7.md](APPROVED_DECISIONS_v2.7.md) and [ENGINEERING_REMEDIATION_v2.7.md](ENGINEERING_REMEDIATION_v2.7.md).
+
+Approved: **1A** educational financial planning only; **2A** member-provided official CPF LIFE estimates; **3A** provisional descriptions of all 96 personas with no numerical confidence claims; **4A** independently verified adult identity and consent before sharing; **5A** five priority scenarios before the remainder; **6A** obtain proposals and quotations before any appointment; **7A** assume consumer PASS only for planning, never as completed real research.
+
+**Local P0 correction:** terminal partial-month proration has been repaired in the v2.7 local source and passed independent arithmetic checks, but GitHub Issue #9 remains OPEN pending source migration and CI. The consumer-facing persona display and CPF LIFE provenance guard were updated locally. Household sharing remains fail-closed and unauthenticated identity remains unintegrated.
+
+**Source-of-truth qualification:** As of 2026-11-04, v2.7 is a **local 77-file engineering handover**, not a confirmed GitHub main-branch implementation. 609/609 pytest, 498/498 internal rule checks and 13/13 existing API checks are **local self-run**. GitHub CI remains unverified.
+
+No gate is closed solely by these code changes; all independent financial, security, legal and real 48-participant research gates remain OPEN. **Phase 9 remains NO-GO.**
