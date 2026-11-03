@@ -26,6 +26,7 @@ RetirePilot explores ongoing household financial planning across salaried employ
 
 - [Progress report](docs/PROGRESS_v2.5.md)
 - [Release gates](docs/RELEASE_GATES.md)
+- [Full source migration handover and pending push](docs/FULL_SOURCE_IMPORT_RUNBOOK.md)
 - [Security and data-handling boundaries](SECURITY.md)
 - GitHub Issues track the outstanding work. No issue should be closed without reproducible evidence.
 
