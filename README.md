@@ -1,5 +1,10 @@
 # RetirePilot
 
+## Latest approved product direction (2026-11-04)
+
+**Decisions 1A-7A are approved.** See [Approved Decisions v2.7](docs/APPROVED_DECISIONS_v2.7.md), [Local Engineering Remediation v2.7](docs/ENGINEERING_REMEDIATION_v2.7.md), and [Release Gates](docs/RELEASE_GATES.md). The **local** v2.7 patch set passes 609 self-run tests and corrects the partial final-month defect, but **complete source migration and GitHub CI have not happened**. No external financial, security or legal approvals, nor real consumer research sessions, are complete. **Phase 9 NO-GO.**
+
+
 **Singapore-first personal and household retirement planning research prototype (age 45+).**
 
 > **Project status (2026-11-04): v2.6 engineering reference package built locally, synthetic data only. Phase 9 external pilot: NO-GO.**
