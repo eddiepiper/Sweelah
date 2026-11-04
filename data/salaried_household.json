@@ -1,0 +1,130 @@
+{
+  "id": "RP-SYNTH-002",
+  "as_of": "2026-11-03",
+  "currency": "SGD",
+  "primary_id": "S1",
+  "persons": [
+    {
+      "id": "S1",
+      "role": "primary",
+      "dob": "1978-09-01",
+      "residency": "SG",
+      "marital_status": "married",
+      "cpf_balances": {
+        "OA": "220000",
+        "SA": "150000",
+        "MA": "70000"
+      }
+    },
+    {
+      "id": "S2",
+      "role": "spouse",
+      "dob": "1980-03-03",
+      "residency": "SG",
+      "marital_status": "married",
+      "consent_for_household_planning": true,
+      "cpf_balances": {
+        "OA": "110000",
+        "SA": "95000"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "SR1",
+      "from_id": "S1",
+      "external_description": "Dependent child age 10",
+      "kind": "child",
+      "financially_dependent": true
+    }
+  ],
+  "income_streams": [
+    {
+      "id": "SI1",
+      "owner_id": "S1",
+      "type": "salary",
+      "gross_monthly": "10500",
+      "worker_cpf_monthly": "1400",
+      "tax_reserve_monthly": "700",
+      "ends_age": 65,
+      "cash_deductions_monthly": "0"
+    },
+    {
+      "id": "SI2",
+      "owner_id": "S2",
+      "type": "salary",
+      "gross_monthly": "6500",
+      "worker_cpf_monthly": "900",
+      "tax_reserve_monthly": "400",
+      "ends_age": 65,
+      "cash_deductions_monthly": "0"
+    }
+  ],
+  "assets": [
+    {
+      "id": "SA1",
+      "type": "cash",
+      "value": "130000",
+      "owners": {
+        "S1": "0.5",
+        "S2": "0.5"
+      }
+    },
+    {
+      "id": "SA2",
+      "type": "investment",
+      "value": "180000",
+      "owners": {
+        "S1": "1"
+      }
+    },
+    {
+      "id": "SA3",
+      "type": "property",
+      "subtype": "hdb",
+      "value": "850000",
+      "owners": {
+        "S1": "0.5",
+        "S2": "0.5"
+      }
+    }
+  ],
+  "liabilities": [
+    {
+      "id": "SL1",
+      "type": "mortgage",
+      "balance": "200000",
+      "cash_payment_monthly": "1400",
+      "cpf_payment_monthly": "0",
+      "remaining_years": 12,
+      "owners": {
+        "S1": "0.5",
+        "S2": "0.5"
+      },
+      "annual_interest_pct": "3.0"
+    }
+  ],
+  "expenses": [
+    {
+      "id": "SE1",
+      "category": "living",
+      "amount_monthly": "4200",
+      "essential": true
+    },
+    {
+      "id": "SE2",
+      "category": "education",
+      "amount_monthly": "1200",
+      "essential": true
+    }
+  ],
+  "goal": {
+    "retirement_age": 65,
+    "projection_end_age": 95
+  },
+  "assumptions": {
+    "inflation_pct": "2.5",
+    "nominal_return_pct": "3.5",
+    "income_growth_pct": "0"
+  }
+}

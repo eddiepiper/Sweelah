@@ -1,0 +1,13 @@
+task_id,target_persona,task,current_evidence,priority
+U01,45-49 salaried parent,Complete guided intake without providing CPF credentials,Not executable: current UI only edits raw JSON,P0
+U02,52-year-old agent + Grab worker,Record separate revenue/cost history for each income stream,Partially demonstrable via JSON,P0
+U03,Unreported CPF balance,Understand why personal CPF LIFE payout cannot be calculated,Desk-test only,P0
+U04,Spouse refuses data consent,Confirm household financial data is not accessed,"Structural validation test PASS, authentication not built",P0
+U05,Senior aged 66 with CPF estimate,Differentiate supplied CPF estimate from inferred certainty,Synthetic code test only,P0
+U06,Low-income senior with inadequate liquid reserves,Find assistance path without recommending an investment product,Not implemented,P0
+U07,Age 55 CPF milestone,Distinguish official policy reference from actual entitlement,Desk-test only,P0
+U08,Person with low digital confidence,Complete progressive onboarding with no JSON expertise,Not implemented,P0
+U09,"Mandarin, Malay and Tamil users",Read and explain personalised outputs in preferred language,Not implemented,P1
+U10,Keyboard-only / screen-reader user,"Navigate, operate scenarios and access chart information",Browser execution blocked,P0
+U11,User changes incorrectly reported income,Observe immediate recalculation of all 96 matches,"Backend code test PASS, UI interaction unverified",P1
+U12,Variable-income downturn,Explain why stress result changed and what was assumed,No participant task completion data,P0
