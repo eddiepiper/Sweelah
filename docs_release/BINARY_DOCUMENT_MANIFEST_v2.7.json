@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "project": "RetirePilot",
+  "release": "v2.7",
+  "report_date": "2026-11-04",
+  "pilot_go_no_go": "NO-GO",
+  "source_branch": "import/v2.7-source-2026-11-04",
+  "artifacts": [
+    {
+      "path": "docs_release/RetirePilot_PSD_v2.7.docx",
+      "description": "Product Specification v2.7 (editable)",
+      "sha256": "9d6150c2af0a065c366a64540297aaeaf3624db11080371f70397edec164764f",
+      "size_bytes": 45761,
+      "paragraphs": 70,
+      "tables": 17
+    },
+    {
+      "path": "docs_release/RetirePilot_PSD_v2.7.pdf",
+      "description": "Product Specification v2.7 (PDF)",
+      "sha256": "7fb0cc2cbb3a7ef109c21016cc0542781cad931ca44a57b5c7181b00a68e69f8",
+      "size_bytes": 229677,
+      "pages": 7
+    },
+    {
+      "path": "docs_release/RetirePilot_TSD_v2.7.docx",
+      "description": "Technical Specification v2.7 (editable)",
+      "sha256": "4506aab4d842061a04d524cc39ebc794243d1993b6a15758d48530a7ce7b0d8e",
+      "size_bytes": 43412,
+      "paragraphs": 51,
+      "tables": 4
+    },
+    {
+      "path": "docs_release/RetirePilot_TSD_v2.7.pdf",
+      "description": "Technical Specification v2.7 (PDF)",
+      "sha256": "f4d10707e68a27f385391369110c7faa2de7ca40a08c6b503a6616c1adfd55d3",
+      "size_bytes": 113846,
+      "pages": 4
+    },
+    {
+      "path": "docs_release/RetirePilot_Master_Library_v1.7.xlsx",
+      "description": "Master Rulebook v1.7 with scenario/research worksheets",
+      "sha256": "99166157ff584fa70776b419878c116125d043bea012918b4ee951268642f4a8",
+      "size_bytes": 128620
+    },
+    {
+      "path": "docs_release/RetirePilot_PrePush_Gate_Report_2026-11-04.pdf",
+      "description": "Internal pre-push gate report (PDF)",
+      "sha256": "d60b1b44afa34440bae70343e7e8619b29fe1948a6c38e796ab0e215cc5377b8",
+      "size_bytes": 12058,
+      "pages": 4
+    },
+    {
+      "path": "docs_release/RetirePilot_PrePush_Gate_Report_2026-11-04.md",
+      "description": "Internal pre-push gate report (Markdown)",
+      "sha256": "12e3dae667c8322ad78d335f4a67c6b8561f188d41f731ef2d93d8e19e7c5a4d",
+      "size_bytes": 10921
+    },
+    {
+      "path": "docs_release/RetirePilot_PrePush_Evidence_2026-11-04.zip",
+      "description": "Reproducible internal test evidence",
+      "sha256": "c19689a338ce8b4a716aded15c909387daeaa0024d200e886bb3e9e27dd8757c",
+      "size_bytes": 18293
+    },
+    {
+      "path": "docs_release/RetirePilot_Validation_Audit_2026-11-04.pdf",
+      "description": "Earlier internal financial/security/legal audit",
+      "sha256": "40870569d77a88c7ce0e27d25d9ef7cb74e854722ef343a645bbc316530361e7",
+      "size_bytes": 44737,
+      "pages": 6
+    }
+  ]
+}
