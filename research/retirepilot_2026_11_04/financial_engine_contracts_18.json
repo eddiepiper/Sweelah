@@ -1,0 +1,146 @@
+[
+  {
+    "ID": "F01",
+    "Engine": "Household fact and provenance register",
+    "Required inputs": "Per adult date of birth, SC/PR/status dates, owner of every asset/liability, dependants, consent for specific data, evidence date",
+    "Decision rules": "Immutable dated fact inputs and ownership; unknown ≠ zero; never impute spouse CPF",
+    "Dependencies": "All financial engines",
+    "Readiness": "Core business rule specified; data provenance unresolved"
+  },
+  {
+    "ID": "F02",
+    "Engine": "Income stream and net household cash flow",
+    "Required inputs": "Each stream type, gross/receipts, refunds, business costs, CPF/tax treatment, volatility, effective dates",
+    "Decision rules": "Monthly attributable cash flows; gross != net; prevent double-counting between platform/SEP/salary; net available cash is after actual deductions",
+    "Dependencies": "F01,F03,F04,F05,F09,F13",
+    "Readiness": "Build contract clear; complex stream verification needed"
+  },
+  {
+    "ID": "F03",
+    "Engine": "Employee CPF contributions and allocation",
+    "Required inputs": "Age at payroll contribution, SC/PR entry year, employer count, OW/AW, eligible wage, year-specific tables, account caps",
+    "Decision rules": "Apply published rate, wage ceilings, graduated PR bands, OW/AW cap and month-specific allocation. No 2028+ rate presented as known",
+    "Dependencies": "F01,F02,F06",
+    "Readiness": "2026/27 bounded rules; future policy needs scenario assumption"
+  },
+  {
+    "ID": "F04",
+    "Engine": "Self-employed CPF / MediSave obligations",
+    "Required inputs": "IRAS assessed net trade income by work year, age, CPF membership, business expense and platform exclusions",
+    "Decision rules": "SEP MediSave due according to verified work-year table, not employee CPF rate; avoid duplicate platform earnings",
+    "Dependencies": "F01,F02,F06,F09",
+    "Readiness": "Rule sources found; detailed table required"
+  },
+  {
+    "ID": "F05",
+    "Engine": "Platform-worker CPF",
+    "Required inputs": "Operator report, net platform earnings, DOB, opt-in state, work year, earnings tier, contributions",
+    "Decision rules": "Use platform rates for that year/opt-in cohort; avoid employee/SEP double count; report uncertain opt-in rather than guess",
+    "Dependencies": "F01,F02,F06",
+    "Readiness": "Official schedule identified; individual opt-in proof required"
+  },
+  {
+    "ID": "F06",
+    "Engine": "CPF OA/SA/MA/RA ledger and milestones",
+    "Required inputs": "Opening dated account balances, transactions, interest rates by period, age, CPF withdrawal/transfer eligibility, BHS, FRS/ERS, property refunds",
+    "Decision rules": "Ledger conservation per period; SA closure on 55th birthday; RA top-ups; BHS overflow according to applicable rules; interest accrues monthly, credited annually",
+    "Dependencies": "F03,F04,F05,F08,F07",
+    "Readiness": "Core end-to-end contract defined, full lifetime policies remain to verify"
+  },
+  {
+    "ID": "F07",
+    "Engine": "CPF LIFE cash-flow input",
+    "Required inputs": "Member-reported official payout estimate by plan/start age/as-of date, supported eligibility facts",
+    "Decision rules": "Treat official member-provided estimate as input, not generated yield; start only on selected date; show missing estimate as unknown, not zero",
+    "Dependencies": "F01,F06,F14",
+    "Readiness": "Approved decision 2A; no personal simulation formula"
+  },
+  {
+    "ID": "F08",
+    "Engine": "Housing and debt service",
+    "Required inputs": "Property owner, valuation, financing currency, balance/rate/tenor, amortization, sale fees, official CPF property refund, stamp duty/lease constraints",
+    "Decision rules": "Compute interest/amortization and equity separately; sale proceeds to loan then CPF refund, cash net; distinguish cash from CPF recredit; bridge funding only with explicit facilities",
+    "Dependencies": "F01,F02,F06,F14",
+    "Readiness": "Event rules described; eligibility and exact waterfall must be externally checked"
+  },
+  {
+    "ID": "F09",
+    "Engine": "Tax and work-year reconciliation",
+    "Required inputs": "Tax residency, income by category/year, allowable expenses/reliefs from evidence, YA, self-employed NI",
+    "Decision rules": "Compute resident tax by confirmed YA schedule; assess reliefs only if documented; separate tax cash payment timing from tax liability",
+    "Dependencies": "F01,F02,F04",
+    "Readiness": "IRAS bands identified; complete relief catalogue pending"
+  },
+  {
+    "ID": "F10",
+    "Engine": "Investments and sequence risk",
+    "Required inputs": "Asset holdings by currency and liquidity, costs, net income, return/inflation/FX paths, rebalancing assumptions",
+    "Decision rules": "Value monthly and apply market returns before/after withdrawals consistently; no guaranteed return or invented recovery",
+    "Dependencies": "F01,F14,F15,F16",
+    "Readiness": "Business model clear; scenario parameters/validation pending"
+  },
+  {
+    "ID": "F11",
+    "Engine": "Insurance and healthcare funding",
+    "Required inputs": "Premiums, deductibles, confirmed coverage terms, claims approved, MediSave/Medishield/others, medical costs",
+    "Decision rules": "Record costs immediately; model reimbursements only on confirmed amounts/eligibility; no promised payouts or double paid expenses",
+    "Dependencies": "F01,F02,F06,F14",
+    "Readiness": "Require benefit/coverage facts, no presumed eligibility"
+  },
+  {
+    "ID": "F12",
+    "Engine": "Dependants, disability and caregiving",
+    "Required inputs": "Per dependant costs and duration, caregiver employment effects, other family contributions, subsidies confirmed",
+    "Decision rules": "Time-based cost schedules and separate income impacts; avoid creating subsidies or spouse resources without proof",
+    "Dependencies": "F01,F02,F11,F14",
+    "Readiness": "Scenario rule clear for cash costs; support eligibility conditional"
+  },
+  {
+    "ID": "F13",
+    "Engine": "Other income and non-CPF retirement sources",
+    "Required inputs": "Tenancy income/expenses, pension quote, annuity, commissions, sale proceeds, dividends, business revenues",
+    "Decision rules": "Record source, owner, start/end, gross/net treatment and net effective cash only once",
+    "Dependencies": "F01,F02,F09,F15",
+    "Readiness": "Build contract clear; individual terms require proof"
+  },
+  {
+    "ID": "F14",
+    "Engine": "Liquidity, decumulation and retirement gap",
+    "Required inputs": "Retirement ages, horizon 90/95/100, essential/discretionary costs, reserve target, funding source order",
+    "Decision rules": "Compute monthly funding gap before sales; preserve emergency reserve; restrict CPF; explicit ordered liquid withdrawals, no hidden debt financing",
+    "Dependencies": "F01-F13,F16",
+    "Readiness": "Source-specific waterfall needs owner decision"
+  },
+  {
+    "ID": "F15",
+    "Engine": "FX and cross-border cash flows",
+    "Required inputs": "Source/destination country, currency, pension/gross net, FX monthly path, tax residence, conversion charges",
+    "Decision rules": "Convert and date each exposure; do not guess jurisdiction-specific tax/pension rights or eligibility",
+    "Dependencies": "F01,F02,F09,F13,F14",
+    "Readiness": "Conditional until jurisdiction inputs sourced"
+  },
+  {
+    "ID": "F16",
+    "Engine": "Projection and explanation layer",
+    "Required inputs": "Date-stamped facts, scenario parameter version, nominal/real price base, uncertainty ranges, policy-source version",
+    "Decision rules": "Rebuild projections on each scenario and show before/after, marginal cash flow, CPF excluded from spendable cash, no single readiness-certainty score",
+    "Dependencies": "F01-F15",
+    "Readiness": "Core contract ready; numeric calibration and comprehension remain unverified"
+  },
+  {
+    "ID": "F17",
+    "Engine": "Government benefits and retirement schemes",
+    "Required inputs": "Scheme ID, eligibility evidence, effective-dated amount, actual application/award status",
+    "Decision rules": "Show potentially relevant scheme only; separate indicative eligibility from confirmed award, do not add cash benefit until awarded",
+    "Dependencies": "F01,F02,F11,F12,F14",
+    "Readiness": "Research catalogue incomplete, no entitlement determination"
+  },
+  {
+    "ID": "F18",
+    "Engine": "Legacy and business transactions",
+    "Required inputs": "Ownership, net realised amount, guarantees, liability, executor/settlement/official evidence, distribution date",
+    "Decision rules": "Only confirmed net receipts and documented cash obligations enter forecast; no inheritance, divorce split or legal right guess",
+    "Dependencies": "F01,F09,F13,F14,F15",
+    "Readiness": "Bespoke facts mandatory; legal-driven entitlement intentionally not derived"
+  }
+]
