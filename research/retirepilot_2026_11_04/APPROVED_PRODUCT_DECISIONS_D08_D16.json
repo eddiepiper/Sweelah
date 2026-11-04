@@ -1,0 +1,83 @@
+[
+  {
+    "ID": "D08",
+    "Question": "Future statutory CPF policy for 2028+",
+    "Recommendation": "Recommend display explicit illustrative continuation of last known verified rates with scenario toggle and strong warning; never label as official future law",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F03/F06",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D09",
+    "Question": "How to fund a retirement cash shortfall",
+    "Recommendation": "Recommend: spendable cash above reserve, then explicitly approved liquid assets; no forced sales, loans or restricted CPF",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F14",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D10",
+    "Question": "Planning horizon and mortality",
+    "Recommendation": "Recommend show age 90, 95 and 100 survival horizons as scenarios, never a single assumed lifespan or prediction",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F14/F16",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D11",
+    "Question": "Property downsizing when replacement requires financing",
+    "Recommendation": "Recommend show deficit and block affordability claim until actual mortgage facility and timing provided",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F08/S020",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D12",
+    "Question": "Unverified insurance / subsidy / inheritance",
+    "Recommendation": "Recommend exclude from baseline, allow an optional separate clearly conditional scenario",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F11/F17/F18",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D13",
+    "Question": "FX and overseas rules",
+    "Recommendation": "Recommend keep cross-border as documented cash-flow-only until each jurisdiction model is verified",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F15",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D14",
+    "Question": "Retirement confidence or readiness badges",
+    "Recommendation": "Recommend show cash runway, goal shortfall and assumptions; no percentile or quantified confidence on 96 personas",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F16",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D15",
+    "Question": "Joint household finances under refused consent",
+    "Recommendation": "Recommend calculate only confirmed individual-owned facts, show joint remainder as unknown; no spouse CPF/income guesses",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "F01/F16",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  },
+  {
+    "ID": "D16",
+    "Question": "Scenario combination and double counting",
+    "Recommendation": "Recommend event-sourcing by dated transaction and owner, with deterministic precedence and conflict notifications",
+    "State": "APPROVED BY PRODUCT OWNER 2026-11-04",
+    "Affected engines": "All scenarios",
+    "Approval evidence": "User explicit approval of all nine recommendations in this conversation",
+    "Validation status": "Policy approved; statutory source reconciliation and empirical consumer validation remain separate."
+  }
+]
