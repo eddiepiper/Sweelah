@@ -1,0 +1,4298 @@
+{
+  "version": "1.2.0-prototype",
+  "source_file": "RetirePilot_Master_Library_v1.1.xlsx",
+  "source_sha256": "91de385a692e69a79c78f131a01a85886c39c9a85a11be9e6c57e01c4a404612",
+  "policy_status": "Not assessed; no CPF or government eligibility decisions",
+  "score_status": "Uncalibrated proposed weights, not probabilities, financial readiness or advice",
+  "predicates": {
+    "actual_vehicle_costs": {
+      "dimension": "D06",
+      "field": "income_stream.vehicle_costs_reported",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "adult_child_supported": {
+      "dimension": "D08",
+      "field": "relationships.adult_children_supported",
+      "op": "GT",
+      "expected": "0"
+    },
+    "age_45plus": {
+      "dimension": "D01",
+      "field": "person.age_years",
+      "op": "GTE",
+      "expected": "45"
+    },
+    "age_55plus": {
+      "dimension": "D01",
+      "field": "person.age_years",
+      "op": "GTE",
+      "expected": "55"
+    },
+    "age_60plus": {
+      "dimension": "D01",
+      "field": "person.age_years",
+      "op": "GTE",
+      "expected": "60"
+    },
+    "age_65plus": {
+      "dimension": "D01",
+      "field": "person.age_years",
+      "op": "GTE",
+      "expected": "65"
+    },
+    "age_80plus": {
+      "dimension": "D01",
+      "field": "person.age_years",
+      "op": "GTE",
+      "expected": "80"
+    },
+    "age_under_65": {
+      "dimension": "D01",
+      "field": "person.age_years",
+      "op": "LT",
+      "expected": "65"
+    },
+    "asset_division": {
+      "dimension": "D18",
+      "field": "events.asset_division_active",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "authority_unverified": {
+      "dimension": "D07",
+      "field": "permissions.financial_authority",
+      "op": "EQ",
+      "expected": "unverified"
+    },
+    "authority_verified": {
+      "dimension": "D07",
+      "field": "permissions.parent_financial_authority",
+      "op": "EQ",
+      "expected": "verified"
+    },
+    "beneficiary_complex": {
+      "dimension": "D17",
+      "field": "goals.beneficiary_complex",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "blended_family": {
+      "dimension": "D07",
+      "field": "household.blended_family",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "business_equity": {
+      "dimension": "D13",
+      "field": "assets.business_equity_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "business_exit_goal": {
+      "dimension": "D17",
+      "field": "goals.business_exit_plan",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "business_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "business"
+    },
+    "business_sale_planned": {
+      "dimension": "D18",
+      "field": "events.business_sale_planned",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "care_expenses": {
+      "dimension": "D16",
+      "field": "expenses.care_annual",
+      "op": "GT",
+      "expected": "0"
+    },
+    "caregiver_left_work": {
+      "dimension": "D18",
+      "field": "events.left_job_for_care",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "cashflow_surplus": {
+      "dimension": "D15",
+      "field": "financials.projected_surplus",
+      "op": "GT",
+      "expected": "0"
+    },
+    "charitable_goal": {
+      "dimension": "D17",
+      "field": "goals.charitable_giving",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "child_support": {
+      "dimension": "D09",
+      "field": "expenses.child_support",
+      "op": "GT",
+      "expected": "0"
+    },
+    "children_dependent": {
+      "dimension": "D08",
+      "field": "relationships.dependent_children_count",
+      "op": "GT",
+      "expected": "0"
+    },
+    "civil_service_pension": {
+      "dimension": "D13",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "civil_service_pension"
+    },
+    "cohabiting_unmarried": {
+      "dimension": "D07",
+      "field": "relationships.marital_status",
+      "op": "EQ",
+      "expected": "cohabiting"
+    },
+    "commission_decline": {
+      "dimension": "D18",
+      "field": "events.commission_decline_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "commission_history": {
+      "dimension": "D06",
+      "field": "income_stream.commission_history_months",
+      "op": "GTE",
+      "expected": "12"
+    },
+    "commission_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "commission"
+    },
+    "complex_inheritance": {
+      "dimension": "D17",
+      "field": "goals.complex_inheritance",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "concentrated_equity": {
+      "dimension": "D13",
+      "field": "assets.equity_concentration_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "consulting_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "consulting"
+    },
+    "contract_gaps": {
+      "dimension": "D06",
+      "field": "income_stream.gap_months_last_12",
+      "op": "GT",
+      "expected": "0"
+    },
+    "contract_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "contract_fee"
+    },
+    "contract_work": {
+      "dimension": "D05",
+      "field": "income_stream.contract_status",
+      "op": "EQ",
+      "expected": "fixed_term"
+    },
+    "cpf_contrib": {
+      "dimension": "D11",
+      "field": "cpf.contribution_recent",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "cpf_high": {
+      "dimension": "D11",
+      "field": "cpf.retirement_balance_band",
+      "op": "EQ",
+      "expected": "high"
+    },
+    "cpf_housing_use": {
+      "dimension": "D11",
+      "field": "cpf.housing_withdrawal_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "cpf_income": {
+      "dimension": "D11",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "cpf_payout"
+    },
+    "cpf_life_starting": {
+      "dimension": "D11",
+      "field": "cpf.life_status",
+      "op": "EQ",
+      "expected": "starting"
+    },
+    "cpf_low": {
+      "dimension": "D11",
+      "field": "cpf.retirement_balance_band",
+      "op": "EQ",
+      "expected": "low"
+    },
+    "cpf_payout_deferred": {
+      "dimension": "D11",
+      "field": "cpf.payout_start_age",
+      "op": "GT",
+      "expected": "65"
+    },
+    "cpf_platform": {
+      "dimension": "D11",
+      "field": "cpf.platform_contribution_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "cpf_settlement": {
+      "dimension": "D18",
+      "field": "events.cpf_settlement_relevant",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "debt_distress": {
+      "dimension": "D14",
+      "field": "financials.debt_distress",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "delivery_motorcycle": {
+      "dimension": "D05",
+      "field": "income_stream.platform_vehicle",
+      "op": "EQ",
+      "expected": "motorcycle"
+    },
+    "delivery_nonmotor": {
+      "dimension": "D05",
+      "field": "income_stream.platform_vehicle",
+      "op": "IN",
+      "expected": "bicycle;walking"
+    },
+    "dependent_adult_disability": {
+      "dimension": "D09",
+      "field": "relationships.adult_dependent_disability_support",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "disability_related_costs": {
+      "dimension": "D16",
+      "field": "expenses.disability_related",
+      "op": "GT",
+      "expected": "0"
+    },
+    "divorce_event": {
+      "dimension": "D18",
+      "field": "events.divorce_current",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "divorced_status": {
+      "dimension": "D07",
+      "field": "relationships.marital_status",
+      "op": "EQ",
+      "expected": "divorced"
+    },
+    "driver_taxi_phv": {
+      "dimension": "D05",
+      "field": "employment.activity",
+      "op": "IN",
+      "expected": "taxi;private_hire"
+    },
+    "early_retired": {
+      "dimension": "D05",
+      "field": "employment.retirement_status",
+      "op": "EQ",
+      "expected": "early_retired"
+    },
+    "early_retirement_goal": {
+      "dimension": "D17",
+      "field": "goals.target_retirement_age",
+      "op": "LT",
+      "expected": "65"
+    },
+    "education_expenses": {
+      "dimension": "D15",
+      "field": "expenses.children_education",
+      "op": "GT",
+      "expected": "0"
+    },
+    "emergency_contact_absent": {
+      "dimension": "D07",
+      "field": "person.emergency_contact_available",
+      "op": "EQ",
+      "expected": "false"
+    },
+    "employee": {
+      "dimension": "D05",
+      "field": "income_stream.worker_class",
+      "op": "HAS",
+      "expected": "employee"
+    },
+    "employer_shares": {
+      "dimension": "D13",
+      "field": "assets.employer_shares_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "employment_pass": {
+      "dimension": "D02",
+      "field": "person.pass_type",
+      "op": "EQ",
+      "expected": "EP"
+    },
+    "employment_transition": {
+      "dimension": "D18",
+      "field": "events.job_transition_active",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "entrepreneur": {
+      "dimension": "D05",
+      "field": "employment.role_group",
+      "op": "EQ",
+      "expected": "entrepreneur"
+    },
+    "essential_expenses": {
+      "dimension": "D15",
+      "field": "expenses.essentials_annual",
+      "op": "GT",
+      "expected": "0"
+    },
+    "essentials_high": {
+      "dimension": "D15",
+      "field": "expenses.essential_income_ratio",
+      "op": "EQ",
+      "expected": "high"
+    },
+    "established_trade": {
+      "dimension": "D05",
+      "field": "employment.trade_tenure_years",
+      "op": "GTE",
+      "expected": "2"
+    },
+    "estate_assets": {
+      "dimension": "D13",
+      "field": "assets.estate_related",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "estate_goal": {
+      "dimension": "D17",
+      "field": "goals.estate_goal",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "estate_receipt": {
+      "dimension": "D18",
+      "field": "events.estate_receipt_pending",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "estranged_family": {
+      "dimension": "D07",
+      "field": "relationships.estranged_family",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "executive_role": {
+      "dimension": "D05",
+      "field": "employment.role_group",
+      "op": "EQ",
+      "expected": "senior_leadership"
+    },
+    "exit_proceeds_uncertain": {
+      "dimension": "D13",
+      "field": "assets.business_exit_proceeds_uncertain",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "expense_streams": {
+      "dimension": "D06",
+      "field": "income_stream.expense_records_separated",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "family_transfers": {
+      "dimension": "D09",
+      "field": "expenses.family_transfers",
+      "op": "GT",
+      "expected": "0"
+    },
+    "foreign_pension": {
+      "dimension": "D13",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "foreign_pension"
+    },
+    "foreign_spending": {
+      "dimension": "D15",
+      "field": "expenses.cross_border",
+      "op": "GT",
+      "expected": "0"
+    },
+    "freelance_professional": {
+      "dimension": "D05",
+      "field": "income_stream.trade",
+      "op": "EQ",
+      "expected": "freelance_professional"
+    },
+    "fx_risk": {
+      "dimension": "D13",
+      "field": "assets.currency_mismatch",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "guaranteed_income": {
+      "dimension": "D03",
+      "field": "income_stream.guaranteed_income_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "hawker_or_sole_prop": {
+      "dimension": "D05",
+      "field": "income_stream.trade",
+      "op": "IN",
+      "expected": "hawker;sole_proprietor"
+    },
+    "hdb_owner": {
+      "dimension": "D10",
+      "field": "housing.property_type",
+      "op": "EQ",
+      "expected": "hdb_owner"
+    },
+    "high_debt_service": {
+      "dimension": "D14",
+      "field": "financials.debt_service_burden",
+      "op": "EQ",
+      "expected": "high"
+    },
+    "high_dependency": {
+      "dimension": "D09",
+      "field": "relationships.support_costs_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "high_net_worth": {
+      "dimension": "D13",
+      "field": "assets.net_worth_band",
+      "op": "EQ",
+      "expected": "high"
+    },
+    "hours_variable": {
+      "dimension": "D06",
+      "field": "employment.hours_variable",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "household_dual_earner": {
+      "dimension": "D04",
+      "field": "household.earners_count",
+      "op": "GTE",
+      "expected": "2"
+    },
+    "household_one_earner": {
+      "dimension": "D04",
+      "field": "household.earners_count",
+      "op": "EQ",
+      "expected": "1"
+    },
+    "household_with_children": {
+      "dimension": "D08",
+      "field": "household.children_resident_count",
+      "op": "GT",
+      "expected": "0"
+    },
+    "housing_contingency": {
+      "dimension": "D17",
+      "field": "goals.housing_contingency",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "housing_independent": {
+      "dimension": "D10",
+      "field": "housing.independent_occupancy",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "housing_monetisation_goal": {
+      "dimension": "D17",
+      "field": "goals.housing_monetisation",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "housing_stable": {
+      "dimension": "D10",
+      "field": "housing.tenure_stability",
+      "op": "EQ",
+      "expected": "stable"
+    },
+    "housing_transition": {
+      "dimension": "D18",
+      "field": "events.housing_transition_active",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "illiquid_assets": {
+      "dimension": "D13",
+      "field": "assets.illiquid_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "income_dependence": {
+      "dimension": "D04",
+      "field": "household.income_dependence_high",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "income_high": {
+      "dimension": "D03",
+      "field": "income.annual_personal_band",
+      "op": "EQ",
+      "expected": "high"
+    },
+    "income_high_household": {
+      "dimension": "D04",
+      "field": "household.annual_income_band",
+      "op": "EQ",
+      "expected": "high"
+    },
+    "income_interrupted": {
+      "dimension": "D06",
+      "field": "income_stream.interruption_active",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "income_low": {
+      "dimension": "D03",
+      "field": "income.annual_personal_band",
+      "op": "EQ",
+      "expected": "low"
+    },
+    "income_mid": {
+      "dimension": "D03",
+      "field": "income.annual_personal_band",
+      "op": "EQ",
+      "expected": "middle"
+    },
+    "income_protection": {
+      "dimension": "D16",
+      "field": "coverage.income_protection_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "income_variable": {
+      "dimension": "D06",
+      "field": "income_stream.volatility_state",
+      "op": "EQ",
+      "expected": "variable"
+    },
+    "inheritance_event": {
+      "dimension": "D18",
+      "field": "events.inheritance_recent",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "insurance_agent": {
+      "dimension": "D05",
+      "field": "income_stream.trade",
+      "op": "EQ",
+      "expected": "insurance_agent"
+    },
+    "insurance_claim": {
+      "dimension": "D16",
+      "field": "coverage.claim_pending",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "insurance_coverage": {
+      "dimension": "D16",
+      "field": "coverage.policy_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "investment_assets": {
+      "dimension": "D12",
+      "field": "assets.investment_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "investment_funded_retirement": {
+      "dimension": "D03",
+      "field": "income_stream.retirement_main_type",
+      "op": "EQ",
+      "expected": "portfolio"
+    },
+    "investment_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "investment"
+    },
+    "joint_goal": {
+      "dimension": "D17",
+      "field": "goals.household_joint_goal",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "late_career": {
+      "dimension": "D01",
+      "field": "person.age_years",
+      "op": "GTE",
+      "expected": "50"
+    },
+    "lease_details": {
+      "dimension": "D10",
+      "field": "housing.lease_details_complete",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "limited_guaranteed_income": {
+      "dimension": "D03",
+      "field": "income_stream.guaranteed_income_band",
+      "op": "EQ",
+      "expected": "low"
+    },
+    "liquid_assets": {
+      "dimension": "D12",
+      "field": "assets.liquid_assets_exist",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "liquid_high": {
+      "dimension": "D12",
+      "field": "assets.liquid_band",
+      "op": "EQ",
+      "expected": "high"
+    },
+    "liquid_low": {
+      "dimension": "D12",
+      "field": "assets.liquid_band",
+      "op": "EQ",
+      "expected": "low"
+    },
+    "living_alone": {
+      "dimension": "D07",
+      "field": "household.members_count",
+      "op": "EQ",
+      "expected": "1"
+    },
+    "living_with_adult_child": {
+      "dimension": "D10",
+      "field": "housing.with_adult_child",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "long_term_care": {
+      "dimension": "D16",
+      "field": "expenses.long_term_care_required",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "long_term_pr": {
+      "dimension": "D02",
+      "field": "person.years_since_pr",
+      "op": "GTE",
+      "expected": "5"
+    },
+    "long_term_unemployed": {
+      "dimension": "D05",
+      "field": "employment.unemployment_months",
+      "op": "GTE",
+      "expected": "12"
+    },
+    "main_earner_loss": {
+      "dimension": "D18",
+      "field": "events.main_earner_loss",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "manages_parent_finances": {
+      "dimension": "D09",
+      "field": "relationships.manages_parent_finances",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "market_risk": {
+      "dimension": "D12",
+      "field": "assets.market_exposure_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "married": {
+      "dimension": "D07",
+      "field": "relationships.marital_status",
+      "op": "EQ",
+      "expected": "married"
+    },
+    "medical_expenses": {
+      "dimension": "D16",
+      "field": "expenses.medical_annual",
+      "op": "GT",
+      "expected": "0"
+    },
+    "medisave_path": {
+      "dimension": "D11",
+      "field": "cpf.platform_medisave_only",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "mixed_nationality_couple": {
+      "dimension": "D02",
+      "field": "relationships.mixed_nationality",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "monthly_mortgage": {
+      "dimension": "D14",
+      "field": "liabilities.monthly_mortgage_payment",
+      "op": "GT",
+      "expected": "0"
+    },
+    "mortgage_active": {
+      "dimension": "D14",
+      "field": "liabilities.active_mortgage",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "mortgage_paid": {
+      "dimension": "D14",
+      "field": "liabilities.housing_loan_balance",
+      "op": "EQ",
+      "expected": "0"
+    },
+    "multigenerational_household": {
+      "dimension": "D07",
+      "field": "household.generations_count",
+      "op": "GTE",
+      "expected": "3"
+    },
+    "multiple_income_types": {
+      "dimension": "D03",
+      "field": "income_stream.type_count",
+      "op": "GTE",
+      "expected": "2"
+    },
+    "multiple_platforms": {
+      "dimension": "D05",
+      "field": "income_stream.active_platforms",
+      "op": "GTE",
+      "expected": "2"
+    },
+    "multiple_properties": {
+      "dimension": "D13",
+      "field": "assets.property_count",
+      "op": "GTE",
+      "expected": "2"
+    },
+    "never_married": {
+      "dimension": "D07",
+      "field": "relationships.marital_status",
+      "op": "EQ",
+      "expected": "never_married"
+    },
+    "new_pr": {
+      "dimension": "D02",
+      "field": "person.years_since_pr",
+      "op": "LT",
+      "expected": "3"
+    },
+    "new_to_trade": {
+      "dimension": "D05",
+      "field": "employment.trade_tenure_years",
+      "op": "LT",
+      "expected": "2"
+    },
+    "new_wealth": {
+      "dimension": "D18",
+      "field": "events.new_wealth_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "no_children": {
+      "dimension": "D08",
+      "field": "relationships.children_count",
+      "op": "EQ",
+      "expected": "0"
+    },
+    "no_cpf": {
+      "dimension": "D11",
+      "field": "cpf.is_member",
+      "op": "EQ",
+      "expected": "false"
+    },
+    "no_family_support": {
+      "dimension": "D09",
+      "field": "relationships.support_network_available",
+      "op": "EQ",
+      "expected": "false"
+    },
+    "no_property_ownership": {
+      "dimension": "D13",
+      "field": "assets.residential_property_count",
+      "op": "EQ",
+      "expected": "0"
+    },
+    "one_parent_household": {
+      "dimension": "D07",
+      "field": "household.resident_parents_count",
+      "op": "EQ",
+      "expected": "1"
+    },
+    "operating_expenses": {
+      "dimension": "D06",
+      "field": "income_stream.actual_business_expenses",
+      "op": "GT",
+      "expected": "0"
+    },
+    "other_debts": {
+      "dimension": "D14",
+      "field": "liabilities.nonhousing_loan_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "overseas_assets": {
+      "dimension": "D13",
+      "field": "assets.overseas_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "overseas_family_support": {
+      "dimension": "D09",
+      "field": "expenses.overseas_family_support",
+      "op": "GT",
+      "expected": "0"
+    },
+    "overseas_property": {
+      "dimension": "D13",
+      "field": "assets.overseas_property_exists",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "parent_of_adult": {
+      "dimension": "D08",
+      "field": "relationships.adult_children_count",
+      "op": "GT",
+      "expected": "0"
+    },
+    "parent_supported": {
+      "dimension": "D09",
+      "field": "relationships.parents_supported_count",
+      "op": "GT",
+      "expected": "0"
+    },
+    "partner_assets": {
+      "dimension": "D13",
+      "field": "assets.partner_assets_known",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "partner_earns": {
+      "dimension": "D04",
+      "field": "relationships.partner_has_income",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "partner_not_earning": {
+      "dimension": "D04",
+      "field": "relationships.partner_has_income",
+      "op": "EQ",
+      "expected": "false"
+    },
+    "partner_residential_care": {
+      "dimension": "D16",
+      "field": "relationships.partner_in_residential_care",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "parttime_work": {
+      "dimension": "D05",
+      "field": "employment.hours_status",
+      "op": "EQ",
+      "expected": "part_time"
+    },
+    "payment_arrears": {
+      "dimension": "D14",
+      "field": "liabilities.payment_arrears",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "pension_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "pension"
+    },
+    "personal_cpf_low": {
+      "dimension": "D11",
+      "field": "cpf.personal_balance_band",
+      "op": "EQ",
+      "expected": "low"
+    },
+    "physical_risk": {
+      "dimension": "D18",
+      "field": "events.work_physical_risk_reported",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "physical_work": {
+      "dimension": "D05",
+      "field": "income_stream.physical_work",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "platform_income": {
+      "dimension": "D05",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "platform"
+    },
+    "platform_not_opted_in": {
+      "dimension": "D11",
+      "field": "cpf.platform_opt_in_state",
+      "op": "EQ",
+      "expected": "not_opted_in"
+    },
+    "platform_opted_in": {
+      "dimension": "D11",
+      "field": "cpf.platform_opt_in_state",
+      "op": "EQ",
+      "expected": "opted_in"
+    },
+    "platform_side_income": {
+      "dimension": "D05",
+      "field": "income_stream.platform_secondary",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "pr_status": {
+      "dimension": "D02",
+      "field": "person.residency",
+      "op": "EQ",
+      "expected": "pr"
+    },
+    "pre_65_bridge": {
+      "dimension": "D17",
+      "field": "goals.pre65_income_bridge_needed",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "previous_dependants": {
+      "dimension": "D09",
+      "field": "relationships.prior_dependants",
+      "op": "GT",
+      "expected": "0"
+    },
+    "previously_employee": {
+      "dimension": "D05",
+      "field": "employment.previous_class",
+      "op": "EQ",
+      "expected": "employee"
+    },
+    "private_condo_owner": {
+      "dimension": "D10",
+      "field": "housing.property_type",
+      "op": "EQ",
+      "expected": "private_condo_owner"
+    },
+    "private_pension": {
+      "dimension": "D13",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "private_pension"
+    },
+    "property_agent": {
+      "dimension": "D05",
+      "field": "income_stream.trade",
+      "op": "EQ",
+      "expected": "property_agent"
+    },
+    "property_concentrated": {
+      "dimension": "D13",
+      "field": "assets.property_share_material",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "ra_balance": {
+      "dimension": "D11",
+      "field": "cpf.ra_balance_known",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "recurring_health_costs": {
+      "dimension": "D16",
+      "field": "expenses.recurring_health_costs",
+      "op": "GT",
+      "expected": "0"
+    },
+    "remarried": {
+      "dimension": "D07",
+      "field": "relationships.marital_status",
+      "op": "EQ",
+      "expected": "remarried"
+    },
+    "renewal_commission": {
+      "dimension": "D06",
+      "field": "income_stream.recurring_commission",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "renewal_uncertain": {
+      "dimension": "D06",
+      "field": "income_stream.renewal_uncertain",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "rent_expense": {
+      "dimension": "D15",
+      "field": "expenses.rent_monthly",
+      "op": "GT",
+      "expected": "0"
+    },
+    "rent_inflation": {
+      "dimension": "D18",
+      "field": "scenarios.rent_increase_active",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "rental_costs": {
+      "dimension": "D15",
+      "field": "expenses.property_rental_costs",
+      "op": "GT",
+      "expected": "0"
+    },
+    "rental_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "rental"
+    },
+    "renter": {
+      "dimension": "D10",
+      "field": "housing.tenure",
+      "op": "EQ",
+      "expected": "renting"
+    },
+    "retire_at_60": {
+      "dimension": "D17",
+      "field": "goals.target_retirement_age",
+      "op": "EQ",
+      "expected": "60"
+    },
+    "retire_in_malaysia": {
+      "dimension": "D17",
+      "field": "goals.retirement_country",
+      "op": "EQ",
+      "expected": "MY"
+    },
+    "retired_status": {
+      "dimension": "D05",
+      "field": "employment.retirement_status",
+      "op": "EQ",
+      "expected": "retired"
+    },
+    "retirement_goal": {
+      "dimension": "D17",
+      "field": "goals.retirement_target_set",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "retirement_goal_late": {
+      "dimension": "D17",
+      "field": "goals.target_retirement_age",
+      "op": "GTE",
+      "expected": "65"
+    },
+    "retirement_shortfall": {
+      "dimension": "D17",
+      "field": "financials.retirement_gap",
+      "op": "GT",
+      "expected": "0"
+    },
+    "retirement_soon": {
+      "dimension": "D17",
+      "field": "goals.years_to_retirement",
+      "op": "LTE",
+      "expected": "10"
+    },
+    "retrenchment_event": {
+      "dimension": "D18",
+      "field": "events.retrenchment_recent",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "returning_singaporean": {
+      "dimension": "D18",
+      "field": "events.returned_to_sg_recent",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "ridehail_platform": {
+      "dimension": "D05",
+      "field": "income_stream.platform_type",
+      "op": "EQ",
+      "expected": "ride_hail"
+    },
+    "safeguarding_needed": {
+      "dimension": "D18",
+      "field": "events.safeguarding_review",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "salary_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "salary"
+    },
+    "savings_low": {
+      "dimension": "D15",
+      "field": "financials.savings_rate_band",
+      "op": "EQ",
+      "expected": "low"
+    },
+    "self_employed": {
+      "dimension": "D05",
+      "field": "income_stream.worker_class",
+      "op": "HAS",
+      "expected": "self_employed"
+    },
+    "semi_retired": {
+      "dimension": "D05",
+      "field": "employment.retirement_status",
+      "op": "EQ",
+      "expected": "semi_retired"
+    },
+    "sep_medisave": {
+      "dimension": "D11",
+      "field": "cpf.sep_medisave_obligation",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "separate_contribution": {
+      "dimension": "D11",
+      "field": "cpf.multiple_contribution_pathways",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "separate_ownership": {
+      "dimension": "D13",
+      "field": "assets.separately_owned",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "sg_citizen": {
+      "dimension": "D02",
+      "field": "person.citizenship",
+      "op": "EQ",
+      "expected": "sg"
+    },
+    "shared_expenses": {
+      "dimension": "D15",
+      "field": "expenses.shared_across_members",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "shared_housing": {
+      "dimension": "D10",
+      "field": "housing.shared_family_occupancy",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "short_contract": {
+      "dimension": "D05",
+      "field": "income_stream.contract_term_months",
+      "op": "LTE",
+      "expected": "12"
+    },
+    "single_household": {
+      "dimension": "D07",
+      "field": "household.members_count",
+      "op": "EQ",
+      "expected": "1"
+    },
+    "single_parent": {
+      "dimension": "D07",
+      "field": "household.family_structure",
+      "op": "EQ",
+      "expected": "single_parent"
+    },
+    "sme_owner": {
+      "dimension": "D13",
+      "field": "ownership.sme_owner",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "solo_goal": {
+      "dimension": "D17",
+      "field": "goals.solo_retirement_plan",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "succession_goal": {
+      "dimension": "D17",
+      "field": "goals.succession_plan",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "support_eligibility": {
+      "dimension": "D02",
+      "field": "policy.support_screening_relevant",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "survivor_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "survivor_income"
+    },
+    "suspected_exploitation": {
+      "dimension": "D18",
+      "field": "events.suspected_exploitation",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "trade_expenses": {
+      "dimension": "D06",
+      "field": "income_stream.trade_expenses_recorded",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "two_household_expenses": {
+      "dimension": "D15",
+      "field": "expenses.two_locations",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "two_platform_payers": {
+      "dimension": "D05",
+      "field": "income_stream.distinct_platform_payers",
+      "op": "GTE",
+      "expected": "2"
+    },
+    "unable_to_work": {
+      "dimension": "D05",
+      "field": "employment.unable_to_work",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "underemployed": {
+      "dimension": "D05",
+      "field": "employment.underemployed",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "vacancy_risk": {
+      "dimension": "D13",
+      "field": "assets.rental_vacancy_exposure",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "vehicle_costs": {
+      "dimension": "D06",
+      "field": "income_stream.vehicle_costs_reported",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "was_employed_household": {
+      "dimension": "D04",
+      "field": "household.lost_employment_income",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "widowed_status": {
+      "dimension": "D07",
+      "field": "relationships.marital_status",
+      "op": "EQ",
+      "expected": "widowed"
+    },
+    "widowhood_event": {
+      "dimension": "D18",
+      "field": "events.recent_bereavement",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "withdrawal_income": {
+      "dimension": "D03",
+      "field": "income_stream.type",
+      "op": "HAS",
+      "expected": "asset_withdrawal"
+    },
+    "work_capacity_variable": {
+      "dimension": "D05",
+      "field": "employment.capacity_uncertain",
+      "op": "EQ",
+      "expected": "true"
+    },
+    "work_permit_or_spass": {
+      "dimension": "D02",
+      "field": "person.pass_type",
+      "op": "IN",
+      "expected": "WP;SP"
+    },
+    "working_beyond_65": {
+      "dimension": "D17",
+      "field": "goals.work_end_age",
+      "op": "GTE",
+      "expected": "66"
+    },
+    "individual_not_earning": {
+      "dimension": "D03",
+      "field": "person.has_earned_income",
+      "op": "EQ",
+      "expected": "false"
+    }
+  },
+  "personas": {
+    "A01": {
+      "id": "A01",
+      "gate": "employee",
+      "exclusion": "!employee",
+      "criteria": [
+        {
+          "predicate": "income_low",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "essentials_high",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "cpf_contrib",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Lower-wage employee",
+      "family": "Salaried employment",
+      "planning_focus": "Essential expenses and CPF savings"
+    },
+    "A02": {
+      "id": "A02",
+      "gate": "employee",
+      "exclusion": "!employee",
+      "criteria": [
+        {
+          "predicate": "income_mid",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "children_dependent",
+          "weight": 30,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "mortgage_active",
+          "weight": 20,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "cpf_contrib",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Middle-income salaried worker",
+      "family": "Salaried employment",
+      "planning_focus": "Housing, family costs and retirement accumulation"
+    },
+    "A03": {
+      "id": "A03",
+      "gate": "employee",
+      "exclusion": "!employee",
+      "criteria": [
+        {
+          "predicate": "income_high",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "executive_role",
+          "weight": 30,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "investment_assets",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "retirement_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "High-income executive",
+      "family": "Salaried employment",
+      "planning_focus": "Lifestyle inflation, asset growth and retirement target"
+    },
+    "A04": {
+      "id": "A04",
+      "gate": "household_dual_earner",
+      "exclusion": "!household_dual_earner",
+      "criteria": [
+        {
+          "predicate": "employee",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "income_high_household",
+          "weight": 30,
+          "dimension": "D04"
+        },
+        {
+          "predicate": "partner_earns",
+          "weight": 20,
+          "dimension": "D04"
+        },
+        {
+          "predicate": "joint_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Dual-income professional household",
+      "family": "Salaried employment",
+      "planning_focus": "Joint planning and income concentration"
+    },
+    "A05": {
+      "id": "A05",
+      "gate": "household_one_earner",
+      "exclusion": "!household_one_earner",
+      "criteria": [
+        {
+          "predicate": "employee",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "children_dependent",
+          "weight": 30,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "partner_not_earning",
+          "weight": 20,
+          "dimension": "D04"
+        },
+        {
+          "predicate": "high_dependency",
+          "weight": 15,
+          "dimension": "D09"
+        }
+      ],
+      "name": "Single-income family provider",
+      "family": "Salaried employment",
+      "planning_focus": "Dependency on one salary"
+    },
+    "A06": {
+      "id": "A06",
+      "gate": "contract_work",
+      "exclusion": "!contract_work",
+      "criteria": [
+        {
+          "predicate": "employee",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "short_contract",
+          "weight": 30,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "renewal_uncertain",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Contract employee",
+      "family": "Salaried employment",
+      "planning_focus": "Renewal uncertainty and contribution gaps"
+    },
+    "A07": {
+      "id": "A07",
+      "gate": "retrenchment_event",
+      "exclusion": "!retrenchment_event",
+      "criteria": [
+        {
+          "predicate": "previously_employee",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "income_interrupted",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "late_career",
+          "weight": 20,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "employment_transition",
+          "weight": 15,
+          "dimension": "D18"
+        }
+      ],
+      "name": "Retrenched professional",
+      "family": "Salaried employment",
+      "planning_focus": "Income interruption and revised retirement plan"
+    },
+    "A08": {
+      "id": "A08",
+      "gate": "employee",
+      "exclusion": "!employee",
+      "criteria": [
+        {
+          "predicate": "age_60plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "working_beyond_65",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "retirement_goal_late",
+          "weight": 20,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "cpf_income",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Late-career employee",
+      "family": "Salaried employment",
+      "planning_focus": "Working beyond typical retirement expectations"
+    },
+    "B01": {
+      "id": "B01",
+      "gate": "ridehail_platform",
+      "exclusion": "!ridehail_platform",
+      "criteria": [
+        {
+          "predicate": "platform_opted_in",
+          "weight": 35,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "platform_income",
+          "weight": 30,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "actual_vehicle_costs",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "cpf_platform",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Ride-hail driver, CPF opted in",
+      "family": "Platform and gig workers",
+      "planning_focus": "Net earnings and increased CPF contributions"
+    },
+    "B02": {
+      "id": "B02",
+      "gate": "ridehail_platform",
+      "exclusion": "!ridehail_platform",
+      "criteria": [
+        {
+          "predicate": "platform_not_opted_in",
+          "weight": 35,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "platform_income",
+          "weight": 30,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "medisave_path",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "age_45plus",
+          "weight": 15,
+          "dimension": "D01"
+        }
+      ],
+      "name": "Ride-hail driver, not opted in",
+      "family": "Platform and gig workers",
+      "planning_focus": "MediSave and alternative retirement accumulation"
+    },
+    "B03": {
+      "id": "B03",
+      "gate": "delivery_motorcycle",
+      "exclusion": "!delivery_motorcycle",
+      "criteria": [
+        {
+          "predicate": "platform_income",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "vehicle_costs",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "physical_risk",
+          "weight": 15,
+          "dimension": "D18"
+        }
+      ],
+      "name": "Motorcycle delivery rider",
+      "family": "Platform and gig workers",
+      "planning_focus": "Operating costs, injury and earnings volatility"
+    },
+    "B04": {
+      "id": "B04",
+      "gate": "delivery_nonmotor",
+      "exclusion": "!delivery_nonmotor",
+      "criteria": [
+        {
+          "predicate": "platform_income",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "age_60plus",
+          "weight": 30,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "physical_work",
+          "weight": 20,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Bicycle/walking delivery worker",
+      "family": "Platform and gig workers",
+      "planning_focus": "Physical sustainability and irregular earnings"
+    },
+    "B05": {
+      "id": "B05",
+      "gate": "multiple_platforms",
+      "exclusion": "!multiple_platforms",
+      "criteria": [
+        {
+          "predicate": "platform_income",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "two_platform_payers",
+          "weight": 30,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "expense_streams",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Multi-platform worker",
+      "family": "Platform and gig workers",
+      "planning_focus": "Income consolidation across platforms"
+    },
+    "B06": {
+      "id": "B06",
+      "gate": "employee",
+      "exclusion": "!employee",
+      "criteria": [
+        {
+          "predicate": "platform_side_income",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "salary_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "platform_income",
+          "weight": 20,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "separate_contribution",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Salaried worker with platform side income",
+      "family": "Platform and gig workers",
+      "planning_focus": "Mixed statutory contribution pathways"
+    },
+    "B07": {
+      "id": "B07",
+      "gate": "retrenchment_event",
+      "exclusion": "!retrenchment_event",
+      "criteria": [
+        {
+          "predicate": "platform_income",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "income_interrupted",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "late_career",
+          "weight": 20,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "employment_transition",
+          "weight": 15,
+          "dimension": "D18"
+        }
+      ],
+      "name": "Retrenched worker relying on gig income",
+      "family": "Platform and gig workers",
+      "planning_focus": "Replacement earnings and retirement gaps"
+    },
+    "B08": {
+      "id": "B08",
+      "gate": "driver_taxi_phv",
+      "exclusion": "!driver_taxi_phv",
+      "criteria": [
+        {
+          "predicate": "age_65plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "parttime_work",
+          "weight": 30,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "cpf_income",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Older taxi/private-hire driver",
+      "family": "Platform and gig workers",
+      "planning_focus": "Ageing, reduced working hours and payouts"
+    },
+    "C01": {
+      "id": "C01",
+      "gate": "property_agent",
+      "exclusion": "!property_agent",
+      "criteria": [
+        {
+          "predicate": "new_to_trade",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "commission_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 15,
+          "dimension": "D12"
+        }
+      ],
+      "name": "New property agent",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Irregular commissions and cash reserves"
+    },
+    "C02": {
+      "id": "C02",
+      "gate": "property_agent",
+      "exclusion": "!property_agent",
+      "criteria": [
+        {
+          "predicate": "established_trade",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "commission_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "income_high",
+          "weight": 20,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "commission_history",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Established high-income property agent",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Multi-year income volatility, tax and savings"
+    },
+    "C03": {
+      "id": "C03",
+      "gate": "property_agent",
+      "exclusion": "!property_agent",
+      "criteria": [
+        {
+          "predicate": "commission_decline",
+          "weight": 35,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "commission_history",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "retirement_soon",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Property agent with declining commissions",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Reduced earnings and retirement timing"
+    },
+    "C04": {
+      "id": "C04",
+      "gate": "insurance_agent",
+      "exclusion": "!insurance_agent",
+      "criteria": [
+        {
+          "predicate": "commission_income",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "renewal_commission",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "trade_expenses",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Insurance/financial advisory agent",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Commission persistence and volatility"
+    },
+    "C05": {
+      "id": "C05",
+      "gate": "freelance_professional",
+      "exclusion": "!freelance_professional",
+      "criteria": [
+        {
+          "predicate": "contract_income",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "contract_gaps",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "sep_medisave",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Freelance consultant or professional",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Contract gaps and SEP contributions"
+    },
+    "C06": {
+      "id": "C06",
+      "gate": "hawker_or_sole_prop",
+      "exclusion": "!hawker_or_sole_prop",
+      "criteria": [
+        {
+          "predicate": "business_income",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "operating_expenses",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "sep_medisave",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Hawker or sole proprietor",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Business costs and retirement liquidity"
+    },
+    "C07": {
+      "id": "C07",
+      "gate": "sme_owner",
+      "exclusion": "!sme_owner",
+      "criteria": [
+        {
+          "predicate": "business_equity",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "business_exit_goal",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "illiquid_assets",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "succession_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "SME owner",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Business equity, succession and exit"
+    },
+    "C08": {
+      "id": "C08",
+      "gate": "entrepreneur",
+      "exclusion": "!entrepreneur",
+      "criteria": [
+        {
+          "predicate": "multiple_income_types",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "business_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "rental_income",
+          "weight": 20,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "investment_income",
+          "weight": 15,
+          "dimension": "D03"
+        }
+      ],
+      "name": "Multiple-income entrepreneur",
+      "family": "Self-employed and business owners",
+      "planning_focus": "Business, rent and investment income integration"
+    },
+    "D01": {
+      "id": "D01",
+      "gate": "married",
+      "exclusion": "!married",
+      "criteria": [
+        {
+          "predicate": "no_children",
+          "weight": 35,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "joint_goal",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "partner_assets",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "household_dual_earner",
+          "weight": 15,
+          "dimension": "D04"
+        }
+      ],
+      "name": "Married couple without children",
+      "family": "Households and dependants",
+      "planning_focus": "Joint retirement objectives"
+    },
+    "D02": {
+      "id": "D02",
+      "gate": "never_married",
+      "exclusion": "!never_married",
+      "criteria": [
+        {
+          "predicate": "single_household",
+          "weight": 35,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "no_children",
+          "weight": 30,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "housing_independent",
+          "weight": 20,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "solo_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Single never-married individual",
+      "family": "Households and dependants",
+      "planning_focus": "Solo retirement and housing security"
+    },
+    "D03": {
+      "id": "D03",
+      "gate": "children_dependent",
+      "exclusion": "!children_dependent",
+      "criteria": [
+        {
+          "predicate": "household_with_children",
+          "weight": 35,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "education_expenses",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "mortgage_active",
+          "weight": 20,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "retirement_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Parents with dependent children",
+      "family": "Households and dependants",
+      "planning_focus": "Education and household financial obligations"
+    },
+    "D04": {
+      "id": "D04",
+      "gate": "single_parent",
+      "exclusion": "!single_parent",
+      "criteria": [
+        {
+          "predicate": "children_dependent",
+          "weight": 35,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "one_parent_household",
+          "weight": 30,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "education_expenses",
+          "weight": 20,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "income_protection",
+          "weight": 15,
+          "dimension": "D16"
+        }
+      ],
+      "name": "Single parent",
+      "family": "Households and dependants",
+      "planning_focus": "Childcare, financial protection and savings"
+    },
+    "D05": {
+      "id": "D05",
+      "gate": "children_dependent",
+      "exclusion": "!children_dependent",
+      "criteria": [
+        {
+          "predicate": "parent_supported",
+          "weight": 35,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "education_expenses",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "care_expenses",
+          "weight": 20,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "high_dependency",
+          "weight": 15,
+          "dimension": "D09"
+        }
+      ],
+      "name": "Sandwich-generation caregiver",
+      "family": "Households and dependants",
+      "planning_focus": "Children plus ageing-parent financial support"
+    },
+    "D06": {
+      "id": "D06",
+      "gate": "individual_not_earning",
+      "exclusion": "!individual_not_earning",
+      "criteria": [
+        {
+          "predicate": "married",
+          "weight": 35,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "partner_earns",
+          "weight": 30,
+          "dimension": "D04"
+        },
+        {
+          "predicate": "personal_cpf_low",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "income_dependence",
+          "weight": 15,
+          "dimension": "D04"
+        }
+      ],
+      "name": "Non-working spouse",
+      "family": "Households and dependants",
+      "planning_focus": "Individual retirement adequacy and spousal dependence"
+    },
+    "D07": {
+      "id": "D07",
+      "gate": "multigenerational_household",
+      "exclusion": "!multigenerational_household",
+      "criteria": [
+        {
+          "predicate": "shared_housing",
+          "weight": 35,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "parent_supported",
+          "weight": 30,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "children_dependent",
+          "weight": 20,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "shared_expenses",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Multigenerational household",
+      "family": "Households and dependants",
+      "planning_focus": "Shared expenses and cross-generation support"
+    },
+    "D08": {
+      "id": "D08",
+      "gate": "adult_child_supported",
+      "exclusion": "!adult_child_supported",
+      "criteria": [
+        {
+          "predicate": "parent_of_adult",
+          "weight": 35,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "family_transfers",
+          "weight": 30,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "high_dependency",
+          "weight": 20,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "retirement_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Parent supporting adult children",
+      "family": "Households and dependants",
+      "planning_focus": "Continued family transfers and retirement affordability"
+    },
+    "E01": {
+      "id": "E01",
+      "gate": "divorce_event",
+      "exclusion": "!divorce_event",
+      "criteria": [
+        {
+          "predicate": "children_dependent",
+          "weight": 35,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "asset_division",
+          "weight": 30,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "housing_transition",
+          "weight": 20,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "child_support",
+          "weight": 15,
+          "dimension": "D09"
+        }
+      ],
+      "name": "Recently divorced parent",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "Asset division, housing and child obligations"
+    },
+    "E02": {
+      "id": "E02",
+      "gate": "divorced_status",
+      "exclusion": "!divorced_status",
+      "criteria": [
+        {
+          "predicate": "age_55plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "cpf_settlement",
+          "weight": 30,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "asset_division",
+          "weight": 20,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "retirement_soon",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Divorced pre-retiree",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "CPF and retirement capital after settlement"
+    },
+    "E03": {
+      "id": "E03",
+      "gate": "widowhood_event",
+      "exclusion": "!widowhood_event",
+      "criteria": [
+        {
+          "predicate": "was_employed_household",
+          "weight": 35,
+          "dimension": "D04"
+        },
+        {
+          "predicate": "income_interrupted",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "estate_receipt",
+          "weight": 20,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "insurance_claim",
+          "weight": 15,
+          "dimension": "D16"
+        }
+      ],
+      "name": "Widowed working adult",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "Lost household income and estate proceeds"
+    },
+    "E04": {
+      "id": "E04",
+      "gate": "widowed_status",
+      "exclusion": "!widowed_status",
+      "criteria": [
+        {
+          "predicate": "retired_status",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "survivor_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "estate_assets",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "living_alone",
+          "weight": 15,
+          "dimension": "D07"
+        }
+      ],
+      "name": "Widowed retiree",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "Survivor income and revised spending"
+    },
+    "E05": {
+      "id": "E05",
+      "gate": "remarried",
+      "exclusion": "!remarried",
+      "criteria": [
+        {
+          "predicate": "blended_family",
+          "weight": 35,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "previous_dependants",
+          "weight": 30,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "estate_goal",
+          "weight": 20,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "beneficiary_complex",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Remarried blended family",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "Multiple dependants and beneficiary planning"
+    },
+    "E06": {
+      "id": "E06",
+      "gate": "cohabiting_unmarried",
+      "exclusion": "!cohabiting_unmarried",
+      "criteria": [
+        {
+          "predicate": "separate_ownership",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "shared_housing",
+          "weight": 30,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "estate_goal",
+          "weight": 20,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "partner_earns",
+          "weight": 15,
+          "dimension": "D04"
+        }
+      ],
+      "name": "Unmarried cohabiting partners",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "Separate assets, property rights and estate plans"
+    },
+    "E07": {
+      "id": "E07",
+      "gate": "estranged_family",
+      "exclusion": "!estranged_family",
+      "criteria": [
+        {
+          "predicate": "no_family_support",
+          "weight": 35,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "single_household",
+          "weight": 30,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "housing_independent",
+          "weight": 20,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "emergency_contact_absent",
+          "weight": 15,
+          "dimension": "D07"
+        }
+      ],
+      "name": "Estranged individual",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "Retirement without expected family support"
+    },
+    "E08": {
+      "id": "E08",
+      "gate": "manages_parent_finances",
+      "exclusion": "!manages_parent_finances",
+      "criteria": [
+        {
+          "predicate": "parent_supported",
+          "weight": 35,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "authority_verified",
+          "weight": 30,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "safeguarding_needed",
+          "weight": 20,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "shared_expenses",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Person managing a parent's finances",
+      "family": "Family transitions and legal relationships",
+      "planning_focus": "Financial authority, capacity and safeguarding"
+    },
+    "F01": {
+      "id": "F01",
+      "gate": "hdb_owner",
+      "exclusion": "!hdb_owner",
+      "criteria": [
+        {
+          "predicate": "mortgage_paid",
+          "weight": 35,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "housing_stable",
+          "weight": 30,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "cpf_housing_use",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "retirement_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Fully paid HDB owner",
+      "family": "Housing and property position",
+      "planning_focus": "Housing security and retirement cash flow"
+    },
+    "F02": {
+      "id": "F02",
+      "gate": "hdb_owner",
+      "exclusion": "!hdb_owner",
+      "criteria": [
+        {
+          "predicate": "mortgage_active",
+          "weight": 35,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "monthly_mortgage",
+          "weight": 30,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "cpf_housing_use",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "retirement_soon",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "HDB owner with mortgage",
+      "family": "Housing and property position",
+      "planning_focus": "Debt service and retirement affordability"
+    },
+    "F03": {
+      "id": "F03",
+      "gate": "private_condo_owner",
+      "exclusion": "!private_condo_owner",
+      "criteria": [
+        {
+          "predicate": "mortgage_active",
+          "weight": 35,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "property_concentrated",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "monthly_mortgage",
+          "weight": 20,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "income_high",
+          "weight": 15,
+          "dimension": "D03"
+        }
+      ],
+      "name": "Private condominium owner with mortgage",
+      "family": "Housing and property position",
+      "planning_focus": "Property concentration and liabilities"
+    },
+    "F04": {
+      "id": "F04",
+      "gate": "multiple_properties",
+      "exclusion": "!multiple_properties",
+      "criteria": [
+        {
+          "predicate": "rental_income",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "vacancy_risk",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "mortgage_active",
+          "weight": 20,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "property_concentrated",
+          "weight": 15,
+          "dimension": "D13"
+        }
+      ],
+      "name": "Multiple-property owner",
+      "family": "Housing and property position",
+      "planning_focus": "Rental yields, taxes and vacancy"
+    },
+    "F05": {
+      "id": "F05",
+      "gate": "age_65plus",
+      "exclusion": "!age_65plus",
+      "criteria": [
+        {
+          "predicate": "property_concentrated",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 30,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "mortgage_paid",
+          "weight": 20,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "housing_monetisation_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Asset-rich, cash-poor senior homeowner",
+      "family": "Housing and property position",
+      "planning_focus": "Monetisation and accessible capital"
+    },
+    "F06": {
+      "id": "F06",
+      "gate": "renter",
+      "exclusion": "!renter",
+      "criteria": [
+        {
+          "predicate": "age_65plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "rent_expense",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "rent_inflation",
+          "weight": 20,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "retired_status",
+          "weight": 15,
+          "dimension": "D05"
+        }
+      ],
+      "name": "Older renter",
+      "family": "Housing and property position",
+      "planning_focus": "Long-term rental affordability"
+    },
+    "F07": {
+      "id": "F07",
+      "gate": "age_65plus",
+      "exclusion": "!age_65plus",
+      "criteria": [
+        {
+          "predicate": "living_with_adult_child",
+          "weight": 35,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "no_property_ownership",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "shared_expenses",
+          "weight": 20,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "housing_contingency",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Senior living with adult children",
+      "family": "Housing and property position",
+      "planning_focus": "Housing dependency and contingency planning"
+    },
+    "F08": {
+      "id": "F08",
+      "gate": "hdb_owner",
+      "exclusion": "!hdb_owner",
+      "criteria": [
+        {
+          "predicate": "housing_monetisation_goal",
+          "weight": 35,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "age_65plus",
+          "weight": 30,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "lease_details",
+          "weight": 20,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "mortgage_paid",
+          "weight": 15,
+          "dimension": "D14"
+        }
+      ],
+      "name": "HDB owner considering downsizing/lease buyback",
+      "family": "Housing and property position",
+      "planning_focus": "Housing proceeds and scheme eligibility"
+    },
+    "G01": {
+      "id": "G01",
+      "gate": "early_retirement_goal",
+      "exclusion": "!early_retirement_goal",
+      "criteria": [
+        {
+          "predicate": "age_under_65",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "pre_65_bridge",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "investment_assets",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "retirement_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Early-retirement aspirant",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Funding retirement before CPF payout age"
+    },
+    "G02": {
+      "id": "G02",
+      "gate": "early_retired",
+      "exclusion": "!early_retired",
+      "criteria": [
+        {
+          "predicate": "age_under_65",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "investment_assets",
+          "weight": 30,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "withdrawal_income",
+          "weight": 20,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "cashflow_surplus",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Financially independent early retiree",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Investment withdrawal sustainability"
+    },
+    "G03": {
+      "id": "G03",
+      "gate": "retirement_shortfall",
+      "exclusion": "!retirement_shortfall",
+      "criteria": [
+        {
+          "predicate": "retirement_soon",
+          "weight": 35,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "cpf_low",
+          "weight": 30,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "essential_expenses",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Pre-retiree with savings shortfall",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Retirement funding-gap closure"
+    },
+    "G04": {
+      "id": "G04",
+      "gate": "retire_at_60",
+      "exclusion": "!retire_at_60",
+      "criteria": [
+        {
+          "predicate": "age_60plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "pre_65_bridge",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "income_interrupted",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "cpf_payout_deferred",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Worker retiring at age 60",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Pre-65 income bridge"
+    },
+    "G05": {
+      "id": "G05",
+      "gate": "cpf_life_starting",
+      "exclusion": "!cpf_life_starting",
+      "criteria": [
+        {
+          "predicate": "age_65plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "ra_balance",
+          "weight": 30,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "cpf_income",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "retired_status",
+          "weight": 15,
+          "dimension": "D05"
+        }
+      ],
+      "name": "Retiree commencing CPF LIFE",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Payout choices and household income"
+    },
+    "G06": {
+      "id": "G06",
+      "gate": "cpf_payout_deferred",
+      "exclusion": "!cpf_payout_deferred",
+      "criteria": [
+        {
+          "predicate": "age_65plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "pre_65_bridge",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "liquid_assets",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "cashflow_surplus",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Retiree considering CPF payout deferral",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Income bridge and payout trade-offs"
+    },
+    "G07": {
+      "id": "G07",
+      "gate": "semi_retired",
+      "exclusion": "!semi_retired",
+      "criteria": [
+        {
+          "predicate": "parttime_work",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "consulting_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "withdrawal_income",
+          "weight": 20,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "age_65plus",
+          "weight": 15,
+          "dimension": "D01"
+        }
+      ],
+      "name": "Semi-retired professional",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Part-time earnings and staged withdrawals"
+    },
+    "G08": {
+      "id": "G08",
+      "gate": "age_80plus",
+      "exclusion": "!age_80plus",
+      "criteria": [
+        {
+          "predicate": "retired_status",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "care_expenses",
+          "weight": 30,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "cpf_income",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "liquid_assets",
+          "weight": 15,
+          "dimension": "D12"
+        }
+      ],
+      "name": "Retiree aged 80+",
+      "family": "Retirement stage and timing",
+      "planning_focus": "Longevity and ongoing care expenditure"
+    },
+    "H01": {
+      "id": "H01",
+      "gate": "income_high",
+      "exclusion": "!income_high",
+      "criteria": [
+        {
+          "predicate": "liquid_low",
+          "weight": 35,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "essentials_high",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "savings_low",
+          "weight": 20,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "retirement_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "High earner with low savings",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Spending patterns and accumulation"
+    },
+    "H02": {
+      "id": "H02",
+      "gate": "income_mid",
+      "exclusion": "!income_mid",
+      "criteria": [
+        {
+          "predicate": "liquid_high",
+          "weight": 35,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "mortgage_paid",
+          "weight": 30,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "investment_assets",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "cashflow_surplus",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Moderate earner with substantial assets",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Asset-supported retirement flexibility"
+    },
+    "H03": {
+      "id": "H03",
+      "gate": "cpf_high",
+      "exclusion": "!cpf_high",
+      "criteria": [
+        {
+          "predicate": "liquid_low",
+          "weight": 35,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "cpf_housing_use",
+          "weight": 30,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "retirement_soon",
+          "weight": 20,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "essential_expenses",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "CPF-rich, cash-poor household",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Access to liquidity"
+    },
+    "H04": {
+      "id": "H04",
+      "gate": "investment_funded_retirement",
+      "exclusion": "!investment_funded_retirement",
+      "criteria": [
+        {
+          "predicate": "investment_assets",
+          "weight": 35,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "withdrawal_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "market_risk",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "limited_guaranteed_income",
+          "weight": 15,
+          "dimension": "D03"
+        }
+      ],
+      "name": "Investment-dependent retiree",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Market and withdrawal sequencing risks"
+    },
+    "H05": {
+      "id": "H05",
+      "gate": "property_concentrated",
+      "exclusion": "!property_concentrated",
+      "criteria": [
+        {
+          "predicate": "high_net_worth",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 30,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "multiple_properties",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "housing_monetisation_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Property-heavy millionaire",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Concentration and illiquidity"
+    },
+    "H06": {
+      "id": "H06",
+      "gate": "income_high",
+      "exclusion": "!income_high",
+      "criteria": [
+        {
+          "predicate": "high_debt_service",
+          "weight": 35,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "mortgage_active",
+          "weight": 30,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "other_debts",
+          "weight": 20,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 15,
+          "dimension": "D12"
+        }
+      ],
+      "name": "Heavily indebted high-income individual",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Debt service and affordability"
+    },
+    "H07": {
+      "id": "H07",
+      "gate": "concentrated_equity",
+      "exclusion": "!concentrated_equity",
+      "criteria": [
+        {
+          "predicate": "investment_assets",
+          "weight": 35,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "employer_shares",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "market_risk",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "high_net_worth",
+          "weight": 15,
+          "dimension": "D13"
+        }
+      ],
+      "name": "Concentrated-equity holder",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Single-asset exposure and diversification"
+    },
+    "H08": {
+      "id": "H08",
+      "gate": "inheritance_event",
+      "exclusion": "!inheritance_event",
+      "criteria": [
+        {
+          "predicate": "estate_assets",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "liquid_high",
+          "weight": 30,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "new_wealth",
+          "weight": 20,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "estate_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Inheritance recipient",
+      "family": "Assets, investments and debt",
+      "planning_focus": "Windfall management and future cash flow"
+    },
+    "I01": {
+      "id": "I01",
+      "gate": "recurring_health_costs",
+      "exclusion": "!recurring_health_costs",
+      "criteria": [
+        {
+          "predicate": "employee",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "medical_expenses",
+          "weight": 30,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "income_protection",
+          "weight": 20,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "retirement_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Worker with recurring healthcare expenditure",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Medical costs and savings continuity"
+    },
+    "I02": {
+      "id": "I02",
+      "gate": "disability_related_costs",
+      "exclusion": "!disability_related_costs",
+      "criteria": [
+        {
+          "predicate": "employee",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "work_capacity_variable",
+          "weight": 30,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "insurance_coverage",
+          "weight": 20,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "medical_expenses",
+          "weight": 15,
+          "dimension": "D16"
+        }
+      ],
+      "name": "Employed person with disability-related costs",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Employment sustainability and care funding"
+    },
+    "I03": {
+      "id": "I03",
+      "gate": "unable_to_work",
+      "exclusion": "!unable_to_work",
+      "criteria": [
+        {
+          "predicate": "income_interrupted",
+          "weight": 35,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "disability_related_costs",
+          "weight": 30,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "insurance_claim",
+          "weight": 20,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "support_eligibility",
+          "weight": 15,
+          "dimension": "D02"
+        }
+      ],
+      "name": "Person unable to continue working",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Income replacement and financial support"
+    },
+    "I04": {
+      "id": "I04",
+      "gate": "dependent_adult_disability",
+      "exclusion": "!dependent_adult_disability",
+      "criteria": [
+        {
+          "predicate": "parent_of_adult",
+          "weight": 35,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "care_expenses",
+          "weight": 30,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "estate_goal",
+          "weight": 20,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "high_dependency",
+          "weight": 15,
+          "dimension": "D09"
+        }
+      ],
+      "name": "Parent supporting adult with lifelong disability",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Lifetime dependency and succession"
+    },
+    "I05": {
+      "id": "I05",
+      "gate": "caregiver_left_work",
+      "exclusion": "!caregiver_left_work",
+      "criteria": [
+        {
+          "predicate": "parent_supported",
+          "weight": 35,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "income_interrupted",
+          "weight": 30,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "care_expenses",
+          "weight": 20,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "personal_cpf_low",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Caregiver who left employment",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Lost salary and CPF accumulation"
+    },
+    "I06": {
+      "id": "I06",
+      "gate": "age_65plus",
+      "exclusion": "!age_65plus",
+      "criteria": [
+        {
+          "predicate": "long_term_care",
+          "weight": 35,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "care_expenses",
+          "weight": 30,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "insurance_coverage",
+          "weight": 20,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 15,
+          "dimension": "D12"
+        }
+      ],
+      "name": "Senior with growing care needs",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Long-term care financing"
+    },
+    "I07": {
+      "id": "I07",
+      "gate": "retired_status",
+      "exclusion": "!retired_status",
+      "criteria": [
+        {
+          "predicate": "recurring_health_costs",
+          "weight": 35,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "medical_expenses",
+          "weight": 30,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "cpf_income",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "essential_expenses",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Retiree with high medication expenses",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Recurring healthcare costs"
+    },
+    "I08": {
+      "id": "I08",
+      "gate": "partner_residential_care",
+      "exclusion": "!partner_residential_care",
+      "criteria": [
+        {
+          "predicate": "married",
+          "weight": 35,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "two_household_expenses",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "care_expenses",
+          "weight": 20,
+          "dimension": "D16"
+        },
+        {
+          "predicate": "survivor_income",
+          "weight": 15,
+          "dimension": "D03"
+        }
+      ],
+      "name": "Couple with one spouse in residential care",
+      "family": "Health, disability and caregiving finances",
+      "planning_focus": "Funding separate living arrangements"
+    },
+    "J01": {
+      "id": "J01",
+      "gate": "employee",
+      "exclusion": "!employee",
+      "criteria": [
+        {
+          "predicate": "income_low",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "essential_expenses",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "support_eligibility",
+          "weight": 15,
+          "dimension": "D02"
+        }
+      ],
+      "name": "Low-wage employee",
+      "family": "Financially vulnerable households",
+      "planning_focus": "Essential expenses and retirement savings"
+    },
+    "J02": {
+      "id": "J02",
+      "gate": "underemployed",
+      "exclusion": "!underemployed",
+      "criteria": [
+        {
+          "predicate": "hours_variable",
+          "weight": 35,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "income_low",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 20,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "essential_expenses",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Underemployed worker",
+      "family": "Financially vulnerable households",
+      "planning_focus": "Irregular hours and inadequate earnings"
+    },
+    "J03": {
+      "id": "J03",
+      "gate": "long_term_unemployed",
+      "exclusion": "!long_term_unemployed",
+      "criteria": [
+        {
+          "predicate": "income_interrupted",
+          "weight": 35,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 30,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "support_eligibility",
+          "weight": 20,
+          "dimension": "D02"
+        },
+        {
+          "predicate": "retirement_soon",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Long-term unemployed person",
+      "family": "Financially vulnerable households",
+      "planning_focus": "Immediate income support and retirement"
+    },
+    "J04": {
+      "id": "J04",
+      "gate": "self_employed",
+      "exclusion": "!self_employed",
+      "criteria": [
+        {
+          "predicate": "income_low",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "sep_medisave",
+          "weight": 30,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "support_eligibility",
+          "weight": 15,
+          "dimension": "D02"
+        }
+      ],
+      "name": "Low-income self-employed worker",
+      "family": "Financially vulnerable households",
+      "planning_focus": "MediSave and support eligibility"
+    },
+    "J05": {
+      "id": "J05",
+      "gate": "age_65plus",
+      "exclusion": "!age_65plus",
+      "criteria": [
+        {
+          "predicate": "cpf_low",
+          "weight": 35,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "income_low",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "support_eligibility",
+          "weight": 15,
+          "dimension": "D02"
+        }
+      ],
+      "name": "Senior with very little CPF savings",
+      "family": "Financially vulnerable households",
+      "planning_focus": "Essential retirement income and assistance"
+    },
+    "J06": {
+      "id": "J06",
+      "gate": "age_65plus",
+      "exclusion": "!age_65plus",
+      "criteria": [
+        {
+          "predicate": "living_alone",
+          "weight": 35,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "no_family_support",
+          "weight": 30,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "support_eligibility",
+          "weight": 15,
+          "dimension": "D02"
+        }
+      ],
+      "name": "Senior living alone without financial support",
+      "family": "Financially vulnerable households",
+      "planning_focus": "Financial stability and support access"
+    },
+    "J07": {
+      "id": "J07",
+      "gate": "debt_distress",
+      "exclusion": "!debt_distress",
+      "criteria": [
+        {
+          "predicate": "high_debt_service",
+          "weight": 35,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "payment_arrears",
+          "weight": 30,
+          "dimension": "D14"
+        },
+        {
+          "predicate": "essential_expenses",
+          "weight": 20,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 15,
+          "dimension": "D12"
+        }
+      ],
+      "name": "Debt-distressed household",
+      "family": "Financially vulnerable households",
+      "planning_focus": "Debt stabilisation and affordability"
+    },
+    "J08": {
+      "id": "J08",
+      "gate": "main_earner_loss",
+      "exclusion": "!main_earner_loss",
+      "criteria": [
+        {
+          "predicate": "income_interrupted",
+          "weight": 35,
+          "dimension": "D06"
+        },
+        {
+          "predicate": "children_dependent",
+          "weight": 30,
+          "dimension": "D08"
+        },
+        {
+          "predicate": "liquid_low",
+          "weight": 20,
+          "dimension": "D12"
+        },
+        {
+          "predicate": "support_eligibility",
+          "weight": 15,
+          "dimension": "D02"
+        }
+      ],
+      "name": "Household losing its main income earner",
+      "family": "Financially vulnerable households",
+      "planning_focus": "Immediate financial survival and recovery"
+    },
+    "K01": {
+      "id": "K01",
+      "gate": "pr_status",
+      "exclusion": "!pr_status",
+      "criteria": [
+        {
+          "predicate": "long_term_pr",
+          "weight": 35,
+          "dimension": "D02"
+        },
+        {
+          "predicate": "cpf_contrib",
+          "weight": 30,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "housing_stable",
+          "weight": 20,
+          "dimension": "D10"
+        },
+        {
+          "predicate": "overseas_assets",
+          "weight": 15,
+          "dimension": "D13"
+        }
+      ],
+      "name": "Long-term Singapore PR",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "CPF, housing and retirement location"
+    },
+    "K02": {
+      "id": "K02",
+      "gate": "pr_status",
+      "exclusion": "!pr_status",
+      "criteria": [
+        {
+          "predicate": "new_pr",
+          "weight": 35,
+          "dimension": "D02"
+        },
+        {
+          "predicate": "foreign_pension",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "overseas_assets",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "cpf_contrib",
+          "weight": 15,
+          "dimension": "D11"
+        }
+      ],
+      "name": "Newly approved PR",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "Transition in CPF and overseas assets"
+    },
+    "K03": {
+      "id": "K03",
+      "gate": "sg_citizen",
+      "exclusion": "!sg_citizen",
+      "criteria": [
+        {
+          "predicate": "retire_in_malaysia",
+          "weight": 35,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "foreign_spending",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "fx_risk",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "overseas_assets",
+          "weight": 15,
+          "dimension": "D13"
+        }
+      ],
+      "name": "Singapore citizen retiring in Malaysia",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "Cross-border cost, currency and residency"
+    },
+    "K04": {
+      "id": "K04",
+      "gate": "sg_citizen",
+      "exclusion": "!sg_citizen",
+      "criteria": [
+        {
+          "predicate": "overseas_property",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "foreign_spending",
+          "weight": 30,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "fx_risk",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "rental_income",
+          "weight": 15,
+          "dimension": "D03"
+        }
+      ],
+      "name": "Singapore citizen holding overseas property",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "Foreign assets and liquidity"
+    },
+    "K05": {
+      "id": "K05",
+      "gate": "mixed_nationality_couple",
+      "exclusion": "!mixed_nationality_couple",
+      "criteria": [
+        {
+          "predicate": "married",
+          "weight": 35,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "pr_status",
+          "weight": 30,
+          "dimension": "D02"
+        },
+        {
+          "predicate": "foreign_pension",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "joint_goal",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Mixed-nationality married couple",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "Different retirement systems and eligibility"
+    },
+    "K06": {
+      "id": "K06",
+      "gate": "employment_pass",
+      "exclusion": "!employment_pass",
+      "criteria": [
+        {
+          "predicate": "foreign_pension",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "no_cpf",
+          "weight": 30,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "overseas_assets",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "foreign_spending",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Employment Pass holder",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "Non-CPF retirement planning"
+    },
+    "K07": {
+      "id": "K07",
+      "gate": "work_permit_or_spass",
+      "exclusion": "!work_permit_or_spass",
+      "criteria": [
+        {
+          "predicate": "no_cpf",
+          "weight": 35,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "overseas_family_support",
+          "weight": 30,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "foreign_spending",
+          "weight": 20,
+          "dimension": "D15"
+        },
+        {
+          "predicate": "income_low",
+          "weight": 15,
+          "dimension": "D03"
+        }
+      ],
+      "name": "Work Permit/S Pass holder",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "Overseas family obligations and non-CPF savings"
+    },
+    "K08": {
+      "id": "K08",
+      "gate": "returning_singaporean",
+      "exclusion": "!returning_singaporean",
+      "criteria": [
+        {
+          "predicate": "sg_citizen",
+          "weight": 35,
+          "dimension": "D02"
+        },
+        {
+          "predicate": "foreign_pension",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "cpf_low",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "overseas_assets",
+          "weight": 15,
+          "dimension": "D13"
+        }
+      ],
+      "name": "Returning Singaporean after years abroad",
+      "family": "Residency and cross-border finances",
+      "planning_focus": "CPF gaps and overseas retirement assets"
+    },
+    "L01": {
+      "id": "L01",
+      "gate": "business_sale_planned",
+      "exclusion": "!business_sale_planned",
+      "criteria": [
+        {
+          "predicate": "sme_owner",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "business_equity",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "exit_proceeds_uncertain",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "retirement_soon",
+          "weight": 15,
+          "dimension": "D17"
+        }
+      ],
+      "name": "Founder preparing company sale",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "Exit proceeds and retirement capital"
+    },
+    "L02": {
+      "id": "L02",
+      "gate": "business_equity",
+      "exclusion": "!business_equity",
+      "criteria": [
+        {
+          "predicate": "illiquid_assets",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "business_exit_goal",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "business_income",
+          "weight": 20,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "concentrated_equity",
+          "weight": 15,
+          "dimension": "D13"
+        }
+      ],
+      "name": "Business owner with illiquid shares",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "Valuation uncertainty and exit risk"
+    },
+    "L03": {
+      "id": "L03",
+      "gate": "private_pension",
+      "exclusion": "!private_pension",
+      "criteria": [
+        {
+          "predicate": "pension_income",
+          "weight": 35,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "cpf_income",
+          "weight": 30,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "guaranteed_income",
+          "weight": 20,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "retired_status",
+          "weight": 15,
+          "dimension": "D05"
+        }
+      ],
+      "name": "Private-pension recipient",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "Guaranteed/conditional pension income"
+    },
+    "L04": {
+      "id": "L04",
+      "gate": "civil_service_pension",
+      "exclusion": "!civil_service_pension",
+      "criteria": [
+        {
+          "predicate": "retired_status",
+          "weight": 35,
+          "dimension": "D05"
+        },
+        {
+          "predicate": "pension_income",
+          "weight": 30,
+          "dimension": "D03"
+        },
+        {
+          "predicate": "cpf_income",
+          "weight": 20,
+          "dimension": "D11"
+        },
+        {
+          "predicate": "guaranteed_income",
+          "weight": 15,
+          "dimension": "D03"
+        }
+      ],
+      "name": "Retired civil servant with pension",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "Scheme-specific income integration"
+    },
+    "L05": {
+      "id": "L05",
+      "gate": "rental_income",
+      "exclusion": "!rental_income",
+      "criteria": [
+        {
+          "predicate": "multiple_properties",
+          "weight": 35,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "vacancy_risk",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "property_concentrated",
+          "weight": 20,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "rental_costs",
+          "weight": 15,
+          "dimension": "D15"
+        }
+      ],
+      "name": "Significant rental-income household",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "Vacancy, maintenance and net yields"
+    },
+    "L06": {
+      "id": "L06",
+      "gate": "overseas_family_support",
+      "exclusion": "!overseas_family_support",
+      "criteria": [
+        {
+          "predicate": "family_transfers",
+          "weight": 35,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "fx_risk",
+          "weight": 30,
+          "dimension": "D13"
+        },
+        {
+          "predicate": "high_dependency",
+          "weight": 20,
+          "dimension": "D09"
+        },
+        {
+          "predicate": "income_variable",
+          "weight": 15,
+          "dimension": "D06"
+        }
+      ],
+      "name": "Person supporting overseas relatives",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "International remittances and dependants"
+    },
+    "L07": {
+      "id": "L07",
+      "gate": "estate_goal",
+      "exclusion": "!estate_goal",
+      "criteria": [
+        {
+          "predicate": "complex_inheritance",
+          "weight": 35,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "beneficiary_complex",
+          "weight": 30,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "charitable_goal",
+          "weight": 20,
+          "dimension": "D17"
+        },
+        {
+          "predicate": "estate_assets",
+          "weight": 15,
+          "dimension": "D13"
+        }
+      ],
+      "name": "Individual planning complex inheritance/charitable giving",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "Estate liquidity and legacy goals"
+    },
+    "L08": {
+      "id": "L08",
+      "gate": "suspected_exploitation",
+      "exclusion": "!suspected_exploitation",
+      "criteria": [
+        {
+          "predicate": "age_65plus",
+          "weight": 35,
+          "dimension": "D01"
+        },
+        {
+          "predicate": "safeguarding_needed",
+          "weight": 30,
+          "dimension": "D18"
+        },
+        {
+          "predicate": "authority_unverified",
+          "weight": 20,
+          "dimension": "D07"
+        },
+        {
+          "predicate": "living_alone",
+          "weight": 15,
+          "dimension": "D07"
+        }
+      ],
+      "name": "Senior exposed to financial exploitation",
+      "family": "Complex wealth, pensions and legacy",
+      "planning_focus": "Safeguarding and protective referral"
+    }
+  },
+  "changes": [
+    {
+      "id": "FIX-D06",
+      "severity": "high",
+      "change": "Mandatory gate now applies to assessed person, not partner; partner_earns retained as weighted criterion",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-D05",
+      "severity": "high",
+      "change": "Exclusion !parent_supported -> !children_dependent (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-D06",
+      "severity": "high",
+      "change": "Exclusion !partner_not_earning -> !individual_not_earning (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-F05",
+      "severity": "high",
+      "change": "Exclusion !property_concentrated -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-F07",
+      "severity": "high",
+      "change": "Exclusion !living_with_adult_child -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-H06",
+      "severity": "high",
+      "change": "Exclusion !high_debt_service -> !income_high (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-I06",
+      "severity": "high",
+      "change": "Exclusion !long_term_care -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-I07",
+      "severity": "high",
+      "change": "Exclusion !recurring_health_costs -> !retired_status (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-J06",
+      "severity": "high",
+      "change": "Exclusion !living_alone -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    }
+  ],
+  "dimensions_count": 18
+}
