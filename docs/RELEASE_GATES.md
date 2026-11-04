@@ -1,43 +1,38 @@
-# RetirePilot Release Gates (as of 2026-11-04)
+# RetirePilot v2.7: Release Gates
 
-**No external pilot until all P0 gates pass.** Design artefacts, test counts and prepared checklists are not sign-offs.
+**Last source-control review:** 2026-11-04.  
+**Pilot status:** **NO-GO**. No real customer data or external deployment until all appropriate release gates are passed and approvals documented.
 
-| Gate | Acceptance evidence | Current verdict |
+| Gate | Required evidence | Verified state |
 |---|---|---|
-| G1 Source integrity | v2.5 source, locked dependency policy, clean CI, hashes and repeatable scripts | OPEN: import pending |
-| G2 Persona quality | Independent labels across 96 archetypes, agreed thresholds, fairness and false-positive assessment | OPEN |
-| G3 Financial correctness | Official 2026/27 Singapore CPF, tax, housing and retirement golden cases independently reconciled, missing-data refusal tests | OPEN |
-| G4 Household privacy | Threat model, authentication, household consent/role model, keys, encryption, deletion and red-team evidence | OPEN |
-| G5 Assistant safety | Grounded explanation, approval state machine, verified actions, privacy boundaries and human escalation; real testing | OPEN |
-| G6 Professional assurance | Named financial SME, independent QA/security specialists, PDPA/privacy assessment, qualified Singapore financial-advice legal review | OPEN |
-| G7 Consumer validation | 48 planned sessions actually observed, transcribed, analysed with demographics, accessibility and comprehension thresholds | OPEN |
-| G8 Pilot authorisation | Signed owner decision relying on G1–G7, documented risk acceptance and rollback plan | BLOCKED |
+| G1 Source and documentation integrity | Complete v2.7 source and original PSD/TSD/Excel files committed, fixed dependency versions, repeatable checks, successful GitHub CI and SHA-256 manifest | **PASS for engineering baseline** (PR #10 CI). Reconfirm on `main` post-merge |
+| G2 Persona quality | Independent calibration labels for 96 archetypes, agreed errors/thresholds and fairness review | **OPEN**: provisional descriptors only |
+| G3 Financial correctness | Independently reconciled 2026/27 CPF, housing, tax and retirement golden cases; missing-data refusal | **OPEN**: bounded modelling only, external reviewer outstanding |
+| G4 Household privacy and security | Production auth, individual adult consent and household permissions, key custody, privacy threat model, security testing | **OPEN**: synthetic-only local protection and denied sharing |
+| G5 Assistant safety | Safe explanation/approval state machine; action verification and correct error handling | **OPEN**: demonstration states are synthetic, no production actions |
+| G6 Professional assurance | Independent finance/QA/security assessment and qualified Singapore financial-regulatory/privacy legal advice | **OPEN**: four exploratory enquiries, no signed professional findings |
+| G7 Consumer acceptance | 48 real observed studies with recorded comprehension, accessibility and correction evidence | **OPEN**: 0/48 real sessions |
+| G8 External pilot authorisation | Named owner GO decision, acceptance of residual risk, operations and rollback | **BLOCKED** by G2–G7 |
 
-## Highest-priority backlog
+## Approved product-owner decisions
 
-1. Import actual v2.5 package into the private repository with reviewed file exclusions.
-2. Establish unit/contract/API CI using synthetic fixtures only.
-3. Produce complete CPF account, RA and CPF LIFE reference methodology; reconcile against official examples.
-4. Expand scenario coverage with independently specified reference cases.
-5. Review calibration and scoring with a blinded, separately labelled cohort.
-6. Implement authenticated household permissions, production key custody and consent lifecycle.
-7. Replace simulated action verification with approved third-party verification or keep action as unverified.
-8. Carry out independent finance, security, regulatory and QA review.
-9. Recruit and test real Singaporean participants age 45+.
+[1A–7A](APPROVED_DECISIONS_v2.7.md): educational planning, member-provided official CPF LIFE estimates, provisional no-score personas, independently verified adult consent, staged five-scenario development, reviewer quotes before appointments, and a mandatory real 48-participant research gate.
 
-## Decision control
+## Technical evidence, scope and limits
 
-Do not mark any gate PASS solely on the basis of an assistant-generated checklist or self-authored tests. Record who reviewed what, against which exact commit and evidence, on which date.
+- [Final pre-push assessment](../docs_release/RetirePilot_PrePush_Gate_Report_2026-11-04.pdf), [text version](../docs_release/RetirePilot_PrePush_Gate_Report_2026-11-04.md).
+- [Original v2.7 PSD, TSD and workbook](../docs_release/DOCUMENT_INDEX_v2.7.md), with exact SHA-256 checksums in [manifest](../docs_release/BINARY_DOCUMENT_MANIFEST_v2.7.json).
+- [GitHub Actions CI](../.github/workflows/ci.yml) verifies 609 Python tests, 498 internal rule contracts, 13 synthetic API checks and release-document integrity.
+- The P0 partial-final-month bug has an internally passing correction, but [Issue #9](../../issues/9) remains open pending independent financial validation.
+- [Issue #1](../../issues/1) tracks source migration, eligible for closure only after `main` verification.
 
+**Passing G1 is not sufficient to authorise a pilot.** No independent professional, legal, security or real consumer approvals are implied by these documents.
 
-## Product-owner approved v2.7 decisions (2026-11-04)
+## Next release priorities
 
-See [APPROVED_DECISIONS_v2.7.md](APPROVED_DECISIONS_v2.7.md) and [ENGINEERING_REMEDIATION_v2.7.md](ENGINEERING_REMEDIATION_v2.7.md).
-
-Approved: **1A** educational financial planning only; **2A** member-provided official CPF LIFE estimates; **3A** provisional descriptions of all 96 personas with no numerical confidence claims; **4A** independently verified adult identity and consent before sharing; **5A** five priority scenarios before the remainder; **6A** obtain proposals and quotations before any appointment; **7A** assume consumer PASS only for planning, never as completed real research.
-
-**Local P0 correction:** terminal partial-month proration has been repaired in the v2.7 local source and passed independent arithmetic checks, but GitHub Issue #9 remains OPEN pending source migration and CI. The consumer-facing persona display and CPF LIFE provenance guard were updated locally. Household sharing remains fail-closed and unauthenticated identity remains unintegrated.
-
-**Source-of-truth qualification:** As of 2026-11-04, v2.7 is a **local 77-file engineering handover**, not a confirmed GitHub main-branch implementation. 609/609 pytest, 498/498 internal rule checks and 13/13 existing API checks are **local self-run**. GitHub CI remains unverified.
-
-No gate is closed solely by these code changes; all independent financial, security, legal and real 48-participant research gates remain OPEN. **Phase 9 remains NO-GO.**
+1. Independently reconcile CPF, retirement, tax and event forecasts; complete missing lifetime CPF logic.
+2. Complete the five highest-value scenario engines and corresponding goldens.
+3. Integrate real household identity and consent, threat modelling, negative tests, private secrets and secure deployment.
+4. Obtain written external scopes, qualifications, quotes and permission to engage independent experts.
+5. Recruit 48 real adults and complete observed research and remediation.
+6. Obtain an explicit, evidence-backed GO/NO-GO decision before pilot.
