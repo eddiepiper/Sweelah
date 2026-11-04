@@ -1,5 +1,8 @@
 # RetirePilot v2.7: Engineering Remediation Record
 
+> **Source-control update (2026-11-04):** The migration originally marked as pending below was completed on the v2.7 review branch in PR #10. Original PSD/TSD Word and PDF files, Master Library v1.7, validation evidence and a checksum verifier were added. GitHub CI passed on the combined source and documentation commit. The historical audit text below remains as originally reported. **Phase 9 is still NO-GO.**
+
+
 **Approved decision set:** 1A, 2A, 3A, 4A, 5A, 6A, 7A (2026-11-04)  
 **Primary decision register:** [APPROVED_DECISIONS_v2.7.md](APPROVED_DECISIONS_v2.7.md)  
 **Source of implementation evidence:** locally packaged v2.7 derivative of v2.6, not GitHub main.  

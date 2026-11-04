@@ -1,0 +1,273 @@
+{
+  "id": "RP-SYNTH-001",
+  "as_of": "2026-11-03",
+  "currency": "SGD",
+  "primary_id": "P1",
+  "persons": [
+    {
+      "id": "P1",
+      "role": "primary",
+      "dob": "1974-05-20",
+      "residency": "SG",
+      "marital_status": "married",
+      "employment_status": "working",
+      "cpf_balances": {
+        "OA": "160000",
+        "SA": "110000",
+        "MA": "66000"
+      }
+    },
+    {
+      "id": "P2",
+      "role": "spouse",
+      "dob": "1977-08-12",
+      "residency": "SG",
+      "marital_status": "married",
+      "cpf_balances": {
+        "OA": "70000",
+        "SA": "40000"
+      },
+      "consent_for_household_planning": true
+    },
+    {
+      "id": "P3",
+      "role": "child",
+      "dob": "2009-09-10",
+      "residency": "SG"
+    },
+    {
+      "id": "P4",
+      "role": "child",
+      "dob": "2013-06-24",
+      "residency": "SG"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "REL1",
+      "from_id": "P1",
+      "to_id": "P3",
+      "kind": "child",
+      "financially_dependent": true
+    },
+    {
+      "id": "REL2",
+      "from_id": "P1",
+      "to_id": "P4",
+      "kind": "child",
+      "financially_dependent": true
+    },
+    {
+      "id": "REL3",
+      "from_id": "P1",
+      "external_description": "Parent aged 81, living elsewhere",
+      "kind": "parent",
+      "financially_dependent": true
+    }
+  ],
+  "income_streams": [
+    {
+      "id": "I1",
+      "owner_id": "P1",
+      "type": "commission",
+      "trade": "property_agent",
+      "gross_monthly": "9000",
+      "operating_costs_monthly": "2000",
+      "cash_deductions_monthly": "500",
+      "worker_cpf_monthly": "0",
+      "tax_reserve_monthly": "800",
+      "ends_age": 65,
+      "history": [
+        {
+          "month": "2025-12",
+          "gross": "6000"
+        },
+        {
+          "month": "2026-01",
+          "gross": "13000"
+        },
+        {
+          "month": "2026-02",
+          "gross": "9000"
+        },
+        {
+          "month": "2026-03",
+          "gross": "5000"
+        },
+        {
+          "month": "2026-04",
+          "gross": "18000"
+        },
+        {
+          "month": "2026-05",
+          "gross": "7000"
+        },
+        {
+          "month": "2026-06",
+          "gross": "9000"
+        },
+        {
+          "month": "2026-07",
+          "gross": "12000"
+        },
+        {
+          "month": "2026-08",
+          "gross": "8500"
+        },
+        {
+          "month": "2026-09",
+          "gross": "10000"
+        },
+        {
+          "month": "2026-10",
+          "gross": "6500"
+        },
+        {
+          "month": "2026-11",
+          "gross": "9000"
+        }
+      ]
+    },
+    {
+      "id": "I2",
+      "owner_id": "P1",
+      "type": "platform",
+      "payer": "Grab",
+      "platform_service": "ride_hail",
+      "vehicle": "car",
+      "platform_opt_in": false,
+      "gross_monthly": "3000",
+      "operating_costs_monthly": "1200",
+      "worker_cpf_monthly": "200",
+      "tax_reserve_monthly": "100",
+      "ends_age": 65,
+      "history": [
+        {
+          "month": "2026-06",
+          "gross": "2000"
+        },
+        {
+          "month": "2026-07",
+          "gross": "2400"
+        },
+        {
+          "month": "2026-08",
+          "gross": "2800"
+        },
+        {
+          "month": "2026-09",
+          "gross": "3200"
+        },
+        {
+          "month": "2026-10",
+          "gross": "3400"
+        },
+        {
+          "month": "2026-11",
+          "gross": "3000"
+        }
+      ],
+      "cash_deductions_monthly": "0"
+    }
+  ],
+  "assets": [
+    {
+      "id": "A1",
+      "type": "cash",
+      "value": "75000",
+      "accessible": true,
+      "owners": {
+        "P1": "0.6",
+        "P2": "0.4"
+      }
+    },
+    {
+      "id": "A2",
+      "type": "investment",
+      "value": "90000",
+      "accessible": true,
+      "owners": {
+        "P1": "1"
+      }
+    },
+    {
+      "id": "A3",
+      "type": "property",
+      "subtype": "hdb",
+      "value": "700000",
+      "remaining_lease_years": 60,
+      "accessible": false,
+      "owners": {
+        "P1": "0.5",
+        "P2": "0.5"
+      }
+    }
+  ],
+  "liabilities": [
+    {
+      "id": "L1",
+      "type": "mortgage",
+      "balance": "360000",
+      "cash_payment_monthly": "1800",
+      "cpf_payment_monthly": "0",
+      "annual_interest_pct": "3.2",
+      "remaining_years": 18,
+      "owners": {
+        "P1": "0.5",
+        "P2": "0.5"
+      }
+    }
+  ],
+  "expenses": [
+    {
+      "id": "E1",
+      "category": "living",
+      "amount_monthly": "2600",
+      "essential": true
+    },
+    {
+      "id": "E2",
+      "category": "education",
+      "amount_monthly": "900",
+      "essential": true,
+      "person_id": "P3",
+      "end_person_age": 23
+    },
+    {
+      "id": "E3",
+      "category": "parent_support",
+      "amount_monthly": "700",
+      "essential": true
+    },
+    {
+      "id": "E4",
+      "category": "discretionary",
+      "amount_monthly": "500",
+      "essential": false
+    }
+  ],
+  "goal": {
+    "retirement_age": 65,
+    "projection_end_age": 95,
+    "retirement_country": "SG"
+  },
+  "assumptions": {
+    "inflation_pct": "2.5",
+    "nominal_return_pct": "3.0",
+    "income_growth_pct": "0"
+  },
+  "reported_classification_facts": {
+    "employment.trade_tenure_years": 4
+  },
+  "protection": [
+    {
+      "id": "PRO1",
+      "covered_person_id": "P1",
+      "type": "health",
+      "premium_monthly": "200",
+      "insured_benefit": "0",
+      "status": "user_reported",
+      "premium_included_in_expenses": true
+    }
+  ]
+}

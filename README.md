@@ -1,49 +1,56 @@
 # RetirePilot
 
-## Latest approved product direction (2026-11-04)
+**Singapore-focused retirement and household financial-planning research prototype, primarily for citizens and PRs aged 45+.**
 
-**Decisions 1A-7A are approved.** See [Approved Decisions v2.7](docs/APPROVED_DECISIONS_v2.7.md), [Local Engineering Remediation v2.7](docs/ENGINEERING_REMEDIATION_v2.7.md), and [Release Gates](docs/RELEASE_GATES.md). The **local** v2.7 patch set passes 609 self-run tests and corrects the partial final-month defect, but **complete source migration and GitHub CI have not happened**. No external financial, security or legal approvals, nor real consumer research sessions, are complete. **Phase 9 NO-GO.**
+**Engineering version:** v2.7. **External-pilot release decision: NO-GO.** Source-code merge and a passing CI check do not authorise a customer pilot.
 
+## Approved product direction
 
-**Singapore-first personal and household retirement planning research prototype (age 45+).**
+Product-owner decisions **1A–7A** are recorded in [the decision register](docs/APPROVED_DECISIONS_v2.7.md).
 
-> **Project status (2026-11-04): v2.6 engineering reference package built locally, synthetic data only. Phase 9 external pilot: NO-GO.**
+- Provide personalised retirement projections, scenarios and educational explanations, **not regulated product recommendations or automatic transactions**.
+- For personal CPF LIFE income, require a **member-provided official estimate**; CPF Board published examples are illustrative only.
+- Retain all 96 provisional archetypes without customer-facing confidence percentages.
+- Block sharing of another adult's financial information until their identity and separate consent are verifiably established.
+- Prioritise five events: housing downsizing, payout timing, part-time retirement, parent care and divorce/family transitions.
+- Obtain external qualifications, written scopes and quotations before approving any paid independent reviewer.
+- Continue to require **48 actual, consenting research participants** before any external pilot; simulated interviews never count.
 
-RetirePilot explores ongoing household financial planning across salaried employment, self-employment, commission income, platform work, dependants, housing, CPF and retirement transitions. The working prototype and supporting documents were developed outside this new repository. **This repository is being established as the source of truth for status, risks and future controlled code imports.** It is not yet a deployed application.
+## Repository contents
 
-## Current evidence (local, self-run, not independent certification)
+| Path | Contents |
+|---|---|
+| [retirepilot/](retirepilot/) | Python API, policy references, projections, scenario contracts and local synthetic security components |
+| [tests/](tests/) | Synthetic unit/integration and approved-decision checks |
+| [data/](data/) | Synthetic-only research fixtures and 46 scenario contracts |
+| [docs_release/](docs_release/) | **Original PSD/TSD v2.7 in Word and PDF**, Master Library v1.7, validation reports, evidence ZIP, document index and checksums |
+| [docs/](docs/) | Approved decisions, financial/research audits, release-gate tracker and project governance |
+| [scripts/verify_release_documents.py](scripts/verify_release_documents.py) | Reconciles nine release artifacts against exact SHA-256, size and file-format checks |
+| [.github/workflows/ci.yml](.github/workflows/ci.yml) | Source tests, 96-archetype contracts, API smoke checks and release-document integrity |
 
-| Area | Evidence | Qualification |
-|---|---|---|
-| Persona taxonomy | 18 dimensions, 96 baseline archetypes | Coverage not population-validated |
-| Classifier | Evaluates all 96; 498/498 rule-contract checks passed | 0 independent labels; weights uncalibrated |
-| Python tests | 477/477 passed on v2.5 extracted package | Self-authored synthetic tests |
-| API checks | 13/13 local checks passed | Localhost synthetic prototype |
-| Financial engine | Monthly projection, bounded CPF/tax references, 12 scenario operators | Full statutory reconciliation and 26 catalogue mappings outstanding |
-| Household data | Consent-gated encrypted *local* synthetic vault | No production identity, key management or multitenant controls |
-| Assistant | Guided rule-based workflow, synthetic memory and action states | No live approved AI or authenticated verification |
-| Independent reviews | None signed off | Financial, QA, security, privacy and legal gates open |
-| Consumer research | 0/48 interviews | Research plan exists, no actual sessions |
+[Browse the release document index](docs_release/DOCUMENT_INDEX_v2.7.md).
 
-**Important:** v2.5 uses `simulated_verified` with `verified_complete=false` in its action demonstration. Synthetic task evidence does not represent real-world completion. Historical v2.4 material is superseded on this point.
+## Run the synthetic test baseline
 
-## v2.6 engineering and external outreach\n\n- [26 formerly unmapped scenario contracts](docs/SCENARIO_MAPPING_v2.6.md): seven limited cash-flow/retirement-age components, 19 explicitly blocked. Mapping **does not** imply full life-event implementation.\n- [2026/27 CPF RA-at-55 reference scope](docs/CPF_RETIREMENT_SCOPE_v2.6.md): bounded account transition and published CPF LIFE examples, not full statutory calculation.\n- [External engagement register](docs/EXTERNAL_ENGAGEMENT_v2.6.md): four non-binding enquiry emails sent, zero external sign-offs and zero of 48 actual participants.\n- **Local v2.6 tests 588/588**; classifier contract 498/498; local API 13/13. These are **not GitHub CI results**.\n- Full application import and CI remain OPEN in [Issue #1](../../issues/1).\n\n## Status and next work
+```bash
+python -m pip install -r requirements.txt
+python -m pytest -q
+python audit/run_rule_contracts_v22.py
+python scripts/verify_release_documents.py
+# API smoke checks require a localhost uvicorn server; see CI workflow
+```
 
-- [Progress report](docs/PROGRESS_v2.5.md)
-- [Release gates](docs/RELEASE_GATES.md)
-- [Full source migration handover and pending push](docs/FULL_SOURCE_IMPORT_RUNBOOK.md)
-- [Security and data-handling boundaries](SECURITY.md)
-- GitHub Issues track the outstanding work. No issue should be closed without reproducible evidence.
+Verified GitHub Actions baseline on the v2.7 review branch: **609/609 Python tests, 498/498 classifier rule checks, 13/13 localhost API checks**, plus release-document integrity verification. These are internally authored synthetic tests, **not independent financial, legal, security or consumer certification**.
 
-## Source availability
+## Release gates
 
-The complete v2.5 executable package is retained in the original development handover. **Full source files are not yet imported to this repository.** Do not infer that a passing test result is a GitHub CI run. The first engineering issue is to import the audited source and establish reproducible CI while excluding personal data, secrets and development artefacts.
+See [Release Gates](docs/RELEASE_GATES.md) and [the pre-push gate assessment](docs_release/RetirePilot_PrePush_Gate_Report_2026-11-04.md).
 
-## Working principles
+- Full future CPF account, interest and retirement modelling: incomplete.
+- The five priority scenarios: four limited previews and one blocked complex family transition, not fully validated engines.
+- Production authentication, adult identity and consent: incomplete; no real customer data permitted.
+- Independent financial and cybersecurity findings: no qualified external sign-offs.
+- Singapore-qualified written legal scope opinion: not obtained.
+- Real consumer research: **0/48 completed**.
 
-- Synthetic financial data only until the appropriate external assurance gates pass.
-- Effective-dated, source-linked Singapore policy references and explicit unsupported-case behaviour.
-- User-provided CPF LIFE estimates are not replaced with invented payouts.
-- Advisory and regulatory scope requires qualified assessment.
-- No financial transactions or unsupervised real-world action execution.
-- No claims of independent review until named reviewers provide signed evidence.
+**Phase 9 remains NO-GO.** Merging into `main` is version-control housekeeping for a research prototype, not a deployment or release approval.

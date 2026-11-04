@@ -1,0 +1,25 @@
+{
+  "as_of": "2026-11-04",
+  "research_prototype": true,
+  "phase_9": "NO_GO",
+  "scenario_total": 46,
+  "previously_unmapped_contracts": 26,
+  "new_limited_converters": 7,
+  "blocked_new_events": 19,
+  "outreach_emails_sent": 4,
+  "participants_recruited": 0,
+  "signed_reviewers": 0,
+  "tests": {
+    "pytest": 588,
+    "classifier": 498,
+    "api": 13
+  },
+  "files": {
+    "retirepilot/cpf_retirement_v26.py": "bacee70a2c42d263ae2635551da3d1cc636aa62d05da4289ca4384eba304f628",
+    "retirepilot/catalog_scenarios_v26.py": "c25f4837985ebd5c41ce32bf8e401a2f4569b3d4009fcd45087e6ca63b513267",
+    "retirepilot/core.py": "33e4f058163cd33d087814c8b6dd099955ac807e41cffa5a24e3979f02255c0d",
+    "retirepilot/projection_v22.py": "2921a0f8a82c2250377677aacf83cdcacd2b1aebcdba7cc66973475f67ffd5ce",
+    "data/scenario_contracts_v26.json": "395eaf990a15ac9c4944fc2813ac96e35a130207a988f822d76c1125c311a9af",
+    "tests/test_cpf_and_scenario_contracts_v26.py": "28e4bba7d1687bd153a64c29d10715746ad9a34949c6b0aea3132fa32f45f37a"
+  }
+}

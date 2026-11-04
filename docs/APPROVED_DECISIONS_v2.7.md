@@ -1,5 +1,8 @@
 # RetirePilot Approved Product Decisions v2.7
 
+> **Source-control update (2026-11-04):** The migration originally marked as pending below was completed on the v2.7 review branch in PR #10. Original PSD/TSD Word and PDF files, Master Library v1.7, validation evidence and a checksum verifier were added. GitHub CI passed on the combined source and documentation commit. The historical audit text below remains as originally reported. **Phase 9 is still NO-GO.**
+
+
 **Approval date:** 2026-11-04  
 **Authority:** Product owner, confirmed in conversation  
 **Status:** Approved product choices, not independent certification  

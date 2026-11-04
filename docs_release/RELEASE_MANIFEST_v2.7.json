@@ -1,0 +1,403 @@
+{
+  "release": "v2.7-approved-decisions",
+  "date": "2026-11-04",
+  "phase9": "NO_GO",
+  "approved": [
+    "1A",
+    "2A",
+    "3A",
+    "4A",
+    "5A",
+    "6A",
+    "7A"
+  ],
+  "local_tests": {
+    "pytest": 609,
+    "classifier_contracts": 498,
+    "legacy_api_smoke": 13
+  },
+  "github_application_code": "NOT_COMMITTED",
+  "github_ci": "NOT_RUN",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "1205cd7cc215ee67cb7a2edb0b880321e91cc4382d671a2d2b72af343870deec",
+      "bytes": 1413
+    },
+    {
+      "path": "CURRENT_RELEASE_START_HERE.md",
+      "sha256": "a3dccb616713b1059df180a783036b57c92406b446e8b7f69df8695eaada026a",
+      "bytes": 586
+    },
+    {
+      "path": "MIGRATE_TO_GITHUB.sh",
+      "sha256": "5575e2c3e42b8fb3abcbbb1332b2e28c3811b8a39ea4f34fe280696975e1b93a",
+      "bytes": 1312
+    },
+    {
+      "path": "README_V25.md",
+      "sha256": "aacdb72b05ffbd9af6ee3f57df6abcd4df4aea54bf193e6aaa9fd59c66b98860",
+      "bytes": 3235
+    },
+    {
+      "path": "README_V26.md",
+      "sha256": "3c89981ac24b612bbe406be09d67a9ff1a62dee4683064ccf602e082839da2d7",
+      "bytes": 1151
+    },
+    {
+      "path": "README_V27.md",
+      "sha256": "9b262badbdbe1dff2d6e3356fc094e8cfc3aa7ef72c1d4c7715f6a6fe479e6e0",
+      "bytes": 2729
+    },
+    {
+      "path": "audit/api_evidence.json",
+      "sha256": "4e6c5ad85cd21876827adf56bbd452c8e041ddd3aebf37340a135f995ea2e5b5",
+      "bytes": 1615
+    },
+    {
+      "path": "audit/build_evidence.py",
+      "sha256": "7b9735255eed52a4748e397a10994eaed7801ebd1bec2296090b554185d2f0e0",
+      "bytes": 12322
+    },
+    {
+      "path": "audit/build_reaudit.py",
+      "sha256": "bd4a73814ef67a802901a0eaa6ddd0112260f2e689fb87bbb4fcfd224424941c",
+      "bytes": 15367
+    },
+    {
+      "path": "audit/build_v24_register.py",
+      "sha256": "c4c34a80b0ab8381cb2606293653794cbd7d85cf30172b5b9537a105d6488877",
+      "bytes": 9252
+    },
+    {
+      "path": "audit/classifier_rule_contracts_v2_2.json",
+      "sha256": "28a3f5260cc1f562e693e4a8ee26f57681609687b1f171c94a3245cadfcee904",
+      "bytes": 2972
+    },
+    {
+      "path": "audit/demo_vault_workflow_v24.py",
+      "sha256": "fcd5a80aaf73e40a90f9358628e9eaf93941e9c641b753f7e120f0d6eb66a7e3",
+      "bytes": 1933
+    },
+    {
+      "path": "audit/patch_audit.py",
+      "sha256": "5a8b37a33ca27f0649df99bf8553f0cec2822cf52e752046912f9464a6704067",
+      "bytes": 5173
+    },
+    {
+      "path": "audit/policy_register.csv",
+      "sha256": "42c52b0c0ce6fb86c1aa4e0ffcb730d5d4383068d475ecc1b9be4607b04997ab",
+      "bytes": 3105
+    },
+    {
+      "path": "audit/render_reaudit_pdf_v22.py",
+      "sha256": "c7ed03d51e9f752e6af462be989ec3359835f5135a4e8ed9c9d48eb79bd0151a",
+      "bytes": 6848
+    },
+    {
+      "path": "audit/render_reports.py",
+      "sha256": "93f930ee298205c26340c036aab656e017e30857f75c038677b675abe597878f",
+      "bytes": 1976
+    },
+    {
+      "path": "audit/research_slots.csv",
+      "sha256": "266b473740687aaeaf6b1fa70583e965a3e4232d4779c133d81f8c12967ba564",
+      "bytes": 4287
+    },
+    {
+      "path": "audit/risk_register.csv",
+      "sha256": "84bd4da7c55c24f9fea542719c9c2af3ebb95fe4a65d380601a7552438adb97c",
+      "bytes": 3934
+    },
+    {
+      "path": "audit/run_api_checks.py",
+      "sha256": "7c7225624aa0180941974d2c23ef296b223abf6c8fa9544887489101141a0a38",
+      "bytes": 3729
+    },
+    {
+      "path": "audit/run_rule_contracts_v22.py",
+      "sha256": "e38778254233da5705da9f230079524d879c4e57a9e7a0ac3f6cb243f1f01f25",
+      "bytes": 6045
+    },
+    {
+      "path": "audit/score_audit_v24.py",
+      "sha256": "24af85f47c4a70e3c61b366b7dacf44dc21a7a5d9c409c270f429cfa071f6d46",
+      "bytes": 1830
+    },
+    {
+      "path": "audit/static_research_audit.py",
+      "sha256": "88f4f680c7068e8365be38e1d727ce87192f71d57d81bcf55f393a039f03fbf8",
+      "bytes": 870
+    },
+    {
+      "path": "audit/usability_tasks.csv",
+      "sha256": "53e7818d865da4ba01ccba6cef78f122a443da51376cc31881275082dc04c480",
+      "bytes": 1578
+    },
+    {
+      "path": "build_scenario_registry_v26.py",
+      "sha256": "9f17f1c15b419d3c582259b44537e431051203eeb2e76057ceea117106decb4a",
+      "bytes": 6442
+    },
+    {
+      "path": "data/mixed_income_household.json",
+      "sha256": "6f28acb122aaa77115d723d00e28cf6983c0fa40b28b4d1e2ed38c7e3187b6c4",
+      "bytes": 5525
+    },
+    {
+      "path": "data/retired_household.json",
+      "sha256": "674bf39cad567ba2f8753073529f2cd41c7bee494e33334e450f4672b831aba6",
+      "bytes": 1903
+    },
+    {
+      "path": "data/salaried_household.json",
+      "sha256": "879782f0438307d8dc388ba44c41f4a8ec9d01dbc0af0e1500470bf58085f6c4",
+      "bytes": 2550
+    },
+    {
+      "path": "data/scenario_contracts_v26.json",
+      "sha256": "395eaf990a15ac9c4944fc2813ac96e35a130207a988f822d76c1125c311a9af",
+      "bytes": 29889
+    },
+    {
+      "path": "data/scenarios.json",
+      "sha256": "f56e6c025e19b9971e599cf77dd086063c4359945c96e1abef7093fc45e15958",
+      "bytes": 280
+    },
+    {
+      "path": "docs/APPROVED_DECISIONS_v2.7.json",
+      "sha256": "d0338da7b7490dbc0a56a98aab46dfbf8f4a97d63c04f8d0aef9558b99c1dec7",
+      "bytes": 1416
+    },
+    {
+      "path": "docs/MIGRATION_RUNBOOK.md",
+      "sha256": "06e90f54391ea424d2f85f9b824cc8847d53ecc04a50a4b24844df753f2f1307",
+      "bytes": 1771
+    },
+    {
+      "path": "docs/SOURCE_IMPORT_MANIFEST.json",
+      "sha256": "59594284d04be9fc0092ed3d40a24f4ceb67aa9c4a8b6023f170785fe7930dfb",
+      "bytes": 6198
+    },
+    {
+      "path": "docs_release/RetirePilot_PSD_v2.7.docx",
+      "sha256": "9d6150c2af0a065c366a64540297aaeaf3624db11080371f70397edec164764f",
+      "bytes": 45761
+    },
+    {
+      "path": "docs_release/RetirePilot_PSD_v2.7.pdf",
+      "sha256": "7fb0cc2cbb3a7ef109c21016cc0542781cad931ca44a57b5c7181b00a68e69f8",
+      "bytes": 229677
+    },
+    {
+      "path": "docs_release/RetirePilot_TSD_v2.7.docx",
+      "sha256": "4506aab4d842061a04d524cc39ebc794243d1993b6a15758d48530a7ce7b0d8e",
+      "bytes": 43412
+    },
+    {
+      "path": "docs_release/RetirePilot_TSD_v2.7.pdf",
+      "sha256": "f4d10707e68a27f385391369110c7faa2de7ca40a08c6b503a6616c1adfd55d3",
+      "bytes": 113846
+    },
+    {
+      "path": "docs_v25/CONSUMER_RESEARCH_EXECUTION_PACKAGE.md",
+      "sha256": "bc6f1a8149643822bfb8e47c7caedcdd5ba2be0d4d0382760dea1d246bf034cb",
+      "bytes": 2628
+    },
+    {
+      "path": "docs_v25/EXTERNAL_ASSURANCE_PACK.md",
+      "sha256": "9499748462c7390742400d6ccca3f54fa94cf1bf068508b6923e1365582e16ef",
+      "bytes": 2947
+    },
+    {
+      "path": "docs_v25/PSD_TSD_CHANGE_ADDENDUM_v25.md",
+      "sha256": "270cf10fd1866e230ceac17b1dcb435efadc4788e033792118f839e4a32919d3",
+      "bytes": 2604
+    },
+    {
+      "path": "docs_v26/ENGINEERING_AND_RELEASE_GATE_v26.md",
+      "sha256": "0c43944687867a6b05958b376f88222ff95da58732cd2d51d40c310e272dc17e",
+      "bytes": 3489
+    },
+    {
+      "path": "docs_v26/EXTERNAL_ENGAGEMENT_AND_RECRUITMENT_v26.md",
+      "sha256": "cc37981c5aaacc8d96775415d1df7241f0d3241be174350bc608c8f44532fa7f",
+      "bytes": 2786
+    },
+    {
+      "path": "docs_v26/RetirePilot_Master_Library_v1.7_Scenario_Mapping_and_External_Assurance.xlsx",
+      "sha256": "99166157ff584fa70776b419878c116125d043bea012918b4ee951268642f4a8",
+      "bytes": 128620
+    },
+    {
+      "path": "docs_v26/SCENARIO_CONTRACT_TABLE.md",
+      "sha256": "da53bde2d89ab1bfe1c23f19db40967d2f368735a52f122d8674a420e3f95f74",
+      "bytes": 4040
+    },
+    {
+      "path": "docs_v26/VERIFICATION_MANIFEST_v26.json",
+      "sha256": "197d5d44cf224706f8d9dcd093a3c5897211ec7276e0ff2e2718f965362338b1",
+      "bytes": 1027
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "bd931628ce057282da3ede0a637c9bc0fde3131178e12b8dbd8cff722e1ac789",
+      "bytes": 70
+    },
+    {
+      "path": "retirepilot/__init__.py",
+      "sha256": "0230aafb4bbd71c2584f5af257cbed62dd65dfdb2446d60ae4753ddef7aecaac",
+      "bytes": 199
+    },
+    {
+      "path": "retirepilot/adapter.py",
+      "sha256": "d838790eb64c3062880a045d096786899d2959c0615d306f46926aebca3ae021",
+      "bytes": 10417
+    },
+    {
+      "path": "retirepilot/api.py",
+      "sha256": "5198860114f6769ea7c0aee97f66a45b911a5d7c8636af82c0785f470df9419b",
+      "bytes": 4440
+    },
+    {
+      "path": "retirepilot/assistant.py",
+      "sha256": "2b1cf2507225b410170cb6766e77943e157d300a448179dd26d4e0960abb12d6",
+      "bytes": 7739
+    },
+    {
+      "path": "retirepilot/catalog_scenarios_v26.py",
+      "sha256": "c25f4837985ebd5c41ce32bf8e401a2f4569b3d4009fcd45087e6ca63b513267",
+      "bytes": 4215
+    },
+    {
+      "path": "retirepilot/classifier_legacy.py",
+      "sha256": "8a4281a692612f643cdacbea21327e66ada50c13d041290e72f72fe2566461c6",
+      "bytes": 4625
+    },
+    {
+      "path": "retirepilot/cli.py",
+      "sha256": "9cf90dd5a6d4b2155ba1b8ce3253b926eba973b79ca92a74b9866017507e6fa3",
+      "bytes": 1171
+    },
+    {
+      "path": "retirepilot/core.py",
+      "sha256": "46cbcd18e12f0282f641e6056aa3b0f10dd3c6a901deecb0201bfce2fb72dbf9",
+      "bytes": 21118
+    },
+    {
+      "path": "retirepilot/cpf_retirement_v26.py",
+      "sha256": "bacee70a2c42d263ae2635551da3d1cc636aa62d05da4289ca4384eba304f628",
+      "bytes": 5392
+    },
+    {
+      "path": "retirepilot/financial_references_v24.py",
+      "sha256": "e74fb3044280d87753337974f3dc7ceff013bed709b4a7997272d3e6417f4d0c",
+      "bytes": 9390
+    },
+    {
+      "path": "retirepilot/llm_adapter.py",
+      "sha256": "3eb31d5f72b5b466d83db4f71a358f79b92508fda6bcddfe667a75493f83b2f4",
+      "bytes": 3034
+    },
+    {
+      "path": "retirepilot/local_vault_v24.py",
+      "sha256": "8ab095f71b37c8ad270a552ff0ca4353a4feb5e451366fdcc94d55a2cedac73f",
+      "bytes": 11336
+    },
+    {
+      "path": "retirepilot/matching_policy_v2.2.json",
+      "sha256": "29cb911a5085fbef65842a1d3907daf289d11fc87381550e0ee139a2bfdf7637",
+      "bytes": 470
+    },
+    {
+      "path": "retirepilot/planner_session_v24.py",
+      "sha256": "a7009996bff20563f1921c37f588d417da810252f0393e2f2108879474deee94",
+      "bytes": 2238
+    },
+    {
+      "path": "retirepilot/policy.py",
+      "sha256": "94b4973f31bb835eea2548c96248806884c7837e657773982b1a6ccabd5bd37e",
+      "bytes": 5982
+    },
+    {
+      "path": "retirepilot/priority_scenarios_v27.py",
+      "sha256": "2d0fe81d299c08e2bb0d6a953bd69d27661a75bbfa6470b348f6b0d1b4594042",
+      "bytes": 4969
+    },
+    {
+      "path": "retirepilot/projection_v22.py",
+      "sha256": "c6889d3a761886d21d3a41046a5ff5344dc64fe87a776efa43363da711a800ed",
+      "bytes": 19225
+    },
+    {
+      "path": "retirepilot/retirepilot_rules_v1.2.json",
+      "sha256": "3e0fed7a0fb751ccfe9b857a51404dc1a26f29634cea9ae77c73e6fba913ec4b",
+      "bytes": 109566
+    },
+    {
+      "path": "retirepilot/service.py",
+      "sha256": "d91eaf3fe17459235409ac15fc8c16a0a4347a657ecf0ce32d95deb1d551bbc8",
+      "bytes": 3128
+    },
+    {
+      "path": "retirepilot/statutory_2026.py",
+      "sha256": "8bee62393b0a5111fe9375e1646449252b600664f1bb12998cf9896fb3e245bb",
+      "bytes": 12445
+    },
+    {
+      "path": "retirepilot/ui.html",
+      "sha256": "dc6c36843ebe8a2d76e74f3945184c476399db0fedbf1c3cefa4e314124bcd34",
+      "bytes": 14302
+    },
+    {
+      "path": "tests/smoke_browser.py",
+      "sha256": "73128e36c4bf426306b984f26a2e1d541e041d16041bacdb6449ade9a187d673",
+      "bytes": 1753
+    },
+    {
+      "path": "tests/test_approved_decisions_v27.py",
+      "sha256": "3247a05ee606f16fd81168dd6b0c86af1593ec17b6f275039fb905f51acde364",
+      "bytes": 8320
+    },
+    {
+      "path": "tests/test_cpf_and_scenario_contracts_v26.py",
+      "sha256": "28e4bba7d1687bd153a64c29d10715746ad9a34949c6b0aea3132fa32f45f37a",
+      "bytes": 5878
+    },
+    {
+      "path": "tests/test_end_to_end.py",
+      "sha256": "0e622f38297321eeda6b70f48e18303cd05bdd8fe142be84bf0fd9a50f85d11d",
+      "bytes": 9061
+    },
+    {
+      "path": "tests/test_phase7_independent_audit.py",
+      "sha256": "2ea82ec57b90e73dd0a9417cfb83bac7ba5f0c9d0a009a85f90cc4485c4857fc",
+      "bytes": 8164
+    },
+    {
+      "path": "tests/test_prior_audit_failures_closed_v22.py",
+      "sha256": "f26a67c7994ceac4c49bef3950e61f2b8617e3436a453dbec4db82af063976f2",
+      "bytes": 2655
+    },
+    {
+      "path": "tests/test_release_integrity_v25.py",
+      "sha256": "bf71d9a4103ddf3aa977fbd5e6489ed391123e87f0569cf7b9206f72504802ff",
+      "bytes": 5499
+    },
+    {
+      "path": "tests/test_remediation_v22.py",
+      "sha256": "ee897c6e975ba948b264bcef64903f4920ff0c137addfdff59509f6ea1256d2c",
+      "bytes": 8870
+    },
+    {
+      "path": "tests/test_roadmap_v24.py",
+      "sha256": "98aaacb0f1bc11ac9f6d9e70e0afeb2e460bee2036e01aef38d22a78f882a071",
+      "bytes": 13674
+    },
+    {
+      "path": "tests/test_statutory_v23.py",
+      "sha256": "a8aee4dc87a079c18577cc5382eba18fd7bcb522ca61feffb2f43c665cce0022",
+      "bytes": 6570
+    }
+  ]
+}

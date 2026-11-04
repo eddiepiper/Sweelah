@@ -1,0 +1,8 @@
+# Reproducible synthetic research CI baseline, verified 2026-11-04.
+# No live account integrations or customer data are permitted.
+fastapi==0.128.2
+starlette==0.50.0
+uvicorn==0.48.0
+pytest==9.0.2
+cryptography==46.0.4
+httpx==0.28.1

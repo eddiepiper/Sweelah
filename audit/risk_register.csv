@@ -1,0 +1,21 @@
+risk_id,severity,area,finding,current_status,residual_issue
+VAL-01,Critical,Privacy,Secondary adult income/assets could be included without their consent flag,Fixed in v2.1 for referenced adult financial records,Code flags only; not authenticated consent or PDPA sign-off
+VAL-02,High,Data accuracy,Unreported income streams previously treated as zero,Fixed in v2.1: no cash result and projection blocked,Explicit empty list still means reported zero income
+VAL-03,High,Data accuracy,Unreported liabilities previously treated as zero,Fixed in v2.1: debt unknown and projection blocked,Liability inventory cannot be verified by software
+VAL-04,High,Data integrity,Missing asset values caused KeyError and server error,Fixed in v2.1: structured validation error,User may still supply inaccurate asset estimates
+VAL-05,High,Data integrity,Missing income gross/cost could default to zero,Fixed in v2.1: explicit value required for listed streams,Other optional deductions remain user-reported and may be omitted
+VAL-06,High,Scenario maths,Negative care expense artificially improved outcomes,Fixed in v2.1: rejected,Full scenario contract and economic realism not independently validated
+VAL-07,Medium,CPF reference,Third-year-plus Singapore PR omitted from 2026 contribution reference,Fixed in v2.1: standard reference only when PR year explicitly 3+,No statutory per-person contribution calculation
+VAL-08,High,Demo boundary,Unauthenticated API could accept non-synthetic identifier,Partially mitigated: synthetic fixture ID gate added,ID is spoofable; real-data exposure risk remains without security stack
+VAL-09,High,Financial model,Single blended return applied to cash and investments,Open: methodology approval required,Cash yield/investment return and allocation must be modelled separately
+VAL-10,High,Financial model,2026 as-of November modelled as full annual year with Dec 31 age,Open: pro-rata monthly model required,Retirement and income cessation can shift a full year
+VAL-11,Critical,Financial model,"No validated statutory CPF, CPF LIFE, tax, mortgage amortisation, insurance",Open: authoritative calculator reconciliation required,No individual retirement readiness certification
+VAL-12,High,Classifier,96 weights and mandatory conditions were not calibrated using genuine cases,Open: specialist review + real-world validation,498 legacy fixtures are largely derived from the rules themselves
+VAL-13,Critical,Security,"No user authentication, encryption/retention system, identity-based consent audit",Open: secure architecture + PDPA DPIA + penetration test,Never expose prototype to internet or real financial data
+VAL-14,Critical,Regulatory,MAS financial-advisory perimeter and action restrictions not cleared,Open: qualified Singapore legal/compliance sign-off,No product-specific recommendation functionality approved
+VAL-15,High,Accessibility / usability,Main onboarding consists of editable raw JSON,Open: replace with progressive guided accessible forms,Not suitable for general 45+ consumers yet
+VAL-16,High,Accessibility / usability,"No Mandarin, Malay, Tamil journeys or readability validation",Open: localisation + participant comprehension tests,No multilingual release readiness
+VAL-17,High,Testing,Browser-based interaction/screenshot blocked by environment policy,Blocked: separate browser QA environment required,No WCAG 2.2 AA audit can be claimed
+VAL-18,High,Research,48 actual interviews and observed task completions are not conducted,"Open: recruit, consent, moderate, analyse",Do not count interview slots as respondents
+VAL-19,Medium,Model governance,External LLM adapter remains disabled; no live prompt injection assessment,Open: design governed provider + tool boundary,Not a live generative AI agent
+VAL-20,Medium,UI disclosure,Export button implied anonymisation without verification,Fixed in v2.1: clearer warning label,No guarantee export lacks sensitive entered data

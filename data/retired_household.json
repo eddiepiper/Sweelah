@@ -1,0 +1,97 @@
+{
+  "id": "RP-SYNTH-003",
+  "as_of": "2026-11-03",
+  "currency": "SGD",
+  "primary_id": "R1",
+  "persons": [
+    {
+      "id": "R1",
+      "role": "primary",
+      "dob": "1958-08-22",
+      "residency": "SG",
+      "marital_status": "widowed",
+      "employment_status": "retired",
+      "cpf_balances": {
+        "OA": "16000",
+        "MA": "38000",
+        "RA": "250000"
+      }
+    }
+  ],
+  "relationships": [],
+  "income_streams": [
+    {
+      "id": "RI1",
+      "owner_id": "R1",
+      "type": "cpf_life",
+      "gross_monthly": "1500",
+      "starts_age": 65,
+      "source": "synthetic_user_provided_estimate",
+      "cash_deductions_monthly": "0",
+      "worker_cpf_monthly": "0",
+      "tax_reserve_monthly": "0"
+    },
+    {
+      "id": "RI2",
+      "owner_id": "R1",
+      "type": "rental",
+      "gross_monthly": "600",
+      "tax_reserve_monthly": "60",
+      "source": "user_reported",
+      "operating_costs_monthly": "0",
+      "cash_deductions_monthly": "0",
+      "worker_cpf_monthly": "0"
+    }
+  ],
+  "assets": [
+    {
+      "id": "RA1",
+      "type": "cash",
+      "value": "52000",
+      "owners": {
+        "R1": "1"
+      }
+    },
+    {
+      "id": "RA2",
+      "type": "investment",
+      "value": "115000",
+      "owners": {
+        "R1": "1"
+      }
+    },
+    {
+      "id": "RA3",
+      "type": "property",
+      "subtype": "hdb",
+      "value": "480000",
+      "owners": {
+        "R1": "1"
+      }
+    }
+  ],
+  "liabilities": [],
+  "expenses": [
+    {
+      "id": "RE1",
+      "category": "living",
+      "amount_monthly": "1900",
+      "essential": true
+    },
+    {
+      "id": "RE2",
+      "category": "medical",
+      "amount_monthly": "180",
+      "essential": true
+    }
+  ],
+  "goal": {
+    "retirement_age": 65,
+    "projection_end_age": 95
+  },
+  "assumptions": {
+    "inflation_pct": "2.5",
+    "nominal_return_pct": "2.5",
+    "income_growth_pct": "0"
+  }
+}

@@ -1,0 +1,5 @@
+[
+ {"type":"commission_drop","start_year":2027,"duration_years":2,"shock_pct":50,"income_ids":["I1"]},
+ {"type":"care_shock","start_year":2028,"duration_years":5,"shock_pct":0,"extra_monthly":"1200"},
+ {"type":"market_crash","start_year":2027,"duration_years":1,"shock_pct":20}
+]

@@ -1,0 +1,846 @@
+[
+  {
+    "id": "S001",
+    "category": "Employment",
+    "name": "Retrenchment",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "job_loss",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S002",
+    "category": "Employment",
+    "name": "Pay reduction",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "job_loss",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S003",
+    "category": "Employment",
+    "name": "Contract non-renewal",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "job_loss",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S004",
+    "category": "Employment",
+    "name": "Reduced working hours",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "job_loss",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S005",
+    "category": "Employment",
+    "name": "Delayed retirement",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "RETIREMENT_GOAL_ONLY",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "new_retirement_age"
+    ],
+    "blocking_gap": "Only stops primary earned income at a revised retirement age; does not forecast CPF effects.",
+    "limitations": [
+      "Only stops primary earned income at a revised retirement age; does not forecast CPF effects.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": true
+  },
+  {
+    "id": "S006",
+    "category": "Employment",
+    "name": "Return to work",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "rehiring_offer",
+      "effective_date",
+      "income",
+      "employer CPF"
+    ],
+    "blocking_gap": "No employment re-entry and statutory contribution recalculation.",
+    "limitations": [
+      "No employment re-entry and statutory contribution recalculation.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S007",
+    "category": "Gig and commissions",
+    "name": "Commission -50%",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "commission_drop",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S008",
+    "category": "Gig and commissions",
+    "name": "Platform suspension",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "job_loss",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S009",
+    "category": "Gig and commissions",
+    "name": "Declining orders",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "commission_drop",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S010",
+    "category": "Gig and commissions",
+    "name": "Vehicle operating-cost shock",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "platform_cost_shock",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S011",
+    "category": "Gig and commissions",
+    "name": "Loss of major client",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "commission_drop",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S012",
+    "category": "Family",
+    "name": "Divorce",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "asset_ownership",
+      "consent",
+      "legal_settlement",
+      "housing",
+      "dependants"
+    ],
+    "blocking_gap": "Divorce settlements, consent and household rights cannot be inferred.",
+    "limitations": [
+      "Divorce settlements, consent and household rights cannot be inferred.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S013",
+    "category": "Family",
+    "name": "Widowhood",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "survivor_income",
+      "insurance",
+      "estate",
+      "household_consents"
+    ],
+    "blocking_gap": "Widowhood requires verified survivor and estate changes.",
+    "limitations": [
+      "Widowhood requires verified survivor and estate changes.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S014",
+    "category": "Family",
+    "name": "New child/dependant",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "RECURRING_COST_COMPONENT",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "extra_monthly",
+      "start_year",
+      "duration_years"
+    ],
+    "blocking_gap": "Cost-only childcare sensitivity; no child benefits, tax relief, insurance or lifecycle modelling.",
+    "limitations": [
+      "Cost-only childcare sensitivity; no child benefits, tax relief, insurance or lifecycle modelling.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": true
+  },
+  {
+    "id": "S015",
+    "category": "Family",
+    "name": "Adult child support",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "RECURRING_COST_COMPONENT",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "extra_monthly",
+      "start_year",
+      "duration_years"
+    ],
+    "blocking_gap": "Cost-only family-support sensitivity; no tax/transfer eligibility.",
+    "limitations": [
+      "Cost-only family-support sensitivity; no tax/transfer eligibility.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": true
+  },
+  {
+    "id": "S016",
+    "category": "Family",
+    "name": "Parent care",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "care_shock",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S017",
+    "category": "Family",
+    "name": "Loss of second income",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "job_loss",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S018",
+    "category": "Housing",
+    "name": "Mortgage repricing",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "mortgage_rate_shock",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S019",
+    "category": "Housing",
+    "name": "Property-value decline",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "specific_property_id",
+      "valuation",
+      "ownership",
+      "mortgage"
+    ],
+    "blocking_gap": "Property valuation affects net worth and LTV, not just cash flow.",
+    "limitations": [
+      "Property valuation affects net worth and LTV, not just cash flow.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S020",
+    "category": "Housing",
+    "name": "Downsizing",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "sale_price",
+      "CPF_refund",
+      "replacement_home",
+      "stamp_duty",
+      "moving_cost"
+    ],
+    "blocking_gap": "Downsizing requires complete property sale and purchase waterfall.",
+    "limitations": [
+      "Downsizing requires complete property sale and purchase waterfall.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S021",
+    "category": "Housing",
+    "name": "Rent increase",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "rent_increase",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S022",
+    "category": "Housing",
+    "name": "Lease monetisation",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "HDB_eligibility",
+      "lease_age",
+      "official_quote",
+      "CPF_refund"
+    ],
+    "blocking_gap": "Lease monetisation requires official HDB eligibility and scheme quote.",
+    "limitations": [
+      "Lease monetisation requires official HDB eligibility and scheme quote.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S023",
+    "category": "Housing",
+    "name": "Rental vacancy",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "rental_vacancy",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S024",
+    "category": "Investments",
+    "name": "Equity market decline",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "market_crash",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S025",
+    "category": "Investments",
+    "name": "Low real returns",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "return_path_by_asset",
+      "inflation_path",
+      "market_timing"
+    ],
+    "blocking_gap": "Global lifetime return override would misrepresent bounded low-return years.",
+    "limitations": [
+      "Global lifetime return override would misrepresent bounded low-return years.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S026",
+    "category": "Investments",
+    "name": "Poor early withdrawal returns",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "withdrawal_timing",
+      "asset_class_returns",
+      "return_sequence"
+    ],
+    "blocking_gap": "Sequence-of-return risk needs time-indexed portfolio return path.",
+    "limitations": [
+      "Sequence-of-return risk needs time-indexed portfolio return path.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S027",
+    "category": "Investments",
+    "name": "Concentrated stock loss",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "holding_id",
+      "holding_value",
+      "loss_rate",
+      "portfolio_allocation"
+    ],
+    "blocking_gap": "Current market_crash affects whole portfolio, not specific holdings.",
+    "limitations": [
+      "Current market_crash affects whole portfolio, not specific holdings.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S028",
+    "category": "Investments",
+    "name": "Inflation shock",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "inflation_shock",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S029",
+    "category": "CPF and retirement",
+    "name": "Earlier retirement",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "RETIREMENT_GOAL_ONLY",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "new_retirement_age"
+    ],
+    "blocking_gap": "Stops primary earned income earlier; no automatic CPF/pension/tax recalculation.",
+    "limitations": [
+      "Stops primary earned income earlier; no automatic CPF/pension/tax recalculation.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": true
+  },
+  {
+    "id": "S030",
+    "category": "CPF and retirement",
+    "name": "Payout deferral",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "official_CPF_LIFE_estimate_65_70",
+      "start_age"
+    ],
+    "blocking_gap": "Payout deferral cannot assume universal percent growth or fabricate personal payout.",
+    "limitations": [
+      "Payout deferral cannot assume universal percent growth or fabricate personal payout.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S031",
+    "category": "CPF and retirement",
+    "name": "Voluntary top-up",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "source_account",
+      "RA_topup_allowance",
+      "verified_cash_availability"
+    ],
+    "blocking_gap": "CPF RA top-ups require official limits and account transfers.",
+    "limitations": [
+      "CPF RA top-ups require official limits and account transfers.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S032",
+    "category": "CPF and retirement",
+    "name": "Pre-payout funding bridge",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "cash_bridge_horizon",
+      "essential_expenses",
+      "official_payout_start"
+    ],
+    "blocking_gap": "Bridge funding needs date-aware withdrawal rules and source of cash.",
+    "limitations": [
+      "Bridge funding needs date-aware withdrawal rules and source of cash.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S033",
+    "category": "CPF and retirement",
+    "name": "Contribution interruption",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "affected_CPF_income",
+      "contribution_months",
+      "residency_cohort"
+    ],
+    "blocking_gap": "Contribution gaps need future CPF allocation and interest model.",
+    "limitations": [
+      "Contribution gaps need future CPF allocation and interest model.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S034",
+    "category": "Health and care",
+    "name": "Medical expense shock",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "medical_shock",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S035",
+    "category": "Health and care",
+    "name": "Disability-related cost shock",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "RECURRING_COST_COMPONENT",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "extra_monthly",
+      "start_year",
+      "duration_years"
+    ],
+    "blocking_gap": "Disability COST component only; no income disruption, insurance or care eligibility.",
+    "limitations": [
+      "Disability COST component only; no income disruption, insurance or care eligibility.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": true
+  },
+  {
+    "id": "S036",
+    "category": "Health and care",
+    "name": "Long-term care expense",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "care_shock",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S037",
+    "category": "Health and care",
+    "name": "Caregiver income loss",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "job_loss",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S038",
+    "category": "Cross-border",
+    "name": "Retire overseas",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "jurisdiction",
+      "residence_status",
+      "expenses",
+      "taxes",
+      "FX",
+      "healthcare"
+    ],
+    "blocking_gap": "Foreign retirement requires jurisdiction-specific tax, healthcare and residency model.",
+    "limitations": [
+      "Foreign retirement requires jurisdiction-specific tax, healthcare and residency model.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S039",
+    "category": "Cross-border",
+    "name": "Exchange-rate movement",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "currency",
+      "FX_path",
+      "foreign_assets",
+      "liabilities"
+    ],
+    "blocking_gap": "FX shock needs explicit currency amounts and dated rates.",
+    "limitations": [
+      "FX shock needs explicit currency amounts and dated rates.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S040",
+    "category": "Cross-border",
+    "name": "Repatriation",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "residence_history",
+      "relocation_costs",
+      "tax_domicile",
+      "FX"
+    ],
+    "blocking_gap": "Repatriation needs cross-border law and verified flows.",
+    "limitations": [
+      "Repatriation needs cross-border law and verified flows.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S041",
+    "category": "Cross-border",
+    "name": "Foreign pension change",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "foreign_pension_currency",
+      "indexation",
+      "source",
+      "taxes"
+    ],
+    "blocking_gap": "Foreign pension changes need verified terms and FX/tax handling.",
+    "limitations": [
+      "Foreign pension changes need verified terms and FX/tax handling.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S042",
+    "category": "Wealth and legacy",
+    "name": "Inheritance",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NET_CASH_RECEIPT_COMPONENT",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "net_received_once",
+      "start_year"
+    ],
+    "blocking_gap": "Confirmed NET cash receipt only, no estate entitlement/probate/tax prediction.",
+    "limitations": [
+      "Confirmed NET cash receipt only, no estate entitlement/probate/tax prediction.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": true
+  },
+  {
+    "id": "S043",
+    "category": "Wealth and legacy",
+    "name": "Business sale",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "sale_net",
+      "liabilities",
+      "owner_shares",
+      "future_business_income"
+    ],
+    "blocking_gap": "Business disposal requires cap gains/tax, liabilities and earnings cessation.",
+    "limitations": [
+      "Business disposal requires cap gains/tax, liabilities and earnings cessation.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S044",
+    "category": "Wealth and legacy",
+    "name": "Major gift to children",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NET_CASH_GIFT_COMPONENT",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "net_cash_gift_once",
+      "start_year"
+    ],
+    "blocking_gap": "Cash gift only; cannot assess CPF eligibility, gift tax overseas or heirs rights.",
+    "limitations": [
+      "Cash gift only; cannot assess CPF eligibility, gift tax overseas or heirs rights.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": true
+  },
+  {
+    "id": "S045",
+    "category": "Wealth and legacy",
+    "name": "Estate expense",
+    "previous_status": "BOUNDED_OPERATOR",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "existing_operator": "one_time_cost",
+    "design_status": "PREEXISTING_BOUNDED_MAPPING_NOT_FULL_EVENT",
+    "required_inputs": [
+      "reference current v2.5 bounded operator contract"
+    ],
+    "blocking_gap": "Existing operator is not a full life event; use API operator directly with scenario safeguards.",
+    "limitations": [
+      "Original mapping may cover only a cash-flow component"
+    ],
+    "implemented_component": false
+  },
+  {
+    "id": "S046",
+    "category": "Wealth and legacy",
+    "name": "Business failure",
+    "previous_status": "UNMAPPED",
+    "execution_strategy": "NOT_SAFE_TO_COMPILE",
+    "design_status": "MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY",
+    "required_inputs": [
+      "business_debt",
+      "liability_guarantees",
+      "income_history",
+      "personal_exposure"
+    ],
+    "blocking_gap": "Business failure affects liabilities, income, ownership and guarantees together.",
+    "limitations": [
+      "Business failure affects liabilities, income, ownership and guarantees together.",
+      "All values must be verified/user-supplied; synthetic only"
+    ],
+    "implemented_component": false
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "version": "2.7",
+  "approved_on": "2026-11-04",
+  "approved_by": "product_owner",
+  "decisions": [
+    {
+      "id": "D-001",
+      "answer": "1A",
+      "decision": "Educational projections, scenarios, explanations only; no regulated product recommendations"
+    },
+    {
+      "id": "D-002",
+      "answer": "2A",
+      "decision": "Member-transcribed official CPF LIFE estimate required for personal projections; examples are illustrations"
+    },
+    {
+      "id": "D-003",
+      "answer": "3A",
+      "decision": "Retain 96 archetypes with consumer-facing provisional descriptions; hide numerical confidence claims"
+    },
+    {
+      "id": "D-004",
+      "answer": "4A",
+      "decision": "Every adult requires separately verified identity and purpose-specific consent before financial sharing; sharing blocked pending provider"
+    },
+    {
+      "id": "D-005",
+      "answer": "5A",
+      "decision": "Prioritise five high-value scenario engines before remainder, with separate acceptance cases"
+    },
+    {
+      "id": "D-006",
+      "answer": "6A",
+      "decision": "Request reviewer credentials/proposals/quotations first; no appointment or spending without approval"
+    },
+    {
+      "id": "D-007",
+      "answer": "7A",
+      "decision": "Assume consumer research success for development planning only; 48 actual sessions required before external pilot"
+    }
+  ],
+  "external_pilot": "NO_GO"
+}

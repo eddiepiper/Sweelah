@@ -1,0 +1,72 @@
+{
+  "title": "RetirePilot 96-Persona Classifier - Synthetic Technical Audit",
+  "version": "1.2.0-prototype",
+  "source_sha256": "91de385a692e69a79c78f131a01a85886c39c9a85a11be9e6c57e01c4a404612",
+  "engine_version": "2.2.0-remediated",
+  "tests_executed": 498,
+  "passed": 498,
+  "failed": 0,
+  "failures": [],
+  "changes": [
+    {
+      "id": "FIX-D06",
+      "severity": "high",
+      "change": "Mandatory gate now applies to assessed person, not partner; partner_earns retained as weighted criterion",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-D05",
+      "severity": "high",
+      "change": "Exclusion !parent_supported -> !children_dependent (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-D06",
+      "severity": "high",
+      "change": "Exclusion !partner_not_earning -> !individual_not_earning (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-F05",
+      "severity": "high",
+      "change": "Exclusion !property_concentrated -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-F07",
+      "severity": "high",
+      "change": "Exclusion !living_with_adult_child -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-H06",
+      "severity": "high",
+      "change": "Exclusion !high_debt_service -> !income_high (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-I06",
+      "severity": "high",
+      "change": "Exclusion !long_term_care -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-I07",
+      "severity": "high",
+      "change": "Exclusion !recurring_health_costs -> !retired_status (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    },
+    {
+      "id": "FIX-J06",
+      "severity": "high",
+      "change": "Exclusion !living_alone -> !age_65plus (strict complement of mandatory gate)",
+      "status": "proposed correction, testable; domain review pending"
+    }
+  ],
+  "limitations": [
+    "Self-generated positive fixtures test internal consistency, not real-world persona validity",
+    "Input fields are flattened prototype values; real household data and one-to-many income provenance not implemented",
+    "Scores and thresholds are uncalibrated; no statistical representativeness or policy eligibility proof",
+    "Financial calculations are illustrative; independent QA, full consent controls and regulatory review are not completed"
+  ]
+}
