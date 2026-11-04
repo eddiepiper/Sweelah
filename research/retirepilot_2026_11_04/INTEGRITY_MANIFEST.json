@@ -1,0 +1,80 @@
+{
+  "product": "RetirePilot",
+  "artifact_set": "Approved business logic and synthetic consumer tabletop",
+  "release": "Business-rulebook v1.8",
+  "approval_date": "2026-11-04",
+  "approved_decisions": [
+    "D08",
+    "D09",
+    "D10",
+    "D11",
+    "D12",
+    "D13",
+    "D14",
+    "D15",
+    "D16"
+  ],
+  "engine_contracts": 18,
+  "scenario_contracts": 46,
+  "synthetic_consumer_cases": 48,
+  "actual_interviews": 0,
+  "verification": "Original source Git blob SHA-1 compared with local original for nine files",
+  "files": [
+    {
+      "path": "research/retirepilot_2026_11_04/48_ROLEPLAY_SESSION_SCRIPTS_synthetic.md",
+      "git_blob_sha1": "88b47f07660c84caeb48ea18ee6ad8a5483ce95c",
+      "size_bytes": 54379
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/APPROVED_BUSINESS_RULE_DECISIONS_D08_D16.md",
+      "git_blob_sha1": "9b43137e595956c8624019f005d5ab2f1ac18cf9",
+      "size_bytes": 4989
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/APPROVED_PRODUCT_DECISIONS_D08_D16.json",
+      "git_blob_sha1": "61d5dbc02051249bad9c68aa7b8359c71b43b629",
+      "size_bytes": 4862
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/ATLAS_BUSINESS_RULES_AND_CONSUMER_SIMULATION_original.md",
+      "git_blob_sha1": "4e83929a011067fa35adadb1ffd1124ca2a00e19",
+      "size_bytes": 38139
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/ATLAS_HANDOFF_BUSINESS_RULES_v1.8.md",
+      "git_blob_sha1": "0ad2e105080db76e9abebabd149da083779be3fb",
+      "size_bytes": 3500
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/EXECUTIVE_READOUT_original.md",
+      "git_blob_sha1": "5107c813178ed8221e61b49c2d77f0ed187c62cd",
+      "size_bytes": 3705
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/README.md",
+      "git_blob_sha1": "ac7ec48f94167e4a9f586c52956984a5aa152c67",
+      "size_bytes": 2507
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/RetirePilot_Business_Rulebook_v1.8_Approved.xlsx",
+      "git_blob_sha1": "a62a88a00e33eebadd965009d4b34549a7ebd3dd",
+      "size_bytes": 31771
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/financial_engine_contracts_18.json",
+      "git_blob_sha1": "570ff51552a86f526687b5481a110139b7737260",
+      "size_bytes": 8817
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/scenario_engine_contracts_46.json",
+      "git_blob_sha1": "f51f360ddee6b5bad455b4012bdd2631dba40b5b",
+      "size_bytes": 31603
+    },
+    {
+      "path": "research/retirepilot_2026_11_04/synthetic_consumer_walkthroughs_48.json",
+      "git_blob_sha1": "29ab6e4b731dfad485f0e2584d363d9400449133",
+      "size_bytes": 41556
+    }
+  ],
+  "status": "Requirements approved only; no independent financial validation or Phase 9 GO"
+}
