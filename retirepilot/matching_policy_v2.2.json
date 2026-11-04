@@ -1,0 +1,9 @@
+{
+  "policy_version": "2.2.0-provisional",
+  "effective_for": "synthetic-prototype-only",
+  "minimum_evidence_coverage": 70,
+  "minimum_match_score": 60,
+  "status": "UNVALIDATED: subject to domain-owner approval and real-user calibration",
+  "intent": "Prevent zero-score and low-evidence persona labels from appearing as confirmed user matches",
+  "scope": "Scoring status and display gating only; original 96 archetype predicates and 35/30/20/15 weights unchanged"
+}
