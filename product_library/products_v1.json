@@ -1,0 +1,2008 @@
+{
+  "version": "1.0.0-discovery",
+  "catalogue_as_of": "2026-11-05",
+  "market": "SG",
+  "scope": "Broad OCBC retail accounts, loans, credit cards and Great Eastern insurance discovery, not exhaustive or approved eligibility data",
+  "privacy": "Institutional public product metadata only; no customer records",
+  "products": [
+    {
+      "id": "ocbc.account.360-account",
+      "name": "360 Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.ocbc-frank-account",
+      "name": "OCBC FRANK Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.bonus-savings-account",
+      "name": "Bonus+ Savings Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.monthly-savings-account",
+      "name": "Monthly Savings Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.usd-current-account",
+      "name": "USD Current Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.global-savings-account",
+      "name": "Global Savings Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.ocbc-myown-account",
+      "name": "OCBC MyOwn Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.mighty-savers-account",
+      "name": "Mighty Savers Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.child-development-account",
+      "name": "Child Development Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.time-deposit",
+      "name": "Time Deposit",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.passbook-savings-account",
+      "name": "Passbook Savings Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.basic-banking-account",
+      "name": "Basic Banking Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.statement-savings-account",
+      "name": "Statement Savings Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.cpf-investment-account",
+      "name": "CPF Investment Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.account.supplementary-retirement-scheme-srs-account",
+      "name": "Supplementary Retirement Scheme (SRS) Account",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "account",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_deposits"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.easicredit",
+      "name": "EasiCredit",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.home-loans",
+      "name": "Home Loans",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.extracash-loan",
+      "name": "ExtraCash Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.cash-on-instalments",
+      "name": "Cash-on-Instalments",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.balance-transfer",
+      "name": "Balance Transfer",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.paylite-instalment-plan",
+      "name": "PayLite Instalment Plan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.debt-consolidation-plan",
+      "name": "Debt Consolidation Plan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.hdb-home-loan",
+      "name": "HDB Home Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.private-property-home-loan",
+      "name": "Private Property Home Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.home-loan-refinancing",
+      "name": "Home Loan Refinancing",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.home-loan-repricing",
+      "name": "Home Loan Repricing",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.overseas-property-financing",
+      "name": "Overseas Property Financing",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.construction-loan",
+      "name": "Construction Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.new-car-loan",
+      "name": "New Car Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.used-car-loan",
+      "name": "Used Car Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.eco-care-car-loan",
+      "name": "Eco-Care Car Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.education-loan",
+      "name": "Education Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.loan.higher-education-student-loan",
+      "name": "Higher Education Student Loan",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "loan",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_loans"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F08",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-infinity-cashback-card",
+      "name": "OCBC INFINITY Cashback Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-365-credit-card",
+      "name": "OCBC 365 Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-rewards-card",
+      "name": "OCBC Rewards Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-90n-visa-card",
+      "name": "OCBC 90°N Visa Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-90n-mastercard",
+      "name": "OCBC 90°N Mastercard",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-nxt-credit-card",
+      "name": "OCBC NXT Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.frank-credit-card",
+      "name": "FRANK Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-voyage-card",
+      "name": "OCBC VOYAGE Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-premier-voyage-card",
+      "name": "OCBC Premier VOYAGE Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-premier-private-client-voyage-card",
+      "name": "OCBC Premier Private Client VOYAGE Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.bank-of-singapore-voyage-card",
+      "name": "Bank of Singapore VOYAGE Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-premier-visa-infinite-credit-card",
+      "name": "OCBC Premier Visa Infinite Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.best-ocbc-credit-card",
+      "name": "BEST-OCBC Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-great-eastern-cashflo-credit-card",
+      "name": "OCBC Great Eastern Cashflo Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "servicing_only",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards_servicing"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-arts-credit-card",
+      "name": "OCBC Arts Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "servicing_only",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards_servicing"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ocbc.credit_card.ocbc-platinum-credit-card",
+      "name": "OCBC Platinum Credit Card",
+      "provider": "OCBC",
+      "market": "SG",
+      "family": "credit_card",
+      "listing_context": "servicing_only",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ocbc_cards_servicing"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F02",
+        "F08"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.great-term-2",
+      "name": "GREAT Term 2",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.great-life-multiplier",
+      "name": "GREAT Life Multiplier",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.prestige-legacy-index",
+      "name": "Prestige Legacy Index",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.great-life-advantage-4",
+      "name": "GREAT Life Advantage 4",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.prestige-life-gold-sgd-usd",
+      "name": "Prestige Life Gold (SGD/USD)",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.gogreat-term-life",
+      "name": "GoGreat Term Life",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.direct-great-term",
+      "name": "DIRECT - GREAT Term",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.direct-great-life-ii",
+      "name": "DIRECT - GREAT Life II",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.great-eastern-cares-term-plan",
+      "name": "Great Eastern Cares Term Plan",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.life.great-life-advantage-4-plus",
+      "name": "GREAT Life Advantage 4 Plus",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "life",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_home"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.great-supremehealth",
+      "name": "GREAT SupremeHealth",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.great-careshield",
+      "name": "GREAT CareShield",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.cancer-guard",
+      "name": "Cancer Guard",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.maternity-protect-series",
+      "name": "Maternity Protect Series",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.great-critical-cover-series",
+      "name": "GREAT Critical Cover Series",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.great-hospital-cash",
+      "name": "GREAT Hospital Cash",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.payassure",
+      "name": "PayAssure",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.lifesecure",
+      "name": "LifeSecure",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.prestige-global-health-options",
+      "name": "Prestige Global Health Options",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.health.great-totalcare-2",
+      "name": "GREAT TotalCare 2",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "health",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11",
+        "F12"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.personal_accident.great-protector-active",
+      "name": "GREAT Protector Active",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "personal_accident",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.personal_accident.great-junior-protector",
+      "name": "GREAT Junior Protector",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "personal_accident",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.personal_accident.great-golden-protector",
+      "name": "GREAT Golden Protector",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "personal_accident",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.personal_accident.prestige-pacare",
+      "name": "Prestige PACare",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "personal_accident",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.personal_accident.pa-supreme",
+      "name": "PA Supreme",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "personal_accident",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.personal_accident.accidentcare-plus-ii",
+      "name": "AccidentCare Plus II",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "personal_accident",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.retirement_income.great-lifetime-payout-3",
+      "name": "GREAT Lifetime Payout 3",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "retirement_income",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.retirement_income.great-prime-rewards-3",
+      "name": "GREAT Prime Rewards 3",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "retirement_income",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.retirement_income.great-retire-income",
+      "name": "GREAT Retire Income",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "retirement_income",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.retirement_income.lifetime-boost",
+      "name": "Lifetime Boost",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "retirement_income",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_home"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-flexi-advantage",
+      "name": "GREAT Flexi Advantage",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-wealth-advantage-4",
+      "name": "GREAT Wealth Advantage 4",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.legacy-income",
+      "name": "Legacy Income",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.index-income-usd",
+      "name": "Index Income (USD)",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.prestige-life-rewards-series",
+      "name": "Prestige Life Rewards Series",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.prestige-wealth-legacy",
+      "name": "Prestige Wealth Legacy",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.prestige-portfolio",
+      "name": "Prestige Portfolio",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-sp",
+      "name": "GREAT SP",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-sp-usd",
+      "name": "GREAT SP USD",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-flexi-cashback",
+      "name": "GREAT Flexi Cashback",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-flexi-goal",
+      "name": "GREAT Flexi Goal",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-flexi-saver",
+      "name": "GREAT Flexi Saver",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-sp-special",
+      "name": "GREAT SP Special",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-invest-advantage",
+      "name": "GREAT Invest Advantage",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.wealth.great-wealth-multiplier-3",
+      "name": "GREAT Wealth Multiplier 3",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "wealth",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_products"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F10",
+        "F13",
+        "F14"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.general.drive-and-save-plus",
+      "name": "Drive and Save Plus",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "general",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_retirement_segment"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.general.great-ev-protect",
+      "name": "GREAT EV Protect",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "general",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_retirement_segment"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.general.great-home-protect",
+      "name": "GREAT Home Protect",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "general",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_retirement_segment"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.general.great-travelcare",
+      "name": "GREAT TravelCare",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "general",
+      "listing_context": "official_directory_or_homepage",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_retirement_segment"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    },
+    {
+      "id": "ge.general.great-maid-protect",
+      "name": "GREAT Maid Protect",
+      "provider": "Great Eastern",
+      "market": "SG",
+      "family": "general",
+      "listing_context": "research_discovery_not_individually_checked",
+      "new_business_status": "not_verified",
+      "eligibility_verification": "unverified",
+      "financial_terms_verification": "unverified",
+      "source_ids": [
+        "ge_retirement_segment"
+      ],
+      "engine_contracts": [
+        "F01",
+        "F11"
+      ],
+      "product_version": "discovery-2026-11-05"
+    }
+  ]
+}
