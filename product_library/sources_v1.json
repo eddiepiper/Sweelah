@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "checked_on": "2026-11-05",
+  "note": "Official public category pages are discovery evidence only. They do not establish full policy terms, plan availability, eligibility or underwriting.",
+  "sources": [
+    {
+      "id": "ocbc_deposits",
+      "url": "https://www.ocbc.com/personal-banking/deposits",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "directory product names only"
+    },
+    {
+      "id": "ocbc_360",
+      "url": "https://www.ocbc.com/personal-banking/deposits/360-savings-account",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "360 published salary and account thresholds; requires terms review"
+    },
+    {
+      "id": "ocbc_loans",
+      "url": "https://www.ocbc.com/personal-banking/loans",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "loans category discovery only"
+    },
+    {
+      "id": "ocbc_cards",
+      "url": "https://www.ocbc.com/personal-banking/cards/credit-card",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "current credit-card directory, selected published thresholds"
+    },
+    {
+      "id": "ocbc_cards_servicing",
+      "url": "https://www.ocbc.com/personal-banking/help-and-support/cards/general",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "servicing page, not new issuance"
+    },
+    {
+      "id": "ge_products",
+      "url": "https://www.greateasternlife.com/sg/en/personal-insurance/our-products.html",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "Great Eastern product directory, not a contract"
+    },
+    {
+      "id": "ge_home",
+      "url": "https://www.greateasternlife.com/sg/en/personal-insurance.html",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "homepage product highlights"
+    },
+    {
+      "id": "ge_retirement_segment",
+      "url": "https://www.greateasternlife.com/sg/en/personal-insurance/our-products/segments/wealth-retirement.html",
+      "checked_on": "2026-11-05",
+      "evidence_scope": "Great Eastern retirement and general insurance category discovery"
+    }
+  ]
+}
