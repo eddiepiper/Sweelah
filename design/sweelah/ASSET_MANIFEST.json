@@ -1,0 +1,218 @@
+{
+  "design_version": "SweeLah! v2, floating-clouds artwork update",
+  "generated_at": "2026-11-05",
+  "repo_root": "design/sweelah",
+  "source_repo": "eddiepiper/RetirePilot",
+  "items": [
+    {
+      "name": "SweeLah_Onboarding_Prototype.html",
+      "source_name": "SweeLah_Onboarding_Prototype.html",
+      "path": "design/sweelah/prototypes/SweeLah_Onboarding_Prototype.html",
+      "kind": "html",
+      "size": 50049,
+      "sha256": "1e861a2327adc9d9da460a40e20b844adc829f24376a67de59cc5548a9b4f136",
+      "git_sha": "243b08098506d6dc0f4d19abde9fba6d41cce400",
+      "description": "Original standalone interactive HTML prototype"
+    },
+    {
+      "name": "SweeLah_Main_Dashboard_Prototype.html",
+      "source_name": "SweeLah_Main_Dashboard_Prototype.html",
+      "path": "design/sweelah/prototypes/SweeLah_Main_Dashboard_Prototype.html",
+      "kind": "html",
+      "size": 50058,
+      "sha256": "7b9f4b60d2b47152c5dec92dbfb32259d301d2b681ca1b055985dc30676c843c",
+      "git_sha": "f8708e1ec99c91cff4dd765c8b0c96c7d01e11e5",
+      "description": "Original standalone interactive HTML prototype"
+    },
+    {
+      "name": "SweeLah_Onboarding_and_Dashboard_Prototype.html",
+      "source_name": "SweeLah_Onboarding_and_Dashboard_Prototype.html",
+      "path": "design/sweelah/prototypes/SweeLah_Onboarding_and_Dashboard_Prototype.html",
+      "kind": "html",
+      "size": 50049,
+      "sha256": "1e861a2327adc9d9da460a40e20b844adc829f24376a67de59cc5548a9b4f136",
+      "git_sha": "243b08098506d6dc0f4d19abde9fba6d41cce400",
+      "description": "Original standalone interactive HTML prototype"
+    },
+    {
+      "name": "SweeLah_Onboarding_With_Floating_Clouds.html",
+      "source_name": "SweeLah_Onboarding_With_Floating_Clouds.html",
+      "path": "design/sweelah/prototypes/SweeLah_Onboarding_With_Floating_Clouds.html",
+      "kind": "html",
+      "size": 2797521,
+      "sha256": "70eef4fb66373ae54f8a5f0b78494cf0a6756fe75dbab02d5ec7c52408266919",
+      "git_sha": "c6038dc771f03129454791f7acd745de99630ddb",
+      "description": "Original standalone interactive HTML prototype"
+    },
+    {
+      "name": "SweeLah_Main_Dashboard_With_Floating_Clouds.html",
+      "source_name": "SweeLah_Main_Dashboard_With_Floating_Clouds.html",
+      "path": "design/sweelah/prototypes/SweeLah_Main_Dashboard_With_Floating_Clouds.html",
+      "kind": "html",
+      "size": 2797770,
+      "sha256": "c56365f35e5c404f0a84a46170bac6430d8268c7f3d168642356d51cb2f76bf3",
+      "git_sha": "c48e6d7b01dcef3cdda242c0e0ee5aef2e32d038",
+      "description": "Original standalone interactive HTML prototype"
+    },
+    {
+      "name": "SweeLah_Onboarding_and_Dashboard_With_Floating_Clouds.html",
+      "source_name": "SweeLah_Onboarding_and_Dashboard_With_Floating_Clouds.html",
+      "path": "design/sweelah/prototypes/SweeLah_Onboarding_and_Dashboard_With_Floating_Clouds.html",
+      "kind": "html",
+      "size": 2797521,
+      "sha256": "70eef4fb66373ae54f8a5f0b78494cf0a6756fe75dbab02d5ec7c52408266919",
+      "git_sha": "c6038dc771f03129454791f7acd745de99630ddb",
+      "description": "Original standalone interactive HTML prototype"
+    },
+    {
+      "name": "SweeLah_Pinnacle_City_Illustration.png",
+      "source_name": "SweeLah_Pinnacle_City_Illustration.png",
+      "path": "design/sweelah/assets/illustrations/SweeLah_Pinnacle_City_Illustration.png",
+      "kind": "binary",
+      "size": 935906,
+      "sha256": "2831a67bc78e72b44a8e1ee069f3a8ee4025a9e3888216a16cea8bcb050c1e80",
+      "git_sha": "2a58d4600282334a81e112b0e1de5fb9cda89782",
+      "description": "The Pinnacle city-facing flat illustration"
+    },
+    {
+      "name": "SweeLah_Pinnacle_Park_Illustration.png",
+      "source_name": "SweeLah_Pinnacle_Park_Illustration.png",
+      "path": "design/sweelah/assets/illustrations/SweeLah_Pinnacle_Park_Illustration.png",
+      "kind": "binary",
+      "size": 965457,
+      "sha256": "ddd8ab9aaba3fd7cdb7e7a9c5df87ada26a99a6733cb9e7bec1e3865f13abb1a",
+      "git_sha": "5096a70a7082c37d64e5fb7c090f56ba06bff33e",
+      "description": "The Pinnacle park and family flat illustration"
+    },
+    {
+      "name": "SweeLah_Pinnacle_Floating_Clouds.webp",
+      "source_name": "SweeLah_Pinnacle_Floating_Clouds.webp",
+      "path": "design/sweelah/assets/animation/SweeLah_Pinnacle_Floating_Clouds.webp",
+      "kind": "binary",
+      "size": 1165464,
+      "sha256": "7bcbeedd2ee0b0a493f9ac3c16bca96e5ef2ce717f979b3381738751b2f8fc0b",
+      "git_sha": "a9598d1909e980169abdb8149358ae9a53adfc2f",
+      "description": "Animated floating clouds, suitable for web"
+    },
+    {
+      "name": "SweeLah_Pinnacle_Clouds_Still.png",
+      "source_name": "SweeLah_Pinnacle_Floating_Clouds.gif",
+      "path": "design/sweelah/assets/illustrations/SweeLah_Pinnacle_Clouds_Still.png",
+      "kind": "binary",
+      "size": 893741,
+      "sha256": "366259fa194283bac4ff1bf092c1ce186c24fa9412ac72400c8887bd8e7af765",
+      "git_sha": "f2adb4eaac1aa3dd0784546f267b845f08462939",
+      "description": "Still PNG originally uploaded with .gif extension"
+    },
+    {
+      "name": "SweeLah_Illustrated_Brand_Concept.png",
+      "source_name": "a_vibrant_colorful_illustrated_ui_concept_of_s.png",
+      "path": "design/sweelah/assets/reference/SweeLah_Illustrated_Brand_Concept.png",
+      "kind": "binary",
+      "size": 2080942,
+      "sha256": "b3a9f17d31c9b1a35cb1bbe60b44009a37dcabc29f6aff160cfd79a6ea43d3d8",
+      "git_sha": "8a4f64c619888cc659c6b8c971b98d6996c5365b",
+      "description": "SweeLah brand and mobile illustration concept"
+    },
+    {
+      "name": "SweeLah_Pinnacle_Split_Illustrations.png",
+      "source_name": "a_wide_split_panel_illustration_showing_the_two_p.png",
+      "path": "design/sweelah/assets/reference/SweeLah_Pinnacle_Split_Illustrations.png",
+      "kind": "binary",
+      "size": 2098487,
+      "sha256": "80779d50f59a6e163669bd63aef57ca5b112a1a675c3e84e34c79928d1f84ccf",
+      "git_sha": "bb0adb39d05aaafff320c7b709ba74f4c4187641",
+      "description": "Original two-panel flat illustration design"
+    },
+    {
+      "name": "SweeLah_Merry_Go_Round.gif",
+      "source_name": "playground_merry_go_round_family_spin.png",
+      "path": "design/sweelah/assets/animation/SweeLah_Merry_Go_Round.gif",
+      "kind": "binary",
+      "size": 913158,
+      "sha256": "122d0004e2aba895b8a9170e8026352493cf84ef08a89e5687c5a818f3c3f04f",
+      "git_sha": "f6cbb3a0ee8b9e92d0ff8e7574a0d5aad8315f4b",
+      "description": "12-frame animated family merry-go-round GIF"
+    },
+    {
+      "name": "SweeLah_Onboarding_Preview.png",
+      "source_name": "SweeLah_Onboarding_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Onboarding_Preview.png",
+      "kind": "binary",
+      "size": 286695,
+      "sha256": "87b7d4503a69fdc88f5772e7f6401dcf62edf239f70320c09db15b182a72ea7f",
+      "git_sha": "6b721bb407277cc763ed14562acebb25cd2bc5d6",
+      "description": "Original onboarding desktop preview"
+    },
+    {
+      "name": "SweeLah_Onboarding_Mobile_Preview.png",
+      "source_name": "SweeLah_Onboarding_Mobile_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Onboarding_Mobile_Preview.png",
+      "kind": "binary",
+      "size": 65377,
+      "sha256": "661302136a5cc69b19f5f3af99b8488935252a63b0aa091e99f5bfb5c12268b4",
+      "git_sha": "b0dc30753429a4a9bc292b68519524c0271cdce6",
+      "description": "Original onboarding mobile preview"
+    },
+    {
+      "name": "SweeLah_Main_Dashboard_Preview.png",
+      "source_name": "SweeLah_Main_Dashboard_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Main_Dashboard_Preview.png",
+      "kind": "binary",
+      "size": 291394,
+      "sha256": "fa9de0399ff15e8fac68c74b8d594c5e4a42e4d31a339728ea72979986f5db41",
+      "git_sha": "470a438bce1fb9e024b23ee21222dfa942827431",
+      "description": "Original dashboard desktop preview"
+    },
+    {
+      "name": "SweeLah_Main_Dashboard_Mobile_Preview.png",
+      "source_name": "SweeLah_Main_Dashboard_Mobile_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Main_Dashboard_Mobile_Preview.png",
+      "kind": "binary",
+      "size": 71780,
+      "sha256": "239cecc38c8db75830479f06934b99c5f081e8eadfe6d676a7ae0ec20c29fc1b",
+      "git_sha": "7a7d9cc68dace8598b13bbffa45d93c7e0e49833",
+      "description": "Original dashboard mobile preview"
+    },
+    {
+      "name": "SweeLah_Life_Line_Preview.png",
+      "source_name": "SweeLah_Life_Line_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Life_Line_Preview.png",
+      "kind": "binary",
+      "size": 275110,
+      "sha256": "ef17c1073b8bf89f95b58c1c28280bf1fdd372106d35655fb8a68d6eb2df077e",
+      "git_sha": "d3b94946d65cd7c605c2599be201a525e9014104",
+      "description": "Original Life Line preview"
+    },
+    {
+      "name": "SweeLah_Floating_Clouds_Dashboard_Preview.png",
+      "source_name": "SweeLah_Floating_Clouds_Dashboard_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Floating_Clouds_Dashboard_Preview.png",
+      "kind": "binary",
+      "size": 657550,
+      "sha256": "f4ebffd405fee1beda9d28d8940dcdf16d03c9a74f792d2f5a7a53c24e72819b",
+      "git_sha": "3f95d558cb9e228ffa5020a9af67d78d54884e95",
+      "description": "Pinnacle dashboard desktop preview"
+    },
+    {
+      "name": "SweeLah_Floating_Clouds_Onboarding_Preview.png",
+      "source_name": "SweeLah_Floating_Clouds_Onboarding_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Floating_Clouds_Onboarding_Preview.png",
+      "kind": "binary",
+      "size": 557031,
+      "sha256": "d4099a7182bd22dd9da63c15fecea8a146a0f3b85ee1798c31cd778d2b05a525",
+      "git_sha": "24f5c54feab7a383b413bbf328cc7ebddc260594",
+      "description": "Pinnacle onboarding preview"
+    },
+    {
+      "name": "SweeLah_Floating_Clouds_Mobile_Preview.png",
+      "source_name": "SweeLah_Floating_Clouds_Mobile_Preview.png",
+      "path": "design/sweelah/previews/SweeLah_Floating_Clouds_Mobile_Preview.png",
+      "kind": "binary",
+      "size": 56102,
+      "sha256": "f65210459cc8f2c19c4d5acc07d04639107b4a699b093cc6fa8fe4d3f3268322",
+      "git_sha": "bd5a730af5f8ade8eaf65fe470600381753a087b",
+      "description": "Pinnacle mobile preview"
+    }
+  ]
+}
