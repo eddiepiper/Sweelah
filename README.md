@@ -66,3 +66,19 @@ See [Release Gates](docs/RELEASE_GATES.md) and [the pre-push gate assessment](do
 The consumer-facing **SweeLah!** design system, six interactive onboarding/dashboard HTML prototypes, Singapore-inspired illustrations, animated assets, and preview screenshots are in [design/sweelah](design/sweelah/README.md). Start with the [latest full journey](design/sweelah/prototypes/SweeLah_Onboarding_and_Dashboard_With_Floating_Clouds.html).
 
 The design is a synthetic-data UI concept and does not alter the RetirePilot financial model, production data controls, or Phase 9 release status.
+
+## SweeLah product intelligence library (new: 5 November 2026)
+
+The [SweeLah product-library implementation](docs/SWEELAH_PRODUCT_LIBRARY.md) adds an **unapproved discovery library of 99 Singapore products** (49 OCBC accounts/loans/cards and 50 Great Eastern insurance entries), supported by dated official source links. It does **not** claim complete current product eligibility, pricing, premium, coverage or new-business availability.
+
+| Component | Location | Actual status |
+|---|---|---|
+| Versioned product catalogue | [products_v1.json](product_library/products_v1.json) | 99 research/discovery records; all detailed criteria unverified |
+| Sources and review dates | [sources_v1.json](product_library/sources_v1.json) | Official public directories; product policy terms require further checking |
+| Candidate eligibility rules | [rules_v1.json](product_library/rules_v1.json) | Four unapproved examples; **never executable by default** |
+| Deterministic evaluation / holdings bridge | [product_library.py](retirepilot/product_library.py) | Implemented fail-closed library validation and limited in-memory contract input adapter; not wired into financial forecasts |
+| Synthetic regression tests | [test_product_library.py](tests/test_product_library.py) | Included in the existing `pytest -q` CI job |
+
+Use `python -m pytest -q tests/test_product_library.py` to run the new module tests. For synthetic-only inspection, `from retirepilot.product_library import load_registry, evaluate_product`.
+
+**Boundary:** products, customer holdings, deterministic eligibility and financial projections are separate layers. A directory listing is not an approved underwriting rule. Actual insured benefits must come from a customer's verified policy terms; unverified insurance claims are never forecast as cash inflows. CPF and retirement model limitations, privacy controls and **Phase 9 external-pilot NO-GO** remain unchanged. There are still 18 existing financial-engine *contracts*, not 18 independently validated complete engines.
