@@ -1,0 +1,93 @@
+{
+  "version": "1.0.0-discovery",
+  "default_decision": "requires_review",
+  "policy": "No rules in this seed are approved. Product directory facts do not constitute full eligibility, suitability, underwriting, or approval.",
+  "rule_sets": [
+    {
+      "id": "ocbc.360.account.age.proposal.v1",
+      "product_id": "ocbc.account.360-account",
+      "status": "source_checked",
+      "coverage": "published_thresholds_only",
+      "effective_from": "2026-11-05",
+      "effective_to": null,
+      "source_ids": [
+        "ocbc_360"
+      ],
+      "conditions": [
+        {
+          "field": "age_years",
+          "op": "gte",
+          "value": 18
+        }
+      ],
+      "limitations": "Official marketing says 'above 18'; exact boundary and residency/application conditions require signed-off T&Cs. Not executable."
+    },
+    {
+      "id": "ocbc.nxt.sg.income.proposal.v1",
+      "product_id": "ocbc.credit_card.ocbc-nxt-credit-card",
+      "status": "source_checked",
+      "coverage": "published_thresholds_only",
+      "effective_from": "2026-11-05",
+      "effective_to": null,
+      "source_ids": [
+        "ocbc_cards"
+      ],
+      "conditions": [
+        {
+          "field": "age_years",
+          "op": "gte",
+          "value": 21
+        },
+        {
+          "field": "residency",
+          "op": "eq",
+          "value": "SG"
+        },
+        {
+          "field": "annual_income_sgd",
+          "op": "gte",
+          "value": 30000
+        }
+      ],
+      "limitations": "Illustrative SG adult threshold only; not PR, foreigner, senior, credit assessment or underwriting. Not executable."
+    },
+    {
+      "id": "ge.prime-rewards.min-funding.proposal.v1",
+      "product_id": "ge.retirement_income.great-prime-rewards-3",
+      "status": "source_checked",
+      "coverage": "published_thresholds_only",
+      "effective_from": "2026-11-05",
+      "effective_to": null,
+      "source_ids": [
+        "ge_products"
+      ],
+      "conditions": [
+        {
+          "field": "single_premium_sgd",
+          "op": "gte",
+          "value": 10000
+        }
+      ],
+      "limitations": "Public marketing minimum is not complete insurance eligibility; no issue age, occupation or suitability evaluation. Not executable."
+    },
+    {
+      "id": "ge.gogreat-dps.proposal.v1",
+      "product_id": "ge.life.gogreat-term-life",
+      "status": "candidate",
+      "coverage": "published_thresholds_only",
+      "effective_from": "2026-11-05",
+      "effective_to": null,
+      "source_ids": [
+        "ge_products"
+      ],
+      "conditions": [
+        {
+          "field": "dps_policyholder",
+          "op": "eq",
+          "value": true
+        }
+      ],
+      "limitations": "Verify DPS dependency against full product brochure and distribution rules. Not executable."
+    }
+  ]
+}
