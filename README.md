@@ -54,3 +54,10 @@ See [Release Gates](docs/RELEASE_GATES.md) and [the pre-push gate assessment](do
 - Real consumer research: **0/48 completed**.
 
 **Phase 9 remains NO-GO.** Merging into `main` is version-control housekeeping for a research prototype, not a deployment or release approval.
+
+
+## SweeLah! visual prototypes
+
+The consumer-facing **SweeLah!** design system, six interactive onboarding/dashboard HTML prototypes, Singapore-inspired illustrations, animated assets, and preview screenshots are in [design/sweelah](design/sweelah/README.md). Start with the [latest full journey](design/sweelah/prototypes/SweeLah_Onboarding_and_Dashboard_With_Floating_Clouds.html).
+
+The design is a synthetic-data UI concept and does not alter the RetirePilot financial model, production data controls, or Phase 9 release status.

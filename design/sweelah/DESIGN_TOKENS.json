@@ -1,0 +1,34 @@
+{
+  "design_system": "SweeLah! Singapore Playful Neo-Retro",
+  "version": "v2 preserved; Pinnacle floating-clouds artwork variant",
+  "palette": {
+    "ink": "#253646",
+    "coral": "#FA6249",
+    "sunshine": "#FFD268",
+    "mint": "#C2EEE2",
+    "cream": "#FFF8EB",
+    "pastel_lavender": "#E7DEFA",
+    "green": "#1C806E"
+  },
+  "illustration": {
+    "technique": "flat geometric vector-look, thick navy outlines, warm pastels",
+    "landmarks": [
+      "Singapore heritage shophouses",
+      "HDB neighbourhood",
+      "Pinnacle@Duxton"
+    ],
+    "mascot": "Swee the otter"
+  },
+  "motion": {
+    "clouds": "animated WebP; decorative gentle drift",
+    "merry_go_round": "12-frame animated GIF, separate playground asset",
+    "reduced_motion": "provide PNG still fallback"
+  },
+  "navigation": [
+    "Home",
+    "Life Line",
+    "Ask Swee",
+    "My Moves"
+  ],
+  "content_safety": "Synthetic figures only; CPF LIFE values require official member estimate provenance"
+}
