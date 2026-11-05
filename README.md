@@ -25,10 +25,15 @@ Product-owner decisions **1A–7A** are recorded in [the decision register](docs
 | [data/](data/) | Synthetic-only research fixtures and 46 scenario contracts |
 | [docs_release/](docs_release/) | **Original PSD/TSD v2.7 in Word and PDF**, Master Library v1.7, validation reports, evidence ZIP, document index and checksums |
 | [docs/](docs/) | Approved decisions, financial/research audits, release-gate tracker and project governance |
+| [docs/FINANCIAL_ENGINE_AGE_COVERAGE.md](docs/FINANCIAL_ENGINE_AGE_COVERAGE.md) | F01–F18 age subject, effective-date, evidence and boundary-test requirements for Atlas |
 | [scripts/verify_release_documents.py](scripts/verify_release_documents.py) | Reconciles nine release artifacts against exact SHA-256, size and file-format checks |
 | [.github/workflows/ci.yml](.github/workflows/ci.yml) | Source tests, 96-archetype contracts, API smoke checks and release-document integrity |
 
 [Browse the release document index](docs_release/DOCUMENT_INDEX_v2.7.md).
+
+## Financial-engine implementation status
+
+The [18 F01–F18 financial-engine contracts](research/retirepilot_2026_11_04/financial_engine_contracts_18.json) are approved **requirements**, not 18 completed calculations. Existing code provides synthetic cash-flow/projection logic and bounded CPF, tax and housing references. In particular, CPF contribution and interest references are not a lifetime CPF ledger, and personal CPF LIFE payouts must come from a member-provided official estimate. The [age and effective-date coverage matrix](docs/FINANCIAL_ENGINE_AGE_COVERAGE.md) identifies the subject person, trigger date, source evidence, current implementation boundary and required tests for every F01–F18 item. Atlas must use the [implementation handover](research/retirepilot_2026_11_04/ATLAS_HANDOFF_BUSINESS_RULES_v1.8.md) and keep specified, implemented, internally tested and independently verified states separate.
 
 ## Run the synthetic test baseline
 

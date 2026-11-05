@@ -39,3 +39,13 @@
 - **Baseline:** Existing v2.7 code on main; any separate v2.8 code must be independently reviewed and committed on its own engineering PR.
 
 **Approved for requirements handoff to Atlas, not certified as financial or consumer-tested.**
+
+## Implementation addendum — 5 November 2026
+
+The product owner requested explicit age and effective-date handling for every F01–F18 contract. Atlas must use the [F01–F18 age and effective-date coverage matrix](../../docs/FINANCIAL_ENGINE_AGE_COVERAGE.md) as the implementation and acceptance checklist. This addendum does not revise the 4 November approved decisions or claim that the engines have been built.
+
+For each engine, record **whose age** is relevant, the exact date on which age is assessed, the rule's effective interval, the before/on/after boundary, and the source and evidence date. Use the rule-specific convention: employee and platform CPF age bands change in the month after the birthday, the supported CPF RA/SA transition occurs on the 55th birthday, and the current 2026 self-employed MediSave reference uses age at 1 January of the work year. Do not apply a generic annual age increment to every engine.
+
+Before marking an engine implemented, supply an owner-specific dated input schema, calculation or explicit refusal, provenance, independent numerical golden cases, and tests at each relevant boundary. The checked-in `tests/test_age_boundaries.py` covers only existing bounded reference paths. Publish F01–F18 and S001–S046 status separately as specified, implemented, internally tested, independently verified or blocked. Keep personal CPF LIFE amounts member-supplied, unsupported statutory years labelled as assumptions or refused, and Phase 9 **NO-GO** until the independent release gates pass.
+
+Build sequence: establish F01's dated person/ownership/provenance model; reconcile F02 cash flow and the supported F03–F06 CPF references against official golden cases; integrate member-provided F07 payouts and F14/F16 retirement horizons only after ledger conservation and missing-data refusals pass. Complete F08 housing and the five priority scenarios as separate, reviewed events. Do not promote a bounded reference into the forecast solely because its isolated test passes.
