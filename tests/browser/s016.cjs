@@ -18,7 +18,7 @@ const monthsLabel = 'For how many months?';
   }
   try {
     if (mode === 'probe') { console.log('Chromium ' + browser.version()); return; }
-    const page = await browser.newPage({viewport:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
+    const page = await browser.newPage({viewport:mode==='mobile375'?{width:375,height:844}:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
     const errors=[];
     page.on('pageerror', e=>errors.push(e.message));
     await page.route('**/*', route => new URL(route.request().url()).origin===base ? route.continue() : route.abort());
@@ -99,6 +99,45 @@ const monthsLabel = 'For how many months?';
       await submit.click();
       await page.getByText("We couldn't work this out just now. Your answers are kept. Please try again.",{exact:true}).waitFor();
       assert.equal(await cost.inputValue(),'1200');
+    } else if (mode==='precision'||mode==='mobile375') {
+      const geometry=async()=>{
+        const overflow=await page.evaluate(()=>[...document.querySelectorAll('body *')].filter(el=>el.getClientRects().length&&el.clientWidth>0).filter(el=>el.scrollWidth>el.clientWidth||el.scrollWidth>innerWidth).map(el=>({tag:el.tagName,id:el.id,class:el.className,client:el.clientWidth,scroll:el.scrollWidth})));
+        assert.deepEqual(overflow,[]);
+        const status=page.getByText('Preview status:',{exact:false});
+        if (await status.isVisible()) {
+          const box=await status.boundingBox();assert.ok(box.x+box.width<=375);
+        }
+      };
+      if(mode==='mobile375') {await fill('1200','12');await preview();await geometry();await page.getByRole('button',{name:'Change my numbers',exact:true}).click();}
+      let precisionRequests=0;
+      const countPreview=request=>{if(request.url().endsWith('/api/scenarios/S016/preview')) precisionRequests++;};
+      page.on('request',countPreview);
+      for (const invalid of ['1.500','0.0001','1e-3','1.005']) {
+        await fill(invalid,'12');await submit.click();
+        await page.locator('#care-errors:not([hidden])').waitFor();await focused('#care-errors');
+        assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount with up to 2 decimal places, for example 1200.50.');
+        assert.equal(await cost.inputValue(),invalid);
+        assert.equal(await page.locator('#care-result').isVisible(),false);
+      }
+      assert.equal(precisionRequests,0,'invalid precision must not reach the API');
+      page.off('request',countPreview);
+      if(mode==='mobile375') {await geometry();await page.screenshot({path:path.join(output,'375-errors.png'),fullPage:true});}
+      await page.route('**/api/scenarios/S016/preview',route=>{
+        const body=route.request().postDataJSON();body.params.additional_care_cost_monthly='1.005';
+        return route.continue({postData:JSON.stringify(body)});
+      });
+      await fill('1.50','12');await submit.click();
+      await page.locator('#care-errors:not([hidden])').waitFor();
+      assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount with up to 2 decimal places, for example 1200.50.');
+      assert.equal(await page.locator('#care-result').isVisible(),false);
+      await page.unroute('**/api/scenarios/S016/preview');
+      for(const [amount,monthly,total] of [['1.50','S$1.50','S$18.00'],['1,200.5','S$1,200.50','S$14,406.00'],['1e2','S$100.00','S$1,200.00']]) {
+        await fill(amount,'12');await preview();
+        assert.ok((await page.locator('#care-result').innerText()).includes(`An extra ${monthly} a month for 12 months adds up to ${total}.`));
+        if(mode==='mobile375') await geometry();
+        if(mode==='mobile375'&&amount==='1.50') await page.screenshot({path:path.join(output,'375-success.png'),fullPage:true});
+        await page.getByRole('button',{name:'Change my numbers',exact:true}).click();
+      }
     } else if (mode==='accessibility') {
       const primary=page.getByRole('button',{name:'Preview care cost',exact:true});
       for (const target of [cost,months,primary,page.getByRole('button',{name:'Talk to Swee',exact:true})]) {

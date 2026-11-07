@@ -2,14 +2,14 @@
 Run: uvicorn retirepilot.api:app --host 127.0.0.1 --port 8766
 """
 import json
-from decimal import DecimalException
+from decimal import Decimal, DecimalException
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from .priority_scenarios_v27 import preview_priority_scenario
 from .service import evaluate
 from .assistant import answer
-from .core import ValidationError
+from .core import ValidationError, dec
 from .llm_adapter import explain_synthetic,ModelDisabledError
 from .financial_references_v24 import resident_tax_reference,static_cpf_interest_reference,housing_sale_reference,employee_cpf_schedule_2026_27
 from .planner_session_v24 import guided_reply
@@ -21,10 +21,10 @@ def require_synthetic_fixture(profile):
     if not isinstance(profile,dict) or not str(profile.get('id','')).startswith('RP-SYNTH-'):
         raise HTTPException(403,'Only synthetic fixture IDs accepted; never submit actual financial records')
 
-async def body_json(req):
+async def body_json(req, *, parse_float=float):
     b=await req.body()
     if len(b)>250_000:raise HTTPException(413,'Prototype payload too large')
-    try:return json.loads(b)
+    try:return json.loads(b, parse_float=parse_float)
     except (ValueError,UnicodeDecodeError):raise HTTPException(400,'Invalid JSON')
 
 @app.get('/',response_class=HTMLResponse)
@@ -101,15 +101,40 @@ def sweelah_care_setup():
     return (ROOT / 'retirepilot/s016.html').read_text(encoding='utf-8')
 
 
+S016_PRECISION_ERROR = 'Enter an amount with up to 2 decimal places, for example 1200.50.'
+
+
+def validate_s016_cost(value):
+    """Validate exact decimal scale before the unchanged preview arithmetic.
+
+    Exponents are accepted if their expanded scale is at most two places.
+    Explicit trailing fractional zeros count, matching Decimal's stored scale.
+    """
+    if isinstance(value, str):
+        value = value.strip()
+        if value[:2].upper() == 'S$':
+            value = value[2:].strip()
+        value = value.replace(',', '')
+    amount = dec(value, 'additional_care_cost_monthly')
+    if amount.as_tuple().exponent < -2:
+        raise ValidationError(S016_PRECISION_ERROR)
+    return str(amount)
+
+
 @app.post('/api/scenarios/S016/preview')
 async def parent_care_preview(req: Request):
     """Synthetic, stateless cost preview. Never posts to the household forecast."""
-    data = await body_json(req)
+    try:
+        data = await body_json(req, parse_float=Decimal)
+    except DecimalException as exc:
+        raise HTTPException(422, 'numeric input cannot be represented') from exc
     if not isinstance(data, dict):
         raise HTTPException(422, 'request must be an object')
     require_synthetic_fixture({'id': data.get('synthetic_profile_id', '')})
     params = data.get('params')
     try:
+        if isinstance(params, dict) and 'additional_care_cost_monthly' in params:
+            params = {**params, 'additional_care_cost_monthly': validate_s016_cost(params['additional_care_cost_monthly'])}
         result = preview_priority_scenario('S016', params)
     except (ValueError, TypeError, KeyError) as exc:
         detail = str(exc)

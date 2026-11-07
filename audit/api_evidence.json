@@ -1,6 +1,6 @@
 {
   "result": "PASS",
-  "total": 18,
+  "total": 20,
   "checks": [
     {
       "case": "sample GET",
@@ -108,6 +108,18 @@
       "case": "S016 real profile refused",
       "status": 403,
       "expected": 403,
+      "pass": true
+    },
+    {
+      "case": "S016 subcent cost refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 cents displayed consistently",
+      "status": 200,
+      "expected": 200,
       "pass": true
     }
   ]

@@ -113,3 +113,50 @@ def test_registry_and_ui_remain_preview_only():
     assert response.status_code == 200
     assert 'Parent-care cost preview' in response.text
     assert 'preview' in (ROOT / 'retirepilot/S016_README.md').read_text().lower()
+
+
+PRECISION_ERROR = 'Enter an amount with up to 2 decimal places, for example 1200.50.'
+
+
+@pytest.mark.parametrize('cost', ['1.005', 1.005, '0.0001', '1.500', '1e-3', '1.005e0'])
+def test_api_subcent_cost_refused_before_preview(monkeypatch, cost):
+    def forbidden_preview(*args):
+        pytest.fail('precision-invalid input reached preview_priority_scenario')
+    monkeypatch.setattr('retirepilot.api.preview_priority_scenario', forbidden_preview)
+    response = CLIENT.post(ROUTE, json=payload(dict(VALID, additional_care_cost_monthly=cost)))
+    assert response.status_code == 422
+    assert response.json() == {'detail': PRECISION_ERROR}
+
+
+@pytest.mark.parametrize('cost,monthly,total', [
+    ('1.50', '1.50', '18.00'), (1.5, '1.50', '18.00'),
+    ('1,200.5', '1200.50', '14406.00'), ('S$1,200.5', '1200.50', '14406.00'), ('1e2', '100.00', '1200.00'),
+    ('1e-2', '0.01', '0.12'), ('1.005e2', '100.50', '1206.00'),
+])
+def test_api_cents_and_exponent_forms(cost, monthly, total):
+    response = CLIENT.post(ROUTE, json=payload(dict(VALID, additional_care_cost_monthly=cost)))
+    assert response.status_code == 200
+    assert response.json()['extra_monthly_cost'] == monthly
+    assert response.json()['period_cash_cost'] == total
+
+
+def test_api_json_decimal_precision_is_not_lost_to_float():
+    response = CLIENT.post(ROUTE, content='{"synthetic_profile_id":"RP-SYNTH-S016","params":{"additional_care_cost_monthly":1.0000000000000001,"months":12}}')
+    assert response.status_code == 422
+    assert response.json() == {'detail': PRECISION_ERROR}
+
+
+@pytest.mark.parametrize('cost,accepted', [('1.005', False), ('1.50', True), ('1e2', True), ('1e-3', False)])
+def test_endpoint_cost_precision_validator(cost, accepted):
+    from retirepilot.api import validate_s016_cost
+    if accepted:
+        assert validate_s016_cost(cost)
+    else:
+        with pytest.raises(ValidationError, match='up to 2 decimal places'):
+            validate_s016_cost(cost)
+
+
+def test_api_unrepresentable_json_exponent_refused_not_500():
+    response = CLIENT.post(ROUTE, content='{"synthetic_profile_id":"RP-SYNTH-S016","params":{"additional_care_cost_monthly":1e99999999999999999999999,"months":12}}')
+    assert response.status_code == 422
+    assert set(response.json()) == {'detail'}

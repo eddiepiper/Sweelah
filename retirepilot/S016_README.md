@@ -31,9 +31,21 @@ and reduced-motion support rather than the prototype's small/light text.
 {"synthetic_profile_id":"RP-SYNTH-S016","params":{"additional_care_cost_monthly":"1200","months":12}}
 ```
 
-The only calculation inputs are a positive cost and integer months 1–120. Neither
-field defaults or prefills. Positive decimal costs remain accepted; the rejection
-of decimals applies to **months only**. The client strips leading `S$` and commas.
+The only calculation inputs are a positive cost with at most two decimal places
+and integer months 1–120. Neither
+field defaults or prefills. Fractional months are always refused; positive decimal
+costs are accepted up to two places. The UI and endpoint strip leading `S$` and
+commas (for example `1,200.5`).
+Sub-cent precision is refused before the preview call, with HTTP 422 and no result:
+“Enter an amount with up to 2 decimal places, for example 1200.50.”
+Precision is checked without float rounding: JSON fractional tokens are parsed as
+Decimal for this endpoint, and the UI counts fractional digits using the input
+string and an integer exponent. Other endpoints retain their default JSON parser.
+Exponent forms are accepted when their expanded Decimal scale has at most two
+fractional places: `1e2` = 100, `1e-2` = 0.01, `1.005e2` = 100.50; `1e-3` is refused.
+Explicit trailing fractional zeros count: `1.50` is accepted, `1.500` is refused.
+`1.005` (string or JSON number) is refused, while `1.50` × 12 displays S$18.00.
+The existing preview arithmetic is unchanged.
 The synthetic fixture identifier is a local-development guard, not authentication
 or permission to process real financial records. Do not expose this server publicly.
 
