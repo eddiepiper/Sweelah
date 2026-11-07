@@ -1,6 +1,6 @@
 {
   "result": "PASS",
-  "total": 13,
+  "total": 18,
   "checks": [
     {
       "case": "sample GET",
@@ -78,6 +78,36 @@
       "case": "synthetic progressive guide",
       "status": 200,
       "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "S016 synthetic cost preview",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "S016 missing cost refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 zero cost refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 boolean duration refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 real profile refused",
+      "status": 403,
+      "expected": 403,
       "pass": true
     }
   ]

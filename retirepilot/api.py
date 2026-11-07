@@ -2,9 +2,11 @@
 Run: uvicorn retirepilot.api:app --host 127.0.0.1 --port 8766
 """
 import json
+from decimal import DecimalException
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
+from .priority_scenarios_v27 import preview_priority_scenario
 from .service import evaluate
 from .assistant import answer
 from .core import ValidationError
@@ -91,3 +93,41 @@ def release_controls():
             'product_advice':'not_permitted',
             'external_consumer_pilot':'NO_GO',
             'consumer_research':'assumed_pass_for_planning_only; real 48 person study remains required'}
+
+
+@app.get('/sweelah', response_class=HTMLResponse)
+def sweelah_care_setup():
+    """Wired care-setup screen; preserved design prototypes remain untouched."""
+    return (ROOT / 'retirepilot/s016.html').read_text(encoding='utf-8')
+
+
+@app.post('/api/scenarios/S016/preview')
+async def parent_care_preview(req: Request):
+    """Synthetic, stateless cost preview. Never posts to the household forecast."""
+    data = await body_json(req)
+    if not isinstance(data, dict):
+        raise HTTPException(422, 'request must be an object')
+    require_synthetic_fixture({'id': data.get('synthetic_profile_id', '')})
+    params = data.get('params')
+    try:
+        result = preview_priority_scenario('S016', params)
+    except (ValueError, TypeError, KeyError) as exc:
+        detail = str(exc)
+        if detail == 'additional_care_cost_monthly: nonnegative amount required':
+            detail = 'additional_care_cost_monthly must be more than 0'
+        raise HTTPException(422, detail) from exc
+    except DecimalException as exc:
+        raise HTTPException(422, 'additional_care_cost_monthly: amount cannot be represented') from exc
+    return {
+        **result,
+        'months': params['months'],
+        'synthetic_only': True,
+        'label': 'Synthetic-only illustrative parent-care cost preview; not part of the plan',
+        'limitations': [
+            'No assumed subsidy or grant.',
+            'No assumed insurance payout, including CareShield LIFE, or MediSave payment.',
+            'No assumed caregiver wage loss or care leave.',
+            'No assumed entitlement or benefit eligibility.',
+            'Flat monthly amount with no inflation; general information, not financial advice.',
+        ],
+    }

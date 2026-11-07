@@ -35,3 +35,6 @@ recordings/
 .DS_Store
 .idea/
 .vscode/
+
+# Local synthetic S016 browser evidence
+/test-artifacts/s016/
