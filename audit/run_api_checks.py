@@ -45,6 +45,20 @@ try:
     call('real profile reference rejected','/api/reference',{'synthetic_profile_id':'REAL-USER','kind':'resident_tax','params':{}},403)
     guide=call('synthetic progressive guide','/api/guide',{'profile':p,'question':'What should I review next?'})
     assert guide['financial_actions_executed'] is False
+    care_request={'synthetic_profile_id':'RP-SYNTH-S016','params':{'additional_care_cost_monthly':'1200','months':12}}
+    care=call('S016 synthetic cost preview','/api/scenarios/S016/preview',care_request)
+    assert care['extra_monthly_cost']=='1200.00' and care['period_cash_cost']=='14400.00' and care['months']==12
+    assert care['synthetic_only'] is True and care['may_post_to_household_projection'] is False
+    assert care['status']=='LIMITED_RECURRING_COST_PREVIEW_ONLY'
+    assert all(word in ' '.join(care['limitations']).lower() for word in ['subsidy','insurance','wage loss','entitlement'])
+    call('S016 missing cost refused','/api/scenarios/S016/preview',{'synthetic_profile_id':'RP-SYNTH-S016','params':{'months':12}},422)
+    call('S016 zero cost refused','/api/scenarios/S016/preview',{'synthetic_profile_id':'RP-SYNTH-S016','params':{'additional_care_cost_monthly':0,'months':12}},422)
+    call('S016 boolean duration refused','/api/scenarios/S016/preview',{'synthetic_profile_id':'RP-SYNTH-S016','params':{'additional_care_cost_monthly':'1200','months':True}},422)
+    call('S016 real profile refused','/api/scenarios/S016/preview',{'synthetic_profile_id':'REAL-USER','params':care_request['params']},403)
+    subcent=call('S016 subcent cost refused','/api/scenarios/S016/preview',{'synthetic_profile_id':'RP-SYNTH-S016','params':{'additional_care_cost_monthly':'1.005','months':12}},422)
+    assert subcent=={'detail':'Enter an amount with up to 2 decimal places, for example 1200.50.'}
+    cents=call('S016 cents displayed consistently','/api/scenarios/S016/preview',{'synthetic_profile_id':'RP-SYNTH-S016','params':{'additional_care_cost_monthly':'1.50','months':12}})
+    assert cents['extra_monthly_cost']=='1.50' and cents['period_cash_cost']=='18.00'
     print(json.dumps({'result':'PASS','total':len(results),'checks':results},indent=2))
     (root/'audit/api_evidence.json').write_text(json.dumps({'result':'PASS','total':len(results),'checks':results},indent=2))
 finally:
