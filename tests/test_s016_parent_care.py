@@ -125,7 +125,9 @@ def test_api_subcent_cost_refused_before_preview(monkeypatch, cost):
     monkeypatch.setattr('retirepilot.api.preview_priority_scenario', forbidden_preview)
     response = CLIENT.post(ROUTE, json=payload(dict(VALID, additional_care_cost_monthly=cost)))
     assert response.status_code == 422
-    assert response.json() == {'detail': PRECISION_ERROR}
+    assert response.json()['detail'] == PRECISION_ERROR
+    assert response.json()['field'] == 'additional_care_cost_monthly'
+    assert response.json()['code'] == 'precision'
 
 
 @pytest.mark.parametrize('cost,monthly,total', [
@@ -143,7 +145,9 @@ def test_api_cents_and_exponent_forms(cost, monthly, total):
 def test_api_json_decimal_precision_is_not_lost_to_float():
     response = CLIENT.post(ROUTE, content='{"synthetic_profile_id":"RP-SYNTH-S016","params":{"additional_care_cost_monthly":1.0000000000000001,"months":12}}')
     assert response.status_code == 422
-    assert response.json() == {'detail': PRECISION_ERROR}
+    assert response.json()['detail'] == PRECISION_ERROR
+    assert response.json()['field'] == 'additional_care_cost_monthly'
+    assert response.json()['code'] == 'precision'
 
 
 @pytest.mark.parametrize('cost,accepted', [('1.005', False), ('1.50', True), ('1e2', True), ('1e-3', False)])
@@ -160,3 +164,71 @@ def test_api_unrepresentable_json_exponent_refused_not_500():
     response = CLIENT.post(ROUTE, content='{"synthetic_profile_id":"RP-SYNTH-S016","params":{"additional_care_cost_monthly":1e99999999999999999999999,"months":12}}')
     assert response.status_code == 422
     assert set(response.json()) == {'detail'}
+
+
+# CXUI-001-FIX: endpoint-only bounds and structured refusals.
+@pytest.mark.parametrize('cost', ['100000.01', '1e12', '999999999999', '1e400', '1e99999'])
+def test_cxui_d07_amount_cap(cost):
+    response = CLIENT.post(ROUTE, json=payload(dict(VALID, additional_care_cost_monthly=cost)))
+    assert response.status_code == 422
+    assert response.json() == {
+        'detail': 'Enter an amount no more than S$100,000.',
+        'field': 'additional_care_cost_monthly', 'code': 'too_large',
+    }
+
+
+@pytest.mark.parametrize('cost', ['Infinity', '-Infinity', 'NaN', 'sNaN', 'inf', True, None])
+def test_cxui_d07_nonfinite_cost(cost):
+    response = CLIENT.post(ROUTE, json=payload(dict(VALID, additional_care_cost_monthly=cost)))
+    assert response.status_code == 422
+    assert response.json()['field'] == 'additional_care_cost_monthly'
+    assert response.json()['code'] == 'numeric'
+
+
+@pytest.mark.parametrize('months', [121, '1e400', 'Infinity', 'NaN', 1e100, True])
+def test_cxui_d07_months_cap(months):
+    response = CLIENT.post(ROUTE, json=payload(dict(VALID, months=months)))
+    assert response.status_code == 422
+    assert response.json()['field'] == 'months'
+    assert response.json()['code'] == 'months'
+
+
+def test_cxui_d07_upper_boundary():
+    response = CLIENT.post(ROUTE, json=payload({'additional_care_cost_monthly': '100000.00', 'months': 120}))
+    assert response.status_code == 200
+    assert response.json()['period_cash_cost'] == '12000000.00'
+
+
+@pytest.mark.parametrize('params,field,code', [
+    ({'months': 12}, 'additional_care_cost_monthly', 'missing'),
+    (dict(VALID, additional_care_cost_monthly='1.005'), 'additional_care_cost_monthly', 'precision'),
+    (dict(VALID, additional_care_cost_monthly=0), 'additional_care_cost_monthly', 'positive'),
+    (dict(VALID, additional_care_cost_monthly='abc'), 'additional_care_cost_monthly', 'numeric'),
+    ({'additional_care_cost_monthly': '1200'}, 'months', 'months'),
+])
+def test_cxui_structured_field_errors(params, field, code):
+    response = CLIENT.post(ROUTE, json=payload(params))
+    assert response.status_code == 422
+    assert isinstance(response.json()['detail'], str)
+    assert response.json()['field'] == field
+    assert response.json()['code'] == code
+
+
+@pytest.mark.parametrize('field,token,code', [
+    ('additional_care_cost_monthly', '1e400', 'too_large'),
+    ('additional_care_cost_monthly', 'Infinity', 'numeric'),
+    ('additional_care_cost_monthly', 'NaN', 'numeric'),
+    ('months', '1e400', 'months'),
+    ('months', 'Infinity', 'months'),
+    ('months', 'NaN', 'months'),
+])
+def test_cxui_d07_raw_json_overflow_and_nonfinite(field, token, code):
+    values = {'additional_care_cost_monthly': '1200', 'months': '12'}
+    values[field] = token
+    body = ('{"synthetic_profile_id":"RP-SYNTH-S016","params":'
+            '{"additional_care_cost_monthly":%s,"months":%s}}' %
+            (values['additional_care_cost_monthly'], values['months']))
+    response = CLIENT.post(ROUTE, content=body)
+    assert response.status_code == 422
+    assert response.json()['field'] == field
+    assert response.json()['code'] == code

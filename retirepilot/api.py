@@ -5,7 +5,7 @@ import json
 from decimal import Decimal, DecimalException
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from .priority_scenarios_v27 import preview_priority_scenario
 from .service import evaluate
 from .assistant import answer
@@ -104,20 +104,37 @@ def sweelah_care_setup():
 S016_PRECISION_ERROR = 'Enter an amount with up to 2 decimal places, for example 1200.50.'
 
 
-def validate_s016_cost(value):
-    """Validate exact decimal scale before the unchanged preview arithmetic.
+S016_MAX_COST = Decimal('100000')
+S016_TOO_LARGE = 'Enter an amount no more than S$100,000.'
 
-    Exponents are accepted if their expanded scale is at most two places.
-    Explicit trailing fractional zeros count, matching Decimal's stored scale.
-    """
+
+class S016InputError(ValidationError):
+    """A stable field/code alongside the existing human-readable detail."""
+
+    def __init__(self, field, code, detail):
+        super().__init__(detail)
+        self.field = field
+        self.code = code
+
+
+def validate_s016_cost(value):
+    """Bound exact decimals before arithmetic; explicit fractional zeros count."""
+    field = 'additional_care_cost_monthly'
     if isinstance(value, str):
         value = value.strip()
         if value[:2].upper() == 'S$':
             value = value[2:].strip()
         value = value.replace(',', '')
-    amount = dec(value, 'additional_care_cost_monthly')
+    try:
+        amount = dec(value, field)
+    except (ValidationError, DecimalException) as exc:
+        raise S016InputError(field, 'numeric', f'{field}: decimal amount expected') from exc
+    if amount > S016_MAX_COST:
+        raise S016InputError(field, 'too_large', S016_TOO_LARGE)
     if amount.as_tuple().exponent < -2:
-        raise ValidationError(S016_PRECISION_ERROR)
+        raise S016InputError(field, 'precision', S016_PRECISION_ERROR)
+    if amount <= 0:
+        raise S016InputError(field, 'positive', f'{field} must be more than 0')
     return str(amount)
 
 
@@ -133,14 +150,22 @@ async def parent_care_preview(req: Request):
     require_synthetic_fixture({'id': data.get('synthetic_profile_id', '')})
     params = data.get('params')
     try:
-        if isinstance(params, dict) and 'additional_care_cost_monthly' in params:
-            params = {**params, 'additional_care_cost_monthly': validate_s016_cost(params['additional_care_cost_monthly'])}
+        if not isinstance(params, dict):
+            raise ValidationError('scenario inputs must be an object')
+        if 'additional_care_cost_monthly' not in params:
+            raise S016InputError('additional_care_cost_monthly', 'missing',
+                                 'additional_care_cost_monthly: explicit member-provided value required')
+        params = {**params, 'additional_care_cost_monthly': validate_s016_cost(params['additional_care_cost_monthly'])}
+        months = params.get('months')
+        if isinstance(months, bool) or not isinstance(months, int) or not 1 <= months <= 120:
+            raise S016InputError('months', 'months', 'months must be an integer 1-120')
         result = preview_priority_scenario('S016', params)
+    except S016InputError as exc:
+        return JSONResponse(status_code=422, content={
+            'detail': str(exc), 'field': exc.field, 'code': exc.code,
+        })
     except (ValueError, TypeError, KeyError) as exc:
-        detail = str(exc)
-        if detail == 'additional_care_cost_monthly: nonnegative amount required':
-            detail = 'additional_care_cost_monthly must be more than 0'
-        raise HTTPException(422, detail) from exc
+        raise HTTPException(422, str(exc)) from exc
     except DecimalException as exc:
         raise HTTPException(422, 'additional_care_cost_monthly: amount cannot be represented') from exc
     return {
