@@ -18,7 +18,7 @@ h1{font-size:28px;line-height:1.3}h2{font-size:24px;line-height:1.3;margin:10px 
 .money-input{display:block;width:100%;min-height:48px;padding:12px;border:2px solid #52656b;border-radius:13px;background:#fff;color:var(--ink);font:inherit}
 .hint{margin:8px 0;color:#40585e}.error{color:#922818;font-weight:700;margin:8px 0}
 [aria-invalid="true"]{border-color:#922818}.error-summary{border:3px solid #922818;border-radius:12px;padding:16px;margin:16px 0}
-.error-summary h3{font-size:20px}.error-summary a{color:#922818;display:block;padding:4px 0}
+.error-summary h3{font-size:20px;margin-top:0}.error-summary a{color:#922818;display:block;padding:4px 0}
 .summary-sheet{background:#fff;border:1px solid #e7ddcf;border-radius:18px;padding:12px 15px}
 .summary-sheet .line{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:11px 0;border-bottom:1px dashed #b1a99d}
 .summary-sheet .line:last-child{border:none}.summary-sheet strong{overflow-wrap:anywhere}
@@ -33,7 +33,7 @@ a,button{min-height:24px}header a{display:inline-flex;align-items:center;min-hei
 </style>
 </head>
 <body>
-<header><div class="wordmark">SweeLah<b>!</b></div><p>For practice: use synthetic figures only.</p><a href="/">Back to overview</a></header>
+<header><div class="wordmark">SweeLah<b>!</b></div><p>For practice: use synthetic figures only.</p><a href="/">Back to RetirePilot lab</a></header>
 <main>
 <nav aria-label="Location">Life Line → Care for family</nav>
 <h1>Parent-care cost preview</h1>
@@ -57,7 +57,7 @@ a,button{min-height:24px}header a{display:inline-flex;align-items:center;min-hei
 </form>
 </div>
 <div id="care-result" hidden></div>
-<div class="secure-notice" id="care-setup-notice">This adds up only the numbers you entered. It leaves out government subsidies and grants, CareShield LIFE and other insurance payouts, MediSave, and lost pay or unpaid leave. We don't assume you'll get any of these. This is general information to help you plan, not financial advice. A flat monthly amount with no inflation, and no assumed entitlement.</div>
+<div class="secure-notice" id="care-setup-notice">This adds up only the numbers you entered. It leaves out government subsidies and grants, CareShield LIFE and other insurance payouts, MediSave, and lost pay or unpaid leave. We don't assume you'll get any of these. This is general information to help you plan, not financial advice. It uses a flat monthly amount with no inflation.</div>
 <p id="care-talk" class="secure-notice" role="status" hidden>Swee says: You can change the extra monthly cost and duration to explore a different illustrative total. This preview doesn't change your main retirement plan.</p>
 </section>
 </div>
@@ -114,18 +114,22 @@ form.addEventListener('input', event => {
   byId(input.id + '-error').hidden = true;
   const link = summary.querySelector('a[href="#' + input.id + '"]');
   if (link) link.closest('li').remove();
-  if (!summary.querySelector('li, p')) summary.hidden = true;
+  // A general (server/network) failure is stale once any answer changes; field errors stay.
+  const general = summary.querySelector('p');
+  if (general) general.remove();
+  if (!summary.querySelector('li')) summary.hidden = true;
 });
 form.addEventListener('submit', async event => {
   event.preventDefault(); clearErrors(); result.hidden = true;
   const amount = cost.value.trim().replace(/^S\$\s*/i, '').replace(/,/g, '');
   const duration = months.value.trim();
-  const decimal = amount.match(/^[+-]?(?:\d+(?:\.(\d*))?|\.(\d+))(?:[eE]([+-]?\d+))?$/);
+  // Plain decimals only: exponent forms such as 1e2 are refused as non-numeric.
+  const decimal = amount.match(/^[+-]?(?:\d+(?:\.(\d*))?|\.(\d+))$/);
   const errors = {};
   if (!amount) errors['care-cost'] = messages.missing;
   else if (!decimal) errors['care-cost'] = messages.numeric;
   else if (Number(amount) > 100000) errors['care-cost'] = messages.too_large;
-  else if (BigInt((decimal[1] || decimal[2] || '').length) - BigInt(decimal[3] || '0') > 2n) errors['care-cost'] = messages.precision;
+  else if ((decimal[1] || decimal[2] || '').length > 2) errors['care-cost'] = messages.precision;
   else if (Number(amount) <= 0) errors['care-cost'] = messages.positive;
   if (!/^\d+$/.test(duration) || Number(duration) < 1 || Number(duration) > 120) errors['care-months'] = messages.months;
   if (Object.keys(errors).length) { showErrors(errors); return; }

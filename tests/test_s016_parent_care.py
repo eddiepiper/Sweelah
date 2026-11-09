@@ -232,3 +232,12 @@ def test_cxui_d07_raw_json_overflow_and_nonfinite(field, token, code):
     assert response.status_code == 422
     assert response.json()['field'] == field
     assert response.json()['code'] == code
+
+
+def test_cxuifu_static_page_copy_and_style():
+    """CXUI-001-FOLLOWUP: R-D01 label, R-D03 margin, wording; synthetic page source only."""
+    html = CLIENT.get('/sweelah').text
+    assert '>Back to RetirePilot lab</a>' in html and 'Back to overview' not in html
+    assert '.error-summary h3{font-size:20px;margin-top:0}' in html
+    assert 'entitlement' not in html.lower()
+    assert '[eE]' not in html  # client no longer parses exponent notation
