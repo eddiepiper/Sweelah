@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [mode, base] = process.argv.slice(2);
-const output = path.resolve(__dirname, '../../test-artifacts/s016');
+const output = path.resolve(__dirname, mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
 const monthsLabel = 'For how many months?';
 (async () => {
@@ -18,7 +18,7 @@ const monthsLabel = 'For how many months?';
   }
   try {
     if (mode === 'probe') { console.log('Chromium ' + browser.version()); return; }
-    const page = await browser.newPage({viewport:mode==='mobile375'?{width:375,height:844}:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
+    const page = await browser.newPage({viewport:(mode==='mobile375'||mode==='cxui-mobile375')?{width:375,height:844}:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
     const errors=[];
     page.on('pageerror', e=>errors.push(e.message));
     await page.route('**/*', route => new URL(route.request().url()).origin===base ? route.continue() : route.abort());
@@ -33,7 +33,127 @@ const monthsLabel = 'For how many months?';
     const fill=async(c,m)=>{await cost.fill(c);await months.fill(m);};
     const preview=async()=>{await submit.click();await page.locator('#care-result:not([hidden])').waitFor();};
     const focused=async selector=>assert.equal(await page.locator(selector).evaluate(el=>el===document.activeElement),true);
-    if (mode==='success'||mode==='mobile') {
+    const limitations = async locator => {
+      const text=await locator.innerText();
+      for (const term of ['subsidies and grants','CareShield LIFE','MediSave','lost pay or unpaid leave','not financial advice']) assert.ok(text.includes(term),term);
+    };
+    const axe = async state => {
+      let axePath=process.env.AXE_CORE_PATH;
+      if (!axePath) {try {axePath=require.resolve('axe-core/axe.min.js');} catch {}}
+      if (!axePath) {console.log('axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit');return;}
+      await page.addScriptTag({path:axePath});
+      const audit=await page.evaluate(()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','best-practice']}}));
+      fs.writeFileSync(path.join(output,`axe-${mode}-${state}.json`),JSON.stringify(audit,null,2));
+      assert.deepEqual(audit.violations,[]);
+    };
+    const screenshot=async state=>page.screenshot({path:path.join(output,`${mode}-${state}.png`),fullPage:true});
+    if (mode==='cxui-d01'||mode==='cxui-d04') {
+      await fill('1200','12');await preview();
+      const text=await page.locator('#care-result').innerText();
+      if(mode==='cxui-d01') assert.doesNotMatch(text,/Preview status:|LIMITED_RECURRING_COST_PREVIEW_ONLY/);
+      else assert.doesNotMatch(text,/Illustrative recurring care costs only; leave, insurance and subsidies omitted/);
+    } else if (mode==='cxui-d02') {
+      await limitations(page.locator('#care-setup-notice'));
+      await fill('1200','12');await preview();await limitations(page.locator('section'));
+      await page.getByRole('button',{name:'Change my numbers'}).click();await limitations(page.locator('#care-setup-notice'));
+    } else if (mode==='cxui-d03') {
+      await months.fill('0');await submit.click();
+      await cost.fill('1');
+      assert.equal(await cost.getAttribute('aria-invalid'),'false');
+      assert.equal(await months.getAttribute('aria-invalid'),'true');
+      assert.equal(await page.locator('#care-months-error').isVisible(),true);
+      assert.equal(await page.locator('#care-errors a').count(),1);
+      await page.locator('#care-errors a').click();await focused('#care-months');
+      await months.fill('12');assert.equal(await page.locator('#care-errors').isVisible(),false);
+      await fill('','');await submit.click();await months.fill('12');
+      assert.equal(await cost.getAttribute('aria-invalid'),'true');
+      assert.equal(await page.locator('#care-cost-error').isVisible(),true);
+      assert.equal(await page.locator('#care-errors a[href="#care-cost"]').count(),1);
+    } else if (mode==='cxui-d05') {
+      assert.doesNotMatch(await page.locator('body').innerText(),/Illustrative scenario setup|household projection|research dashboard|Synthetic-only|Local preview|Single user/i);
+      await fill('1200','12');await preview();
+      assert.doesNotMatch(await page.locator('body').innerText(),/household projection|Limited preview|Illustrative scenario setup/i);
+      assert.match(await page.locator('body').innerText(),/synthetic figures only/i);
+    } else if (mode==='cxui-d06'||mode==='cxui-mapping') {
+      await fill('1200','12');
+      const cases=mode==='cxui-d06'?[500,403,'abort']:[
+        {detail:'words changed completely',field:'months',code:'months'},
+        {detail:'not a prefix',field:'additional_care_cost_monthly',code:'precision'},
+        {detail:'additional_care_cost_monthly must be more than 0'},
+        {detail:'months invalid',field:'unexpected',code:'months'},
+        {detail:'anything',field:'additional_care_cost_monthly',code:'unexpected'},
+      ];
+      for (const item of cases) {
+        await page.unroute('**/api/scenarios/S016/preview');
+        await page.route('**/api/scenarios/S016/preview',route=>item==='abort'?route.abort():route.fulfill({status:typeof item==='number'?item:422,contentType:'application/json',body:JSON.stringify(typeof item==='number'?{detail:'internal detail'}:item)}));
+        await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+        const heading=await page.locator('#care-error-heading').innerText();
+        if(typeof item==='object'&&['months','precision'].includes(item.code)&&['months','additional_care_cost_monthly'].includes(item.field)) {
+          assert.equal(heading,'Please check these answers');
+          assert.equal(await (item.field==='months'?months:cost).getAttribute('aria-invalid'),'true');
+        } else {
+          assert.equal(heading,'Something went wrong');
+          assert.equal(await cost.getAttribute('aria-invalid'),'false');assert.equal(await months.getAttribute('aria-invalid'),'false');
+          assert.doesNotMatch(await page.locator('#care-errors').innerText(),/internal detail|must be more than 0|months invalid/);
+        }
+        assert.equal(await cost.inputValue(),'1200');assert.equal(await months.inputValue(),'12');
+      }
+      await screenshot('server-error');
+    } else if (mode==='cxui-d07') {
+      let requests=0;page.on('request',r=>{if(r.url().endsWith('/api/scenarios/S016/preview')) requests++;});
+      for(const amount of ['100000.01','1e12','999999999999','1e400']) {
+        await fill(amount,'12');await submit.click();
+        assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount no more than S$100,000.');
+      }
+      for(const amount of ['Infinity','NaN','-Infinity','sNaN']) {
+        await fill(amount,'12');await submit.click();
+        assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter numbers only, for example 1200.');
+      }
+      for(const duration of ['121','1e400','Infinity','NaN']) {
+        await fill('1200',duration);await submit.click();
+        assert.equal(await page.locator('#care-months-error').innerText(),'Error: Enter the number of months, from 1 to 120 (10 years).');
+      }
+      assert.equal(requests,0);
+      await fill('100000.00','120');await preview();assert.match(await page.locator('#care-result').innerText(),/S\$12,000,000.00/);
+    } else if(mode==='cxui-d08'||mode==='cxui-mobile375') {
+      await page.setViewportSize({width:375,height:844});
+      await screenshot('setup');
+      if(mode==='cxui-mobile375') await axe('setup');
+      await submit.click();await screenshot('field-errors');
+      const geometry=await page.locator('#care-errors li').evaluateAll(items=>items.map(li=>{
+        const a=li.querySelector('a'),range=document.createRange();range.selectNodeContents(a);
+        const first=range.getClientRects()[0],box=a.getBoundingClientRect(),parent=li.getBoundingClientRect();
+        return {display:getComputedStyle(a).display,firstTop:first.top,top:box.top,itemTop:parent.top};
+      }));
+      fs.writeFileSync(path.join(output,`${mode}-bullet-geometry.json`),JSON.stringify(geometry,null,2));
+      for(const item of geometry) {assert.equal(item.display,'block');assert.ok(Math.abs(item.top-item.itemTop)<1);assert.ok(item.firstTop-item.top<12);}
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      await axe('field-errors');
+      await fill('1200','12');await preview();await screenshot('result');await axe('result');
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      if(mode==='cxui-mobile375') {
+        await page.getByRole('button',{name:'Change my numbers'}).click();
+        await page.route('**/api/scenarios/S016/preview',route=>route.abort());await submit.click();
+        await page.getByText("We couldn't work this out just now. Your answers are kept. Please try again.",{exact:true}).waitFor();
+        await screenshot('server-error');await axe('server-error');
+      }
+    } else if(mode==='cxui-d09') {
+      const tokens=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../design/sweelah/DESIGN_TOKENS.json'))).palette;
+      for(const key of ['ink','cream','mint','green','coral']) assert.equal((await page.locator('html').evaluate((el,key)=>getComputedStyle(el).getPropertyValue('--'+key).trim(),key)).toLowerCase(),tokens[key].toLowerCase());
+      assert.equal(await page.locator('.wordmark b').evaluate(el=>getComputedStyle(el).color),'rgb(250, 98, 73)');
+      assert.equal(await page.locator('.eyebrow').evaluate(el=>getComputedStyle(el).textTransform),'uppercase');
+      await screenshot('setup');await axe('setup');await submit.click();await screenshot('field-errors');await axe('field-errors');
+      await fill('1200','12');await preview();await screenshot('result');await axe('result');
+    } else if(mode==='cxui-d10') {
+      for(const state of ['setup','errors','result']) {
+        if(state==='errors') await submit.click();
+        if(state==='result') {await fill('1200','12');await preview();}
+        const levels=await page.locator('h1,h2,h3,h4,h5,h6').evaluateAll(els=>els.filter(el=>el.getClientRects().length).map(el=>Number(el.tagName[1])));
+        let previous=0;for(const level of levels) {assert.ok(level<=previous+1,`${state}: ${previous} to ${level}`);previous=level;}
+      }
+    } else if(mode==='cxui-d11') {
+      const box=await page.locator('header a').boundingBox();assert.ok(box.width>=44&&box.height>=44);
+    } else if (mode==='success'||mode==='mobile') {
       await page.screenshot({path:path.join(output,'setup-'+mode+'.png'),fullPage:true});
       await fill('S$1,200','12');
       const responsePromise=page.waitForResponse(r=>r.url().endsWith('/api/scenarios/S016/preview'));
@@ -43,11 +163,11 @@ const monthsLabel = 'For how many months?';
       assert.equal(body.may_post_to_household_projection,false);
       assert.equal(body.status,'LIMITED_RECURRING_COST_PREVIEW_ONLY');
       assert.deepEqual(response.request().postDataJSON().params,{additional_care_cost_monthly:'1200',months:12});
-      await focused('#care-result h3');
-      const text=await page.locator('#care-result').innerText();
-      for (const expected of ['Limited preview','Your parent-care cost estimate','S$1,200.00','S$14,400.00',
+      await focused('#care-result h2');
+      const text=await page.locator('section').innerText();
+      for (const expected of ['YOUR ESTIMATE','Your parent-care cost estimate','S$1,200.00','S$14,400.00',
         "This doesn't change your main retirement plan.",'no inflation','no assumed entitlement',
-        'CareShield LIFE','lost pay or unpaid leave','Illustrative recurring care costs only; leave, insurance and subsidies omitted']) assert.ok(text.includes(expected),expected);
+        'CareShield LIFE','lost pay or unpaid leave']) assert.ok(text.includes(expected),expected);
       await page.screenshot({path:path.join(output,'success-'+mode+'.png'),fullPage:true});
       await page.getByRole('button',{name:'Change my numbers',exact:true}).click();
       assert.equal(await cost.inputValue(),'S$1,200'); assert.equal(await months.inputValue(),'12');
@@ -148,14 +268,14 @@ const monthsLabel = 'For how many months?';
         const luminance=hex=>{const parts=hex.match(/\w\w/g).map(v=>parseInt(v,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return parts[0]*.2126+parts[1]*.7152+parts[2]*.0722;};
         const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);
       };
-      for (const pair of [['253646','fff8eb'],['146d5b','ffffff'],['40585e','ffffff'],['922818','ffffff'],['253646','ffefca']]) assert.ok(contrast(...pair)>=4.5,pair.join('/'));
+      for (const pair of [['253646','fff8eb'],['1c806e','ffffff'],['40585e','ffffff'],['922818','ffffff'],['253646','ffefca']]) assert.ok(contrast(...pair)>=4.5,pair.join('/'));
       assert.ok(await cost.evaluate(el=>Boolean(document.querySelector('label[for="'+el.id+'"]'))));
       assert.equal(await cost.getAttribute('inputmode'),'decimal');
       assert.equal(await months.getAttribute('inputmode'),'numeric');
       await cost.focus();await page.keyboard.type('1200');await page.keyboard.press('Tab');await focused('#care-months');
       await page.keyboard.type('12');await page.keyboard.press('Tab');
       assert.equal(await primary.evaluate(el=>el===document.activeElement),true);
-      await page.keyboard.press('Enter');await page.locator('#care-result:not([hidden])').waitFor();await focused('#care-result h3');
+      await page.keyboard.press('Enter');await page.locator('#care-result:not([hidden])').waitFor();await focused('#care-result h2');
       let axePath=process.env.AXE_CORE_PATH;
       if (!axePath) {try {axePath=require.resolve('axe-core/axe.min.js');} catch {}}
       if (axePath) {
