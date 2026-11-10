@@ -1,0 +1,8 @@
+red-phase targeted exit=1 (5 failed; see red-phase.log)
+green-phase targeted exit=0 (5 passed; see green-phase-targeted.log)
+pytest exit=0
+rules exit=1 without PYTHONPATH (ModuleNotFoundError, see rules-no-pythonpath.log); rules exit=0 with PYTHONPATH=.
+browser exit=0
+api exit=0 (unshare -rn, own :8769 inside namespace; PATH includes /workspace/sweelah-baseline-venv/bin)
+release exit=0
+assets exit=0

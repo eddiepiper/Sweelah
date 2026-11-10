@@ -112,7 +112,19 @@ def test_reference_checker_detects_mismatched_and_dangling_facts_and_guardrails(
     s025 = next(e for e in dangling_g['entries'] if e['id'] == 'S025')
     s025['guardrail'] = 'softened invented guardrail'
     dangling_g_errors = '\n'.join(reference_errors(dangling_g))
-    assert 'S025: dangling guardrail' in dangling_g_errors
+    assert "S025: dangling guardrail 'softened invented guardrail'" in dangling_g_errors
+
+    empty_g = copy.deepcopy(base)
+    s046 = next(e for e in empty_g['entries'] if e['id'] == 'S046')
+    s046['guardrail'] = ''
+    empty_errors = '\n'.join(reference_errors(empty_g))
+    assert "S046: dangling guardrail ''" in empty_errors
+
+    missing_g = copy.deepcopy(base)
+    s040 = next(e for e in missing_g['entries'] if e['id'] == 'S040')
+    s040.pop('guardrail', None)
+    missing_errors = '\n'.join(reference_errors(missing_g))
+    assert 'S040: dangling guardrail None' in missing_errors
 
     assert reference_errors() == []
 
