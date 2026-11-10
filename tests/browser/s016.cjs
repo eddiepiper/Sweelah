@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [mode, base] = process.argv.slice(2);
-const output = path.resolve(__dirname, mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
+const output = path.resolve(__dirname, mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
 const monthsLabel = 'For how many months?';
 (async () => {
@@ -249,6 +249,61 @@ const monthsLabel = 'For how many months?';
       assert.equal(await page.locator('#care-error-heading').innerText(),'Something went wrong');
       assert.equal(await page.locator('#care-result').isVisible(),false);
       assert.doesNotMatch(await page.locator('body').innerText(),/\b0 months?\b/);
+    } else if(mode==='cxuifu2d01-guard'||mode==='cxuifu2d01-guard-375') {
+      // CXUI-FU2-D01: a forged 200 must carry months as a whole JSON number 1..120 (no coercion),
+      // and extra_monthly_cost x months must equal period_cash_cost exactly. Raw bodies let NaN/Infinity be forged.
+      const contract='"status":"LIMITED_RECURRING_COST_PREVIEW_ONLY","synthetic_only":true,"may_post_to_household_projection":false';
+      const forged=(monthly,total,monthsJson)=>`{${contract},"extra_monthly_cost":${JSON.stringify(monthly)},"period_cash_cost":${JSON.stringify(total)},"months":${monthsJson}}`;
+      let body='';
+      await page.route('**/api/scenarios/S016/preview',route=>route.fulfill({status:200,contentType:'application/json',body}));
+      const send=async()=>{
+        await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/scenarios/S016/preview')),submit.click()]);
+        await page.waitForFunction(()=>!document.getElementById('care-form').hasAttribute('aria-busy'));
+      };
+      const refused=async label=>{
+        await page.locator('#care-errors:not([hidden])').waitFor();
+        assert.equal(await page.locator('#care-error-heading').innerText(),'Something went wrong',label);
+        assert.ok((await page.locator('#care-errors').innerText()).includes("We couldn't work this out just now. Your answers are kept. Please try again."),label);
+        assert.equal(await page.locator('#care-result').isVisible(),false,label);
+        const text=await page.locator('body').innerText();
+        assert.doesNotMatch(text,/Over \d|Over 1 month|adds up to|Your parent-care cost estimate/,label);
+        assert.doesNotMatch(text,/S\$14,400\.00|NaN|Infinity|undefined|null/,label);
+      };
+      const bad=[
+        ['true','true','1200.00','14400.00'],['"1"','"1"','1200.00','1200.00'],['[5]','[5]','1200.00','6000.00'],
+        ['"1e1"','"1e1"','1200.00','12000.00'],['1.5','1.5','1200.00','1800.00'],
+        ['NaN-token','NaN','1200.00','14400.00'],['Infinity-token','Infinity','1200.00','14400.00'],
+        ['1e400-Infinity','1e400','1200.00','14400.00'],['-1e400','-1e400','1200.00','14400.00'],
+        // Mismatched or malformed totals with a valid months value.
+        ['total-mismatch-1','1','1200.00','14400.00'],['total-off-by-1c','12','1200.00','14400.01'],
+        ['monthly-number','12',1200,'14400.00'],['total-1dp','12','1200.00','14400.0'],['monthly-exponent','2','1e2','200.00']
+      ];
+      await fill('1200','1');
+      for(const [label,monthsJson,monthly,total] of bad) {
+        body=forged(monthly,total,monthsJson);
+        await send();await refused(label);
+        if(label==='true') {await screenshot('forged-months-true');await axe('forged-months-true');}
+      }
+      // Valid forged integers (cents arithmetic, no float drift) still render with the existing grammar.
+      for(const [n,monthly,total,line] of [
+        [1,'1200.00','1200.00','An extra S$1,200.00 a month for 1 month adds up to S$1,200.00.'],
+        [3,'0.10','0.30','An extra S$0.10 a month for 3 months adds up to S$0.30.'],
+        [7,'99999.99','699999.93','An extra S$99,999.99 a month for 7 months adds up to S$699,999.93.'],
+        [120,'100000.00','12000000.00','An extra S$100,000.00 a month for 120 months adds up to S$12,000,000.00.']]) {
+        body=forged(monthly,total,String(n));
+        await send();await page.locator('#care-result:not([hidden])').waitFor();
+        const text=await page.locator('#care-result').innerText();
+        assert.ok(text.includes(line),text);
+        assert.ok(text.includes(n===1?'Over 1 month':`Over ${n} months`),text);
+        assert.doesNotMatch(text,/\b1 months\b/);
+        if(n===1) await screenshot('forged-months-1-valid');
+        if(mode.endsWith('-375')) assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+        await page.getByRole('button',{name:'Change my numbers'}).click();
+      }
+      await page.unroute('**/api/scenarios/S016/preview');
+      // Real API, unforged, still succeeds.
+      await fill('1200','1');await preview();
+      assert.ok((await page.locator('#care-result').innerText()).includes('An extra S$1,200.00 a month for 1 month adds up to S$1,200.00.'));
     } else if(mode==='cxuifu2-heading'||mode==='cxuifu2-heading-375') {
       // CXUI-001-F-D01: force a general failure and field error(s) to coexist, as in the Designer's repro.
       const general="We couldn't work this out just now. Your answers are kept. Please try again.";

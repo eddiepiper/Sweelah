@@ -163,9 +163,14 @@ form.addEventListener('submit', async event => {
     }
     if (data.may_post_to_household_projection !== false || data.synthetic_only !== true ||
         data.status !== 'LIMITED_RECURRING_COST_PREVIEW_ONLY') throw new Error('Unexpected preview contract');
+    // CXUI-FU2-D01: months must already be a whole JSON number (no coercion of true, "1", [5], "1e1").
+    const count = data.months;
+    if (typeof count !== 'number' || !Number.isInteger(count) || count < 1 || count > 120) throw new Error('Unexpected preview contract');
+    // Amounts must be plain cent strings, and monthly x months must equal the total exactly (integer cents, no floats).
+    const cents = value => typeof value === 'string' && /^\d+\.\d{2}$/.test(value) ? BigInt(value.replace('.', '')) : null;
+    const monthlyCents = cents(data.extra_monthly_cost), totalCents = cents(data.period_cash_cost);
+    if (monthlyCents === null || totalCents === null || monthlyCents * BigInt(count) !== totalCents) throw new Error('Unexpected preview contract');
     const monthly = sgd(data.extra_monthly_cost), total = sgd(data.period_cash_cost);
-    const count = Number(data.months);
-    if (!Number.isInteger(count) || count < 1 || count > 120) throw new Error('Unexpected preview contract');
     const span = monthCount(count);
     result.innerHTML = `<div class="eyebrow">Your estimate</div>
       <h2 tabindex="-1">Your parent-care cost estimate</h2>
