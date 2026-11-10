@@ -284,3 +284,25 @@ Interpretation decisions:
 
 The new cases fail against `6d8bbf3` and pass with this change (red-phase log in the
 evidence folder). Evidence (uncommitted): `test-artifacts/cxui-fu2-d01/`.
+
+## QA-FU2D01-L01: canonical, in-range amounts on preview responses
+
+Status: **Verified** locally by the automated checks below; independent QA (G5) and
+designer (G5X) re-verification are still pending. Branch `fix/qa-fu2d01-l01` from
+`411a868`. Only `retirepilot/s016.html`, S016 browser tests and this document change.
+`retirepilot/api.py`, the API response, the dashboard at `/`, nav and artwork are unchanged.
+
+| Item | Change (`retirepilot/s016.html`) | Proving case/test |
+|---|---|---|
+| QA-FU2D01-L01 | Both `extra_monthly_cost` and `period_cash_cost` must match the canonical `^(0\|[1-9]\d*)\.\d{2}$`. Monthly must be 1–10,000,000 cents (S$0.01–S$100,000.00 inclusive). The existing FU2-D01 checks stay: months is a whole JSON number 1–120 with no coercion, and monthly × months = total in BigInt cents. So a valid total is S$0.01–S$12,000,000.00. Anything else is “Something went wrong” with no result. | `qafu2d01l01-guard`, `qafu2d01l01-guard-375` (forged 200s refused: `01200.00` monthly+total, `01200.00` total only, `0.00`×1, `0.00`×120, `999999.00`×120, `99999999999.99`×120, `100000.01`×1, `1200.0`, `1200.000`, `+1200.00`, `1200.`, `.50`, `-1200.00`, leading space; FU2-D01 regressions: months `true`/`"1"`/`[5]`/`"1e1"`, mismatched and off-by-1c totals, numeric monthly and total, 1-dp total, `1e2` monthly. Accepted: 1×1200.00 (“1 month”), 1×0.01, 3×0.10, 7×99999.99, 1×100000.00, 120×100000.00, real API months=1; 375px overflow; axe) |
+
+Interpretation decisions:
+- The canonical form is applied to the total as well as the monthly amount, and a total that
+  is canonical but fails the arithmetic is still refused. No separate upper bound on the total
+  is needed: monthly ≤ 100000.00 and months ≤ 120 already cap it at 12000000.00.
+- The API still sends `money()` strings that are already canonical and within the cap, so real
+  responses are unaffected.
+
+The new cases fail against `411a868` (the first leading-zero forgery renders a result) and pass
+with this change. Evidence (uncommitted): `test-artifacts/qa-fu2d01-l01/` (red-phase log,
+suite logs, screenshots, axe reports).

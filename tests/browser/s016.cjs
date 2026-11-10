@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [mode, base] = process.argv.slice(2);
-const output = path.resolve(__dirname, mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
+const output = path.resolve(__dirname, mode.startsWith('qafu2d01l01-') ? '../../test-artifacts/qa-fu2d01-l01' : mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
 const monthsLabel = 'For how many months?';
 (async () => {
@@ -249,6 +249,67 @@ const monthsLabel = 'For how many months?';
       assert.equal(await page.locator('#care-error-heading').innerText(),'Something went wrong');
       assert.equal(await page.locator('#care-result').isVisible(),false);
       assert.doesNotMatch(await page.locator('body').innerText(),/\b0 months?\b/);
+    } else if(mode==='qafu2d01l01-guard'||mode==='qafu2d01l01-guard-375') {
+      // QA-FU2D01-L01: forged 200 amounts must be canonical ^(0|[1-9]\d*)\.\d{2}$ (monthly and total),
+      // monthly within 0.01..100000.00, total = monthly x months in integer cents. Otherwise "Something went wrong".
+      const contract='"status":"LIMITED_RECURRING_COST_PREVIEW_ONLY","synthetic_only":true,"may_post_to_household_projection":false';
+      const forged=(monthly,total,monthsJson)=>`{${contract},"extra_monthly_cost":${JSON.stringify(monthly)},"period_cash_cost":${JSON.stringify(total)},"months":${monthsJson}}`;
+      let body='';
+      await page.route('**/api/scenarios/S016/preview',route=>route.fulfill({status:200,contentType:'application/json',body}));
+      const send=async()=>{
+        await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/scenarios/S016/preview')),submit.click()]);
+        await page.waitForFunction(()=>!document.getElementById('care-form').hasAttribute('aria-busy'));
+      };
+      const refused=async label=>{
+        await page.locator('#care-errors:not([hidden])').waitFor();
+        assert.equal(await page.locator('#care-error-heading').innerText(),'Something went wrong',label);
+        assert.ok((await page.locator('#care-errors').innerText()).includes("We couldn't work this out just now. Your answers are kept. Please try again."),label);
+        assert.equal(await page.locator('#care-result').isVisible(),false,label);
+        const text=await page.locator('body').innerText();
+        assert.doesNotMatch(text,/Over \d|adds up to|Your parent-care cost estimate/,label);
+        assert.doesNotMatch(text,/S\$0?1,200\.00|S\$0\.00|S\$999,999\.00|S\$119,999,880\.00|S\$99,999,999,999\.99|S\$11,999,999,999,998\.80|S\$14,400\.00|NaN|Infinity|undefined|null/,label);
+      };
+      const bad=[
+        // QA-FU2D01-L01: non-canonical or out-of-range amounts.
+        ['leading-zero','1','01200.00','01200.00'],['leading-zero-total-only','1','1200.00','01200.00'],
+        ['zero-monthly','1','0.00','0.00'],['zero-monthly-120','120','0.00','0.00'],
+        ['over-cap-999999','120','999999.00','119999880.00'],['over-cap-huge','120','99999999999.99','11999999999998.80'],
+        ['over-cap-100000.01','1','100000.01','100000.01'],
+        ['one-dp','1','1200.0','1200.0'],['three-dp','1','1200.000','1200.000'],['plus-sign','1','+1200.00','+1200.00'],
+        ['trailing-dot','1','1200.','1200.'],['no-int-part','1','.50','.50'],['minus','1','-1200.00','-1200.00'],
+        ['space','1',' 1200.00',' 1200.00'],
+        // FU2-D01 regressions (type/arithmetic refusals).
+        ['months-true','true','1200.00','14400.00'],['months-"1"','"1"','1200.00','1200.00'],['months-[5]','[5]','1200.00','6000.00'],
+        ['months-"1e1"','"1e1"','1200.00','12000.00'],['total-mismatch','1','1200.00','14400.00'],['total-off-by-1c','12','1200.00','14400.01'],
+        ['monthly-number','12',1200,'14400.00'],['total-number','1','1200.00',1200],['total-1dp','12','1200.00','14400.0'],['monthly-exponent','2','1e2','200.00']
+      ];
+      await fill('1200','1');
+      for(const [label,monthsJson,monthly,total] of bad) {
+        body=forged(monthly,total,monthsJson);
+        await send();await refused(label);
+        if(label==='leading-zero') {await screenshot('forged-leading-zero');await axe('forged-leading-zero');}
+        if(label==='over-cap-huge') await screenshot('forged-over-cap-huge');
+      }
+      for(const [n,monthly,total,line] of [
+        [1,'1200.00','1200.00','An extra S$1,200.00 a month for 1 month adds up to S$1,200.00.'],
+        [1,'0.01','0.01','An extra S$0.01 a month for 1 month adds up to S$0.01.'],
+        [3,'0.10','0.30','An extra S$0.10 a month for 3 months adds up to S$0.30.'],
+        [7,'99999.99','699999.93','An extra S$99,999.99 a month for 7 months adds up to S$699,999.93.'],
+        [1,'100000.00','100000.00','An extra S$100,000.00 a month for 1 month adds up to S$100,000.00.'],
+        [120,'100000.00','12000000.00','An extra S$100,000.00 a month for 120 months adds up to S$12,000,000.00.']]) {
+        body=forged(monthly,total,String(n));
+        await send();await page.locator('#care-result:not([hidden])').waitFor();
+        const text=await page.locator('#care-result').innerText();
+        assert.ok(text.includes(line),text);
+        assert.ok(text.includes(n===1?'Over 1 month':`Over ${n} months`),text);
+        assert.doesNotMatch(text,/\b1 months\b/);
+        if(n===120) {await screenshot('forged-valid-120-cap');await axe('forged-valid-120-cap');}
+        if(mode.endsWith('-375')) assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+        await page.getByRole('button',{name:'Change my numbers'}).click();
+      }
+      await page.unroute('**/api/scenarios/S016/preview');
+      await fill('1200','1');await preview();
+      assert.ok((await page.locator('#care-result').innerText()).includes('An extra S$1,200.00 a month for 1 month adds up to S$1,200.00.'));
     } else if(mode==='cxuifu2d01-guard'||mode==='cxuifu2d01-guard-375') {
       // CXUI-FU2-D01: a forged 200 must carry months as a whole JSON number 1..120 (no coercion),
       // and extra_monthly_cost x months must equal period_cash_cost exactly. Raw bodies let NaN/Infinity be forged.
