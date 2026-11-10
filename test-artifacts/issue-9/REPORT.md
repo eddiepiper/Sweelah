@@ -68,7 +68,7 @@ Exit codes: `exits.txt`. Environment: `env.txt`.
 
 ## 7. Residual risks / follow-ups (not changed here, out of scope)
 
-1. **Leap-day convention is an assumption.** I aligned the boundaries to the engine's existing `age_on`, where a 29-Feb person reaches the new age on 1 Mar in common years. I did not verify the CPF Board/statutory convention. That needs finance review (independent reviewer not engaged).
+1. **Leap-day convention is an assumption.** I aligned the boundaries to the engine's existing `age_on`, where a 29-Feb person reaches the new age on 1 Mar in common years. I did not verify the CPF Board/statutory convention. That needs finance review (independent reviewer not engaged). Per CoS (10 Nov 2026), this is recorded as an **internal assumption, not checked against the CPF Board**. Phase 7 (external review) is skipped, and the same note is in the `_anniversary` docstring. The `statutory_2026.py` 29-Feb `ValueError` is being fixed on a separate branch, not in this commit.
 2. **`statutory_2026` crashes for 29-Feb DOBs.** Line ~45 does `date(born.year+threshold, born.month, born.day)`, so `employee_ow_cpf(dob='1972-02-29', month='2027-03', ...)` raises `ValueError: day is out of range for month`. Separate CPF-rate module; suggest a separate ticket.
 3. Partial-month returns are prorated linearly, as `monthly_rate * fraction`, not as `(1+r)^fraction - 1`. Linear is slightly higher for fractions below 1 (about 1e-6 relative per partial month). This is intended and documented by the new test, not changed.
 4. Issue #9 says not to close until a reviewed result is linked to GitHub CI. This commit uses "Refs #9" only.

@@ -30,6 +30,10 @@ def _anniversary(dob,age):
 
     Must agree with age_on: a 29 Feb birthday is attained on 1 Mar in a common
     year, not 28 Feb, else age-bounded flows start or stop a day early (#9).
+
+    INTERNAL ASSUMPTION (not checked against the CPF Board or any statutory
+    convention; Phase 7 external review skipped): the 1 Mar leap-day rule
+    follows the engine's existing core.age_on only.
     """
     d=date.fromisoformat(dob)
     year=d.year+age
