@@ -1,0 +1,134 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.7.0 -- /workspace/sweelah-baseline-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/sweelah-cpf55-leapdob
+plugins: anyio-4.16.0
+collecting ... collected 18 items
+
+tests/test_cpf55_leap_dob.py::test_age_on_29_feb_attains_55_on_1_mar_in_common_year PASSED [  5%]
+tests/test_cpf55_leap_dob.py::test_age_on_29_feb_attains_new_age_on_29_feb_in_leap_year PASSED [ 11%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_2027_uses_1_mar_snapshot FAILED [ 16%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_2027_sa_excess_and_below_frs FAILED [ 22%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_adjacent_days_still_rejected PASSED [ 27%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_nonexistent_29_feb_as_of_is_invalid_date PASSED [ 33%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_55th_in_unsupported_cohort_is_frs_limit_not_birthday FAILED [ 38%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_leap_year_date_is_not_the_55th_snapshot PASSED [ 44%]
+tests/test_cpf55_leap_dob.py::test_ordinary_june_dob_snapshot_unchanged PASSED [ 50%]
+tests/test_cpf55_leap_dob.py::test_ordinary_1_mar_and_28_feb_dobs_unchanged PASSED [ 55%]
+tests/test_cpf55_leap_dob.py::test_ordinary_2027_january_dob_unchanged PASSED [ 61%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs0] PASSED [ 66%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs1] PASSED [ 72%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs2] PASSED [ 77%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs3] PASSED [ 83%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs4] PASSED [ 88%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs5] PASSED [ 94%]
+tests/test_cpf55_leap_dob.py::test_attained_age_date_helper_matches_age_on_common_and_leap_years FAILED [100%]
+
+=================================== FAILURES ===================================
+_________ test_transition_29_feb_common_year_2027_uses_1_mar_snapshot __________
+
+    def test_transition_29_feb_common_year_2027_uses_1_mar_snapshot():
+>       result = transition_at_55(
+            dob=DOB_55_IN_2027_COMMON, as_of="2027-03-01", **BALANCES_2027_FRS
+        )
+
+tests/test_cpf55_leap_dob.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def transition_at_55(*, dob:str, as_of:str, oa, sa, ma, existing_ra='0', cpf_membership_confirmed:bool=False, property_pledge:bool=False):
+        """Transfers SA first, OA second into a new RA up to cohort FRS.
+    
+        This isolated snapshot is valid only on the date of 55th birthday for
+        cohorts 2026/27; no accrued interest or past/future events are simulated.
+        """
+        try: birthday=date.fromisoformat(dob); today=date.fromisoformat(as_of)
+        except (ValueError,TypeError): raise CPFUnsupportedCase('Valid ISO date of birth and as_of required')
+        if (today.year-birthday.year)!=55 or (today.month,today.day)!=(birthday.month,birthday.day):
+>           raise CPFUnsupportedCase('Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances')
+E           retirepilot.cpf_retirement_v26.CPFUnsupportedCase: Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances
+
+retirepilot/cpf_retirement_v26.py:46: CPFUnsupportedCase
+_______ test_transition_29_feb_common_year_2027_sa_excess_and_below_frs ________
+
+    def test_transition_29_feb_common_year_2027_sa_excess_and_below_frs():
+>       excess = transition_at_55(
+            dob=DOB_55_IN_2027_COMMON, as_of="2027-03-01", **BALANCES_2027_EXCESS
+        )
+
+tests/test_cpf55_leap_dob.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def transition_at_55(*, dob:str, as_of:str, oa, sa, ma, existing_ra='0', cpf_membership_confirmed:bool=False, property_pledge:bool=False):
+        """Transfers SA first, OA second into a new RA up to cohort FRS.
+    
+        This isolated snapshot is valid only on the date of 55th birthday for
+        cohorts 2026/27; no accrued interest or past/future events are simulated.
+        """
+        try: birthday=date.fromisoformat(dob); today=date.fromisoformat(as_of)
+        except (ValueError,TypeError): raise CPFUnsupportedCase('Valid ISO date of birth and as_of required')
+        if (today.year-birthday.year)!=55 or (today.month,today.day)!=(birthday.month,birthday.day):
+>           raise CPFUnsupportedCase('Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances')
+E           retirepilot.cpf_retirement_v26.CPFUnsupportedCase: Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances
+
+retirepilot/cpf_retirement_v26.py:46: CPFUnsupportedCase
+_ test_transition_29_feb_55th_in_unsupported_cohort_is_frs_limit_not_birthday __
+
+    def test_transition_29_feb_55th_in_unsupported_cohort_is_frs_limit_not_birthday():
+        """1968-02-29 attains 55 on 2023-03-01 (also a common year).
+    
+        After the date check accepts 1 Mar, the remaining refusal is the
+        existing 2026/27 FRS cohort limitation — a genuine unsupported case.
+        """
+        with pytest.raises(CPFUnsupportedCase, match="Only 2026 and 2027"):
+>           transition_at_55(
+                dob=DOB_55_IN_2023_COMMON, as_of="2023-03-01", **BALANCES_2026
+            )
+
+tests/test_cpf55_leap_dob.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def transition_at_55(*, dob:str, as_of:str, oa, sa, ma, existing_ra='0', cpf_membership_confirmed:bool=False, property_pledge:bool=False):
+        """Transfers SA first, OA second into a new RA up to cohort FRS.
+    
+        This isolated snapshot is valid only on the date of 55th birthday for
+        cohorts 2026/27; no accrued interest or past/future events are simulated.
+        """
+        try: birthday=date.fromisoformat(dob); today=date.fromisoformat(as_of)
+        except (ValueError,TypeError): raise CPFUnsupportedCase('Valid ISO date of birth and as_of required')
+        if (today.year-birthday.year)!=55 or (today.month,today.day)!=(birthday.month,birthday.day):
+>           raise CPFUnsupportedCase('Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances')
+E           retirepilot.cpf_retirement_v26.CPFUnsupportedCase: Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances
+
+retirepilot/cpf_retirement_v26.py:46: CPFUnsupportedCase
+
+During handling of the above exception, another exception occurred:
+
+    def test_transition_29_feb_55th_in_unsupported_cohort_is_frs_limit_not_birthday():
+        """1968-02-29 attains 55 on 2023-03-01 (also a common year).
+    
+        After the date check accepts 1 Mar, the remaining refusal is the
+        existing 2026/27 FRS cohort limitation — a genuine unsupported case.
+        """
+>       with pytest.raises(CPFUnsupportedCase, match="Only 2026 and 2027"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'Only 2026 and 2027'
+E         Actual message: 'Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances'
+
+tests/test_cpf55_leap_dob.py:139: AssertionError
+______ test_attained_age_date_helper_matches_age_on_common_and_leap_years ______
+
+    def test_attained_age_date_helper_matches_age_on_common_and_leap_years():
+>       from retirepilot.cpf_retirement_v26 import _attained_age_date
+E       ImportError: cannot import name '_attained_age_date' from 'retirepilot.cpf_retirement_v26' (/workspace/sweelah-cpf55-leapdob/retirepilot/cpf_retirement_v26.py)
+
+tests/test_cpf55_leap_dob.py:286: ImportError
+=========================== short test summary info ============================
+FAILED tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_2027_uses_1_mar_snapshot - retirepilot.cpf_retirement_v26.CPFUnsupportedCase: Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances
+FAILED tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_2027_sa_excess_and_below_frs - retirepilot.cpf_retirement_v26.CPFUnsupportedCase: Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances
+FAILED tests/test_cpf55_leap_dob.py::test_transition_29_feb_55th_in_unsupported_cohort_is_frs_limit_not_birthday - AssertionError: Regex pattern did not match.
+  Expected regex: 'Only 2026 and 2027'
+  Actual message: 'Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances'
+FAILED tests/test_cpf55_leap_dob.py::test_attained_age_date_helper_matches_age_on_common_and_leap_years - ImportError: cannot import name '_attained_age_date' from 'retirepilot.cpf_retirement_v26' (/workspace/sweelah-cpf55-leapdob/retirepilot/cpf_retirement_v26.py)
+========================= 4 failed, 14 passed in 0.07s =========================
+EXIT:1
