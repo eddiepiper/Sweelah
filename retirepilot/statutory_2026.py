@@ -37,12 +37,27 @@ def _blocked(reason,source=None):
 def _round_total(amount):return amount.quantize(Decimal('1'),rounding=ROUND_HALF_UP)
 def _floor_worker(amount):return amount.quantize(Decimal('1'),rounding=ROUND_FLOOR)
 
+def _attained_age_date(born: date, age: int) -> date:
+    """First date on which a person born on ``born`` attains ``age``.
+
+    INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory
+    convention (Phase 7 external review skipped): a 29-Feb person attains the
+    new age on 1 Mar in a common year, matching core.age_on.
+    """
+    try:
+        return date(born.year + age, born.month, born.day)
+    except ValueError:
+        # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
+        # first day the new age is attained.
+        return date(born.year + age, 3, 1)
+
+
 def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
     """Age band changes in the month AFTER the corresponding birthday month."""
     born=date.fromisoformat(dob)
     start=date(year,month,1)
     for i,threshold in enumerate(cutoffs):
-        birthday=date(born.year+threshold,born.month,born.day)
+        birthday=_attained_age_date(born, threshold)
         # Previous month birthday is fully over at the start of current month.
         if start <= birthday.replace(day=1):return i
     return len(cutoffs)

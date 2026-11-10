@@ -1,0 +1,88 @@
+# SWEELAH-STAT-LEAPDOB — 29-Feb DOB ValueError in statutory_2026
+
+**Ticket:** SWEELAH-STAT-LEAPDOB (CoS assignment under standing defect rule, 10 Nov 2026, Asia/Singapore)  
+**Worktree:** `/workspace/sweelah-stat-leapdob`  
+**Branch:** `fix/statutory-leap-dob` (no upstream; not pushed)  
+**Parent:** `823ef724cdcf5dfada91a895a51baa60fd6c41ec` (`origin/main`, confirmed)  
+**Status:** Implemented but unverified (G5 not started). Do not push, amend, rebase, or open a PR.
+
+## 1. Root cause
+
+`retirepilot/statutory_2026.py::_band_index` built each age-band anniversary as:
+
+```python
+birthday = date(born.year + threshold, born.month, born.day)
+```
+
+For a synthetic 29-Feb date of birth this constructs `date(<year>, 2, 29)` whenever `born.year + threshold` is a common year, which raises `ValueError: day is out of range for month`.
+
+The crash is not limited to the month of the birthday. `_band_index` always constructs every cutoff anniversary (employee: 55/60/65/70; platform: 35/45/50/55/60/65/70). Those anniversaries are five or more years apart, so at least one of them is always a common year. Every 29-Feb DOB therefore crashed `employee_ow_cpf` and `platform_cpf`, including mid-band months such as `employee_ow_cpf(dob='1972-02-29', month='2027-03', ...)`.
+
+`self_employed_medisave_2026` already goes through `core.age_on`, which compares `(month, day)` tuples and does not construct an invalid date, so it did not crash.
+
+## 2. Fix
+
+Added `_attained_age_date(born, age)` and used it in `_band_index`. It returns `date(year, month, day)` when that calendar day exists, and **1 March** when 29 Feb does not exist in the target year.
+
+This matches `core.age_on`: a 29-Feb person is still the younger age on 28 Feb of a common year and attains the new age on 1 Mar. Age-band changes continue to take effect in the month *after* the attained-age month, so:
+
+- Common year (e.g. 1972-02-29 turning 55 on 2027-03-01): March keeps the prior band; April takes the next band.
+- Leap year (e.g. 1968-02-29 turning 60 on 2028-02-29): February keeps the prior band; March takes the next band.
+
+Money math is unchanged (still Decimal, same rounding helpers). The change is limited to anniversary date construction.
+
+**INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory convention (Phase 7 external review skipped):** treating 1 March as the attained-age date in a common year is aligned with the engine's existing `core.age_on` behaviour only. It is documented in the `_attained_age_date` docstring.
+
+## 3. Other `date(year, dob.month, dob.day)`-style constructions in `retirepilot/`
+
+| Location | Crash on 29-Feb? | Action |
+|---|---|---|
+| `statutory_2026._band_index` (the defect) | Yes | **Fixed** in this commit |
+| `projection_v22._anniversary` | No — already clamps with `monthrange` to 28 Feb in a common year | **Not changed.** That clamp disagrees with `age_on` (boundary falls a day early). It is issue #9, already being fixed on a separate branch from main. Out of scope here. |
+| `core.age_on` | No — tuple comparison `(month, day)` | Left unchanged; this is the convention the fix follows |
+| `cpf_retirement_v26.transition_at_55` | No — compares `(today.month, today.day)` to the DOB. An "exact 55th-birthday" snapshot for a 29-Feb DOB is only possible when `as_of` itself is 29 Feb (so the 55th year must be a leap year). A common-year `as_of` of 1 Mar raises the existing `CPFUnsupportedCase`, not `ValueError`. | Listed, not changed |
+| `policy.py` (`dob.year + 55` as an integer year only) | No | Listed, not changed |
+| `date(year, month, 1)` / `monthrange` end-of-month constructions | No | Listed, not changed |
+
+## 4. Red / green
+
+Tests were written first in `tests/test_statutory_leap_dob.py` (synthetic 29-Feb DOBs only).
+
+- **Red** (parent `823ef72` source + new tests): `red-phase.log`, **24 failed, 3 passed**. Every failure is `ValueError: day is out of range for month` at `statutory_2026.py:45`. The three passes are the `age_on` convention checks and `self_employed_medisave_2026`, which did not use `_band_index`.
+- After the product fix, one agreement test still failed because it passed the employee cutoff list (`55/60/65/70`) for a age-50 platform birthday. That was a test error, not a product error; the cutoff list was corrected.
+- **Green:** `green-phase.log`, **27 passed**, 0 failed.
+
+The new tests cover: no-crash for employee and platform APIs across several 29-Feb cohorts; common-year transitions in April for 2026/2027 public APIs; leap-year transitions in March via `_band_index` (2024 and 2028, which the 2026/27 monetary APIs cannot query); and a sweep of all months in 2024–2028 (leap and common) for five synthetic 29-Feb DOBs.
+
+## 5. Full suites
+
+All runs used `/workspace/sweelah-baseline-venv` (Python 3.13.5) with `PYTHONPATH=.` in this worktree. Host previews on ports 8769–8773 were left running. No other worktree was checked out or edited.
+
+| Suite | Result | Log |
+|---|---|---|
+| New tests, red | 24 failed, 3 passed | `red-phase.log` |
+| New tests, green | **27 passed** | `green-phase.log` |
+| `pytest -q -rs --ignore=tests/test_s016_browser.py` | **802 passed**, 0 failed, 1 dependency deprecation warning | `pytest.log` |
+| Browser `tests/test_s016_browser.py -q -s` with `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` (real Chromium 156.0.8078.47) | **46 passed**; `axe WCAG checks PASS` | `browser.log` |
+| Combined pytest + browser | **848 passed** (821 on main + 27 new) | — |
+| Rule contracts `audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `rules.log` |
+| API `audit/run_api_checks.py` | **PASS 20/20**, run under `unshare -rn` with loopback up (its own :8769 inside the namespace; host previews 8769–8773 untouched) | `api.log` |
+| Release documents `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `release.log` |
+| Design assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
+
+## 6. Visible UI output change: **No** for shipped samples
+
+`service.evaluate()` for all three bundled households (`data/*household*.json`) is **byte-identical** to `origin/main`'s `statutory_2026.py`. None of those profiles has a 29-Feb DOB (`ui-compare.log`). Default UI chart text and "Baseline projected accessible assets" do not change. Labels and copy are unchanged.
+
+The UI takes editable JSON. For a synthetic profile with a 29-Feb DOB, `employee_ow_cpf` / `platform_cpf` / `cpf_contribution_review` previously raised `ValueError` and would now return a bounded reference (and, in a common-year attained-age month, keep the prior band through March). Cash-flow and projection still use user-supplied deductions, not these statutory references, so the default forecast chart is unaffected unless a later path starts displaying the reference amounts. Recommendation: G5X is not required for shipped content; CoS to decide whether the newly-non-crashing 29-Feb statutory reference counts as a visible change.
+
+## 7. Residual risks
+
+1. **Leap-day convention is an internal assumption.** 1 March in a common year follows `core.age_on` only. It has not been checked against the CPF Board or any statutory payroll convention. Phase 7 (external review) is skipped.
+2. **`projection_v22._anniversary` is still wrong on this branch** (clamps to 28 Feb). That is issue #9, fixed separately on `fix/issue-9-partial-month`; it was not merged into this worktree, by design.
+3. **`transition_at_55` still requires an exact calendar match** of `(month, day)`. A 29-Feb member has no exact 55th-birthday snapshot in a common year; callers still get `CPFUnsupportedCase`. That is existing bounded-reference behaviour, not this crash.
+4. Supported employee/platform monetary years remain 2026/2027 (both common years). Leap-year *transition month* behaviour is unit-tested via `_band_index` for 2024 and 2028, not through those monetary APIs.
+
+## 8. Constraints observed
+
+No push, PR, merge, force-push or amend. Synthetic dates only; no NRIC, CPF account, bank or real user data; no secrets; no paid services or deploys; no Supermemory or connectors. Existing named worktrees (including `sweelah-issue-8`, `sweelah-issue-9`, `sweelah-cxui-*`, `sweelah-qa-*`, `/workspace/sweelah`, `eng-onb-*`) were left untouched. Previews on 8769–8773 were not stopped. No preview was required on 8776.
