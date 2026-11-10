@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.7.0 -- /workspace/sweelah-baseline-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/sweelah-cpf55-leapdob
+plugins: anyio-4.16.0
+collecting ... collected 18 items
+
+tests/test_cpf55_leap_dob.py::test_age_on_29_feb_attains_55_on_1_mar_in_common_year PASSED [  5%]
+tests/test_cpf55_leap_dob.py::test_age_on_29_feb_attains_new_age_on_29_feb_in_leap_year PASSED [ 11%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_2027_uses_1_mar_snapshot PASSED [ 16%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_2027_sa_excess_and_below_frs PASSED [ 22%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_adjacent_days_still_rejected PASSED [ 27%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_common_year_nonexistent_29_feb_as_of_is_invalid_date PASSED [ 33%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_55th_in_unsupported_cohort_is_frs_limit_not_birthday PASSED [ 38%]
+tests/test_cpf55_leap_dob.py::test_transition_29_feb_leap_year_date_is_not_the_55th_snapshot PASSED [ 44%]
+tests/test_cpf55_leap_dob.py::test_ordinary_june_dob_snapshot_unchanged PASSED [ 50%]
+tests/test_cpf55_leap_dob.py::test_ordinary_1_mar_and_28_feb_dobs_unchanged PASSED [ 55%]
+tests/test_cpf55_leap_dob.py::test_ordinary_2027_january_dob_unchanged PASSED [ 61%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs0] PASSED [ 66%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs1] PASSED [ 72%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs2] PASSED [ 77%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs3] PASSED [ 83%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs4] PASSED [ 88%]
+tests/test_cpf55_leap_dob.py::test_other_unsupported_cases_still_raise[kwargs5] PASSED [ 94%]
+tests/test_cpf55_leap_dob.py::test_attained_age_date_helper_matches_age_on_common_and_leap_years PASSED [100%]
+
+============================== 18 passed in 0.03s ==============================
+EXIT:0

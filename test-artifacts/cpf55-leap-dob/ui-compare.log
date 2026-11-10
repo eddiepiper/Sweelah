@@ -1,0 +1,23 @@
+=== Bundled household DOBs ===
+mixed_income_household.json: dobs=['1974-05-20', '1977-08-12', '2009-09-10', '2013-06-24']
+  cash_flow.monthly_surplus=700.00
+  projection.status=conditional_estimate
+retired_household.json: dobs=['1958-08-22']
+  cash_flow.monthly_surplus=-40.00
+  projection.status=conditional_estimate
+salaried_household.json: dobs=['1978-09-01', '1980-03-03']
+  cash_flow.monthly_surplus=6800.00
+  projection.status=conditional_estimate
+
+=== Byte compare evaluate() vs origin/main ===
+mixed_income_household.json: identical=True
+retired_household.json: identical=True
+salaried_household.json: identical=True
+ALL_IDENTICAL=True
+
+=== Shipped samples have no 29-Feb DOB ===
+mixed_income_household.json: dobs=['1974-05-20', '1977-08-12', '2009-09-10', '2013-06-24'] has_29feb=False
+retired_household.json: dobs=['1958-08-22'] has_29feb=False
+salaried_household.json: dobs=['1978-09-01', '1980-03-03'] has_29feb=False
+VISIBLE_UI_CHANGE_SHIPPED_SAMPLES=No
+EXIT:0

@@ -34,15 +34,35 @@ def _nonnegative_decimal(value, field):
     if not n.is_finite() or n<0:raise CPFUnsupportedCase(field+' must be nonnegative and finite')
     return n
 
+def _attained_age_date(born: date, age: int) -> date:
+    """First date on which a person born on ``born`` attains ``age``.
+
+    INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory
+    convention (Phase 7 external review skipped): a 29-Feb person attains the
+    new age on 1 Mar in a common year, matching core.age_on.
+    """
+    year = born.year + age
+    if year < date.min.year or year > date.max.year:
+        raise CPFUnsupportedCase(
+            'Attained-age calendar year is outside the supported date range '
+            f'({date.min.year}-{date.max.year})'
+        )
+    try:
+        return date(year, born.month, born.day)
+    except ValueError:
+        # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
+        # first day the new age is attained.
+        return date(year, 3, 1)
+
 def transition_at_55(*, dob:str, as_of:str, oa, sa, ma, existing_ra='0', cpf_membership_confirmed:bool=False, property_pledge:bool=False):
     """Transfers SA first, OA second into a new RA up to cohort FRS.
 
-    This isolated snapshot is valid only on the date of 55th birthday for
+    This isolated snapshot is valid only on the date the member attains 55 for
     cohorts 2026/27; no accrued interest or past/future events are simulated.
     """
     try: birthday=date.fromisoformat(dob); today=date.fromisoformat(as_of)
     except (ValueError,TypeError): raise CPFUnsupportedCase('Valid ISO date of birth and as_of required')
-    if (today.year-birthday.year)!=55 or (today.month,today.day)!=(birthday.month,birthday.day):
+    if today != _attained_age_date(birthday, 55):
         raise CPFUnsupportedCase('Only an exact 55th-birthday snapshot is supported; cannot reconstruct historical balances')
     if today.year not in FRS_55:
         raise CPFUnsupportedCase('Only 2026 and 2027 55-year-old cohorts have verified FRS in this module')
