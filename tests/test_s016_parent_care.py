@@ -265,3 +265,11 @@ def test_cxui_d05_d09_static_copy_and_shell():
         assert source in html, symbol
     # Other destinations stay in-page: no new links besides the honest lab link.
     assert re.findall(r'<a href="(?!#)[^"]*"', html) == ['<a href="/"'] and '<a href="/">Back to RetirePilot lab</a>' in html
+
+
+def test_cxui_d05d09_d01_cap_copy_restored():
+    """CXUI-D05D09-D01: the UI cap message is the Designer-verified copy; the cap itself is unchanged."""
+    html = CLIENT.get('/sweelah').text
+    assert "too_large: 'Enter an amount up to S$100,000 a month.'," in html
+    assert 'no more than S$100,000' not in html
+    assert 'Number(amount) > 100000' in html

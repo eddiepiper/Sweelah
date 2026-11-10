@@ -73,7 +73,8 @@ def browser_server():
     'cxuifu2d01-guard', 'cxuifu2d01-guard-375',
     'qafu2d01l01-guard', 'qafu2d01l01-guard-375',
     'cxuid0509-copy', 'cxuid0509-copy-768', 'cxuid0509-copy-375',
-    'cxuid0509-nav', 'cxuid0509-nav-768', 'cxuid0509-nav-375', 'cxuid0509-art'])
+    'cxuid0509-nav', 'cxuid0509-nav-768', 'cxuid0509-nav-375', 'cxuid0509-art',
+    'cxuid0509d01-cap', 'cxuid0509d01-cap-375'])
 def test_s016_real_browser(browser_server, case):
     node, env, base = browser_server
     result = subprocess.run([node, str(ROOT / 'tests/browser/s016.cjs'), case, base],
