@@ -82,7 +82,7 @@ No push, PR, merge, force-push or amend. Synthetic dates only; no NRIC, CPF acco
 
 ## 8. Follow-up: SWEELAH-LEAPDOB-YEARCAP (QA G5 condition, 10 Nov 2026)
 
-QA G5 at `5452a46` (PASS with conditions) found that `_attained_age_date` still raised a bare `ValueError: year 10000 is out of range` when `born.year + age` exceeds 9999. The 29-Feb fallback `except ValueError` also constructs a date in that year, so the overflow leaked out. This is unreachable for the verified 2026/27 FRS cohorts, but it contradicted the earlier claim that every other refusal raised `CPFUnsupportedCase`.
+QA G5 at `5452a46` (PASS with conditions) found that `_attained_age_date` still raised a bare `ValueError: year 10000 is out of range` when `born.year + age` exceeds 9999. The 29-Feb fallback `except ValueError` also constructs a date in that year, so the overflow leaked out. The year-cap guard runs for any date of birth in year 9945 or later, not only 29 Feb, and it runs in `transition_at_55` before the 2026/27 cohort check. That contradicted the earlier claim that every other refusal raised `CPFUnsupportedCase`.
 
 **Fix.** The helper now checks the target year against `date.min.year` / `date.max.year` (1–9999) before constructing a date, and raises `CPFUnsupportedCase` with a clear message: `Attained-age calendar year is outside the supported date range (1-9999)`. The 29-Feb → 1-Mar fallback is unchanged for in-range years.
 
@@ -92,11 +92,17 @@ QA G5 at `5452a46` (PASS with conditions) found that `_attained_age_date` still 
 
 Red: `yearcap-red.log`, **2 failed, 19 passed**. Both failures are `ValueError: year 10005 is out of range` from the helper. Green: `yearcap-green.log`, **21 passed**.
 
+**HTTP.** No HTTP route reaches `transition_at_55` or this guard. The function has no caller in `retirepilot/` outside its own module; only tests import it. `CPFUnsupportedCase` from this module is not surfaced over HTTP.
+
+**`_anniversary` limitation.** `projection_v22._anniversary` has no year cap. A target year past 9999 raises a bare `ValueError` (`year N is out of range`). `/api/evaluate` already maps `ValueError` to HTTP 422, not 500. This is a known limitation, left to the follow-up that consolidates `_attained_age_date` into core.
+
 **Helper copy.** `_attained_age_date` is a verbatim copy of STAT-LEAPDOB's helper in `retirepilot/statutory_2026.py`, apart from the exception type (`CPFUnsupportedCase` here, `core.ValidationError` there).
 
 **Manifests.** `docs_release/RELEASE_MANIFEST_v2.7.json` and `docs_v26/VERIFICATION_MANIFEST_v26.json` still pin the old `cpf_retirement_v26.py` hash. That is being handled by SWEELAH-MANIFEST-PINS on a separate branch; this commit does not touch manifests.
 
 **Land order.** STAT-LEAPDOB, then #9 (`fix/issue-9-partial-month`), then CPF55, with no release in between. Consolidation of the three leap-day helpers follows after those merges.
+
+**QA merge check.** QA trial-merged `339ecea` → `de3a7bc` (#9) → `08317d8` onto main `823ef72`. The merge was clean (no conflicts), resulting tree `be24a6a`, pytest 912. That check was run by QA on a local trial branch; this commit does not merge.
 
 ### Suites re-run on this commit
 
