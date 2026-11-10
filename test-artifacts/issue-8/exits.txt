@@ -1,0 +1,6 @@
+pytest exit=0
+rules exit=1 without PYTHONPATH (ModuleNotFoundError, see rules-no-pythonpath.log); rules exit=0 with PYTHONPATH=.
+browser exit=0
+api exit=0 (unshare -rn, own :8769 inside namespace)
+release exit=0
+assets exit=0

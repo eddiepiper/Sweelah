@@ -1,0 +1,1222 @@
+{
+ "schema": "sweelah.scenario_mapping_internal/1",
+ "task": "SWEELAH-ISSUE-8",
+ "issue": "eddiepiper/Sweelah#8",
+ "as_of": "2026-11-10",
+ "validation_status": "INTERNAL_UNVALIDATED",
+ "external_validation": false,
+ "synthetic_only": true,
+ "phase_9": "NO_GO",
+ "label": "INTERNAL / UNVALIDATED. In-house engineering mapping, not externally validated, not domain-reviewed, no sign-off. Mapped does not mean implemented, golden-tested or approved; unsupported entries still fail closed and imply no effect.",
+ "coverage_levels": {
+  "mapped": "Engineering has recorded scope, engines, facts, guardrail, timing and conflicts.",
+  "implemented": "Runtime level: LIMITED_COMPONENT (v2.6 converter), LIMITED_PREVIEW / BLOCKED_PREVIEW (v2.7), or NOT_IMPLEMENTED_FAIL_CLOSED.",
+  "golden_tested": "Independent golden reference for the full event semantics. None exist.",
+  "domain_approved": "Qualified external domain review. None exist."
+ },
+ "sources": [
+  "data/scenario_contracts_v26.json",
+  "research/retirepilot_2026_11_04/scenario_engine_contracts_46.json",
+  "research/retirepilot_2026_11_04/financial_engine_contracts_18.json",
+  "research/retirepilot_2026_11_04/APPROVED_PRODUCT_DECISIONS_D08_D16.json",
+  "retirepilot/priority_scenarios_v27.py"
+ ],
+ "entries": [
+  {
+   "id": "S005",
+   "v26_name": "Delayed retirement",
+   "v26_category": "Employment",
+   "v26_execution_strategy": "RETIREMENT_GOAL_ONLY",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Shift planned stop-work age later; extend wages/CPF accrual by employment type",
+   "financial_engines": [
+    "F02",
+    "F03",
+    "F06",
+    "F14"
+   ],
+   "required_facts": [
+    "new_retirement_age"
+   ],
+   "guardrail": "No guarantee of employment continuation",
+   "timing_rule": "New retirement age must exceed the approved age; change applies from the month after the original stop-work month.",
+   "missing_data_behaviour": "Refuse without new_retirement_age and an existing approved retirement age.",
+   "incompatible_with": [
+    "S029"
+   ],
+   "applicable_decisions": [
+    "D08",
+    "D09",
+    "D10",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_COMPONENT",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_retirement_target_recalculated_only_by_explicit_input"
+   ],
+   "rationale": "Existing RETIREMENT_GOAL_ONLY converter moves the stop-work age only; full mapping adds F03/F06 CPF accrual, which is not implemented, so coverage stays a limited component."
+  },
+  {
+   "id": "S006",
+   "v26_name": "Return to work",
+   "v26_category": "Employment",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Insert dated new job stream and correct contribution scheme; leave CPF LIFE payments untouched absent official change",
+   "financial_engines": [
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F07"
+   ],
+   "required_facts": [
+    "rehiring_offer",
+    "effective_date",
+    "income",
+    "employer CPF"
+   ],
+   "guardrail": "Do not assume rehiring, salary or pension suspension",
+   "timing_rule": "Job stream starts on the verified effective_date (>= as_of) and only after the household member has stopped work.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S033",
+    "S046"
+   ],
+   "applicable_decisions": [
+    "D08",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs a new dated income stream plus employee/SEP/platform CPF recalculation (F03-F05); no safe component subset exists, so it stays fail-closed."
+  },
+  {
+   "id": "S012",
+   "v26_name": "Divorce",
+   "v26_category": "Family",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": "S012",
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Model separate households after documented separation dates and agreed financial obligations only",
+   "financial_engines": [
+    "F01",
+    "F02",
+    "F08",
+    "F12",
+    "F18"
+   ],
+   "required_facts": [
+    "asset_ownership",
+    "consent",
+    "legal_settlement",
+    "housing",
+    "dependants"
+   ],
+   "guardrail": "Block property division, maintenance, CPF or custody assumptions without actual terms",
+   "timing_rule": "Effects start only from a documented separation/settlement date; nothing is back-dated.",
+   "missing_data_behaviour": "Block: never infer property division, maintenance, CPF or custody without actual terms.",
+   "incompatible_with": [
+    "S013"
+   ],
+   "applicable_decisions": [
+    "D12",
+    "D15",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "BLOCKED_PREVIEW",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_approved_decisions_v27.py::test_divorce_requires_legal_and_consent_inputs_not_formula",
+    "tests/test_approved_decisions_v27.py::test_all_five_priorities_have_explicit_contract",
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Priority 5A item whose v2.7 entry deliberately always blocks; mapping to F01/F12/F18 records the facts a future engine needs without implying any effect."
+  },
+  {
+   "id": "S013",
+   "v26_name": "Widowhood",
+   "v26_category": "Family",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "On verified death event stop deceased income; introduce only confirmed survivors benefits, claims and estate receipts",
+   "financial_engines": [
+    "F01",
+    "F02",
+    "F07",
+    "F11",
+    "F18"
+   ],
+   "required_facts": [
+    "survivor_income",
+    "insurance",
+    "estate",
+    "household_consents"
+   ],
+   "guardrail": "Do not assume inheritance/insurance payouts, spouse CPF rights",
+   "timing_rule": "Applies from a verified date of death; survivor receipts start only on confirmed payment dates.",
+   "missing_data_behaviour": "Block: do not assume insurance, estate or survivor CPF payments.",
+   "incompatible_with": [
+    "S012"
+   ],
+   "applicable_decisions": [
+    "D12",
+    "D15",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Requires verified survivor income, claims and estate data across F07/F11/F18; nothing can be computed from defaults, so fail-closed."
+  },
+  {
+   "id": "S014",
+   "v26_name": "New child/dependant",
+   "v26_category": "Family",
+   "v26_execution_strategy": "RECURRING_COST_COMPONENT",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Introduce dated newborn/dependant recurring and one-time costs, medical and education",
+   "financial_engines": [
+    "F02",
+    "F12",
+    "F17"
+   ],
+   "required_facts": [
+    "extra_monthly",
+    "start_year",
+    "duration_years"
+   ],
+   "guardrail": "Benefits and grants conditional until confirmed",
+   "timing_rule": "start_year >= as_of year; duration_years 1-50; cost applies monthly within that window.",
+   "missing_data_behaviour": "Refuse without a positive user-supplied extra_monthly.",
+   "incompatible_with": [],
+   "applicable_decisions": [
+    "D12",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_COMPONENT",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_cost_subcomponent_requires_user_value"
+   ],
+   "rationale": "Cost-only recurring component already exists; benefits/grants (F17) stay excluded from baseline per D12, so it remains a limited component."
+  },
+  {
+   "id": "S015",
+   "v26_name": "Adult child support",
+   "v26_category": "Family",
+   "v26_execution_strategy": "RECURRING_COST_COMPONENT",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Add timed adult-child support; distinguish loan vs grant and one-time vs recurring",
+   "financial_engines": [
+    "F02",
+    "F12",
+    "F14"
+   ],
+   "required_facts": [
+    "extra_monthly",
+    "start_year",
+    "duration_years"
+   ],
+   "guardrail": "Avoid implied permanent support or double counting",
+   "timing_rule": "start_year >= as_of year; duration_years 1-50; one-time vs recurring must be chosen explicitly.",
+   "missing_data_behaviour": "Refuse without a positive user-supplied extra_monthly.",
+   "incompatible_with": [
+    "S044"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_COMPONENT",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_cost_subcomponent_requires_user_value"
+   ],
+   "rationale": "Recurring-cost component covers cash support; incompatible with S044 for the same transfer to avoid double counting (D16)."
+  },
+  {
+   "id": "S019",
+   "v26_name": "Property-value decline",
+   "v26_category": "Housing",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Update property fair value and secured-equity estimate, leave cash and loan principal unchanged",
+   "financial_engines": [
+    "F08",
+    "F14",
+    "F16"
+   ],
+   "required_facts": [
+    "specific_property_id",
+    "valuation",
+    "ownership",
+    "mortgage"
+   ],
+   "guardrail": "Loss of net worth is not immediate cash outflow",
+   "timing_rule": "Revaluation dated at a user-supplied valuation date; no cash flow is created.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S020",
+    "S022"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D14",
+    "D15",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "A net-worth/LTV change, not a cash outflow; the current projection has no per-property equity ledger (F08), so it fails closed."
+  },
+  {
+   "id": "S020",
+   "v26_name": "Downsizing",
+   "v26_category": "Housing",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": "S020",
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Sale proceeds less settlement/fees/CPF refund; separate OA/RA credits; replacement purchase, duties, bridge, new loan flows",
+   "financial_engines": [
+    "F08",
+    "F06",
+    "F02",
+    "F14"
+   ],
+   "required_facts": [
+    "sale_price",
+    "CPF_refund",
+    "replacement_home",
+    "stamp_duty",
+    "moving_cost"
+   ],
+   "guardrail": "CPF refunds are not available cash; eligibility and timing must be confirmed",
+   "timing_rule": "Sale completion date and replacement purchase date must both be supplied; CPF refund is credited at completion, not as spendable cash.",
+   "missing_data_behaviour": "Refuse without member-transcribed official CPF property refund; show deficit rather than affordability when financing is needed (D11).",
+   "incompatible_with": [
+    "S019",
+    "S022"
+   ],
+   "applicable_decisions": [
+    "D08",
+    "D09",
+    "D10",
+    "D11",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_PREVIEW",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_approved_decisions_v27.py::test_downsize_requires_official_cpf_refund",
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Priority 5A item with a v2.7 cash-arithmetic preview that may not post to the projection; the full F08/F06 waterfall is not implemented."
+  },
+  {
+   "id": "S022",
+   "v26_name": "Lease monetisation",
+   "v26_category": "Housing",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Use official scheme eligibility and quote, including lease, RA and proceeds, then model dated receipts",
+   "financial_engines": [
+    "F08",
+    "F06",
+    "F07",
+    "F14"
+   ],
+   "required_facts": [
+    "HDB_eligibility",
+    "lease_age",
+    "official_quote",
+    "CPF_refund"
+   ],
+   "guardrail": "No estimated HDB Lease Buyback entitlement",
+   "timing_rule": "Receipts dated from an official scheme quote; lease and RA effects follow the quoted dates only.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S020",
+    "S019"
+   ],
+   "applicable_decisions": [
+    "D08",
+    "D09",
+    "D10",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Depends on official HDB eligibility and quote; no estimate is permitted, so it fails closed."
+  },
+  {
+   "id": "S025",
+   "v26_name": "Low real returns",
+   "v26_category": "Investments",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Apply real-return sensitivity to explicit nominal return and inflation paths per asset",
+   "financial_engines": [
+    "F10",
+    "F14",
+    "F16"
+   ],
+   "required_facts": [
+    "return_path_by_asset",
+    "inflation_path",
+    "market_timing"
+   ],
+   "guardrail": "Do not subtract inflation twice",
+   "timing_rule": "Explicit per-year nominal return and inflation paths; each year applied once.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S024",
+    "S026",
+    "S028"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D14",
+    "D15",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs per-asset return and inflation paths (F10); a global override would double-subtract inflation alongside S028, so it fails closed."
+  },
+  {
+   "id": "S026",
+   "v26_name": "Poor early withdrawal returns",
+   "v26_category": "Investments",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Apply ordered path of early losses and withdrawals; recompute end capital and reserve",
+   "financial_engines": [
+    "F10",
+    "F14",
+    "F16"
+   ],
+   "required_facts": [
+    "withdrawal_timing",
+    "asset_class_returns",
+    "return_sequence"
+   ],
+   "guardrail": "Sequence of returns matters, not just average return",
+   "timing_rule": "Ordered, dated return path applied before/after each withdrawal consistently.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S024",
+    "S025"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D14",
+    "D15",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Sequence-of-returns risk requires a time-indexed portfolio path (F10/F14) that does not exist yet; fail-closed."
+  },
+  {
+   "id": "S027",
+   "v26_name": "Concentrated stock loss",
+   "v26_category": "Investments",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Apply shock to named concentrated holding and denominator of total portfolio",
+   "financial_engines": [
+    "F10",
+    "F14",
+    "F16"
+   ],
+   "required_facts": [
+    "holding_id",
+    "holding_value",
+    "loss_rate",
+    "portfolio_allocation"
+   ],
+   "guardrail": "Not a shock to entire investments",
+   "timing_rule": "Shock dated to a single holding at a user-supplied date.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S024"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D14",
+    "D15",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs holding-level portfolio detail; reusing market_crash would wrongly shock the whole portfolio, so it fails closed."
+  },
+  {
+   "id": "S029",
+   "v26_name": "Earlier retirement",
+   "v26_category": "CPF and retirement",
+   "v26_execution_strategy": "RETIREMENT_GOAL_ONLY",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Move wage stop date earlier; recompute contributions and explicit liquidity bridge to official payout age",
+   "financial_engines": [
+    "F02",
+    "F03",
+    "F06",
+    "F07",
+    "F14"
+   ],
+   "required_facts": [
+    "new_retirement_age"
+   ],
+   "guardrail": "CPF LIFE start not moved earlier by early employment exit",
+   "timing_rule": "New retirement age must be below the approved age; CPF LIFE start age is not moved.",
+   "missing_data_behaviour": "Refuse without new_retirement_age and an existing approved retirement age.",
+   "incompatible_with": [
+    "S005"
+   ],
+   "applicable_decisions": [
+    "D08",
+    "D09",
+    "D10",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_COMPONENT",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_retirement_target_recalculated_only_by_explicit_input",
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_incomplete_retirement_scenario_blocked"
+   ],
+   "rationale": "Existing converter moves the stop-work age only; liquidity bridge (F14) and CPF effects (F03/F06/F07) are not implemented, so limited component."
+  },
+  {
+   "id": "S030",
+   "v26_name": "Payout deferral",
+   "v26_category": "CPF and retirement",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": "S030",
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Compare separate member-provided official payout scenarios from 65/70 and bridging cash needs",
+   "financial_engines": [
+    "F07",
+    "F14",
+    "F16"
+   ],
+   "required_facts": [
+    "official_CPF_LIFE_estimate_65_70",
+    "start_age"
+   ],
+   "guardrail": "No automatic best-age advice or generic uplift as personal quote",
+   "timing_rule": "Compare two member-transcribed official estimates dated with their as-of date; no break-even.",
+   "missing_data_behaviour": "Refuse unless estimate_source is a member-transcribed official CPF estimate (D-002).",
+   "incompatible_with": [
+    "S032"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D14",
+    "D15",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_PREVIEW",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_approved_decisions_v27.py::test_payout_timing_never_infers_cpf_amounts",
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Priority 5A item with a v2.7 comparison-only preview; no actuarial or lifetime calculation, so limited preview."
+  },
+  {
+   "id": "S031",
+   "v26_name": "Voluntary top-up",
+   "v26_category": "CPF and retirement",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Reallocate confirmed available cash/OA to RA under verified limits; revise payout only with new official member estimate",
+   "financial_engines": [
+    "F06",
+    "F07",
+    "F14"
+   ],
+   "required_facts": [
+    "source_account",
+    "RA_topup_allowance",
+    "verified_cash_availability"
+   ],
+   "guardrail": "Do not award assumed tax relief or payout increase",
+   "timing_rule": "Top-up dated at transfer; payout change only from a new official member estimate.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [],
+   "applicable_decisions": [
+    "D08",
+    "D09",
+    "D10",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs verified RA limits and account transfers on the F06 ledger plus a fresh F07 estimate; fail-closed."
+  },
+  {
+   "id": "S032",
+   "v26_name": "Pre-payout funding bridge",
+   "v26_category": "CPF and retirement",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Calculate dated cash bridge until actual member-provided payout start; report reserve exhaustion",
+   "financial_engines": [
+    "F07",
+    "F14"
+   ],
+   "required_facts": [
+    "cash_bridge_horizon",
+    "essential_expenses",
+    "official_payout_start"
+   ],
+   "guardrail": "Cannot withdraw restricted CPF to plug deficit",
+   "timing_rule": "Bridge runs from stop-work date to the member-provided official payout start date.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S030"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs dated cash drawdown and reserve logic (F14, D09); restricted CPF can never fill the gap, so fail-closed until built."
+  },
+  {
+   "id": "S033",
+   "v26_name": "Contribution interruption",
+   "v26_category": "CPF and retirement",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Suspend contributor-specific CPF postings for verified months; recompute full cash/payroll interactions",
+   "financial_engines": [
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+   ],
+   "required_facts": [
+    "affected_CPF_income",
+    "contribution_months",
+    "residency_cohort"
+   ],
+   "guardrail": "Never assume CPF contributions continue after income stops",
+   "timing_rule": "Suspends contributions only for the verified months of the affected income stream.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S006"
+   ],
+   "applicable_decisions": [
+    "D08",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs contributor-specific CPF posting and allocation (F03-F06); never assume contributions continue, so fail-closed."
+  },
+  {
+   "id": "S035",
+   "v26_name": "Disability-related cost shock",
+   "v26_category": "Health and care",
+   "v26_execution_strategy": "RECURRING_COST_COMPONENT",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Separate disabled-person spending, reduced wages and confirmed benefits into distinct dated streams",
+   "financial_engines": [
+    "F02",
+    "F11",
+    "F12",
+    "F14"
+   ],
+   "required_facts": [
+    "extra_monthly",
+    "start_year",
+    "duration_years"
+   ],
+   "guardrail": "Do not infer disability-benefit eligibility",
+   "timing_rule": "start_year >= as_of year; duration_years 1-50; cost applies monthly within that window.",
+   "missing_data_behaviour": "Refuse without a positive user-supplied extra_monthly.",
+   "incompatible_with": [
+    "S036"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D12",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_COMPONENT",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_cost_subcomponent_requires_user_value"
+   ],
+   "rationale": "Cost component exists; income disruption (F02) and benefits (F11/F17) are separate and unimplemented; overlapping S036 care cost would double count."
+  },
+  {
+   "id": "S038",
+   "v26_name": "Retire overseas",
+   "v26_category": "Cross-border",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Combine location-specific cost, FX, foreign pensions, residency/tax status and healthcare",
+   "financial_engines": [
+    "F09",
+    "F13",
+    "F14",
+    "F15"
+   ],
+   "required_facts": [
+    "jurisdiction",
+    "residence_status",
+    "expenses",
+    "taxes",
+    "FX",
+    "healthcare"
+   ],
+   "guardrail": "Block jurisdiction-specific unsupported rules",
+   "timing_rule": "Relocation dated from a user-supplied move date; jurisdiction rules apply only from then.",
+   "missing_data_behaviour": "Block jurisdiction-specific rules that are not sourced (D13).",
+   "incompatible_with": [
+    "S040"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D13",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Cross-border tax, healthcare, residency and FX (F09/F13/F15) are unsupported, so fail-closed."
+  },
+  {
+   "id": "S039",
+   "v26_name": "Exchange-rate movement",
+   "v26_category": "Cross-border",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Revalue each foreign-currency asset, liability and recurring receipt using dated FX path",
+   "financial_engines": [
+    "F10",
+    "F13",
+    "F14",
+    "F15"
+   ],
+   "required_facts": [
+    "currency",
+    "FX_path",
+    "foreign_assets",
+    "liabilities"
+   ],
+   "guardrail": "Do not treat unrealised FX change as cash realised",
+   "timing_rule": "Each foreign exposure revalued on a dated FX path; unrealised changes are not cash.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D13",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs explicit currency amounts and dated FX rates (F15); fail-closed."
+  },
+  {
+   "id": "S040",
+   "v26_name": "Repatriation",
+   "v26_category": "Cross-border",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "End offshore and start onshore incomes/costs with relocation expenses and tax residency changes",
+   "financial_engines": [
+    "F09",
+    "F13",
+    "F14",
+    "F15"
+   ],
+   "required_facts": [
+    "residence_history",
+    "relocation_costs",
+    "tax_domicile",
+    "FX"
+   ],
+   "guardrail": "Residency rights and tax effects must be documented",
+   "timing_rule": "Offshore streams end and onshore streams start on a documented return date.",
+   "missing_data_behaviour": "Block until residency and tax effects are documented (D13).",
+   "incompatible_with": [
+    "S038"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D13",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Cross-border law and verified flows required; fail-closed."
+  },
+  {
+   "id": "S041",
+   "v26_name": "Foreign pension change",
+   "v26_category": "Cross-border",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Enter verified foreign pension gross/net and indexation rules with FX and withholding",
+   "financial_engines": [
+    "F09",
+    "F13",
+    "F15"
+   ],
+   "required_facts": [
+    "foreign_pension_currency",
+    "indexation",
+    "source",
+    "taxes"
+   ],
+   "guardrail": "No unverified foreign pension entitlement",
+   "timing_rule": "Change applies from the pension provider's documented effective date.",
+   "missing_data_behaviour": "Block: no unverified foreign pension entitlement (D13).",
+   "incompatible_with": [],
+   "applicable_decisions": [
+    "D13",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs verified foreign pension terms with FX and withholding (F13/F15); fail-closed."
+  },
+  {
+   "id": "S042",
+   "v26_name": "Inheritance",
+   "v26_category": "Wealth and legacy",
+   "v26_execution_strategy": "NET_CASH_RECEIPT_COMPONENT",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Post confirmed net inheritance receipt after probate, costs and actual ownership transfer",
+   "financial_engines": [
+    "F13",
+    "F14",
+    "F18"
+   ],
+   "required_facts": [
+    "net_received_once",
+    "start_year"
+   ],
+   "guardrail": "Pending estate is not available cash",
+   "timing_rule": "Posted once in start_year after probate and actual transfer; pending estate is not cash.",
+   "missing_data_behaviour": "Refuse without a positive confirmed net_received_once; excluded from baseline (D12).",
+   "incompatible_with": [],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D12",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_COMPONENT",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_inheritance_only_user_confirmed_net_cash_receipt"
+   ],
+   "rationale": "Net cash receipt component exists; entitlement, probate and tax are out of scope, so limited component."
+  },
+  {
+   "id": "S043",
+   "v26_name": "Business sale",
+   "v26_category": "Wealth and legacy",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Book verified sale proceeds after debt/fees and stop business earnings/equity upon closing",
+   "financial_engines": [
+    "F02",
+    "F09",
+    "F13",
+    "F14",
+    "F18"
+   ],
+   "required_facts": [
+    "sale_net",
+    "liabilities",
+    "owner_shares",
+    "future_business_income"
+   ],
+   "guardrail": "Avoid double-counting business value and sale proceeds",
+   "timing_rule": "Proceeds booked at verified completion; business income and equity stop the same date.",
+   "missing_data_behaviour": "Refuse (fail closed) until every required fact is user-supplied or member-transcribed from an official source; unknown is never zero.",
+   "incompatible_with": [
+    "S046"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D12",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Needs net proceeds, liabilities and earnings cessation (F02/F09/F18); avoid double counting value and proceeds, so fail-closed."
+  },
+  {
+   "id": "S044",
+   "v26_name": "Major gift to children",
+   "v26_category": "Wealth and legacy",
+   "v26_execution_strategy": "NET_CASH_GIFT_COMPONENT",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Reduce spendable liquid assets on dated cash gift, reflect other household only when ownership known",
+   "financial_engines": [
+    "F14",
+    "F18"
+   ],
+   "required_facts": [
+    "net_cash_gift_once",
+    "start_year"
+   ],
+   "guardrail": "Do not gift restricted CPF balances",
+   "timing_rule": "Posted once in start_year from liquid assets; restricted CPF can never be gifted.",
+   "missing_data_behaviour": "Refuse without a positive net_cash_gift_once.",
+   "incompatible_with": [
+    "S015"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D12",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "LIMITED_COMPONENT",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_gift_depletes_cash_and_is_not_tax_eligibility"
+   ],
+   "rationale": "Cash gift outflow component exists; recipient-household effects only when ownership is known, so limited component."
+  },
+  {
+   "id": "S046",
+   "v26_name": "Business failure",
+   "v26_category": "Wealth and legacy",
+   "v26_execution_strategy": "NOT_SAFE_TO_COMPILE",
+   "v27_priority_preview": null,
+   "previous_status": "UNMAPPED",
+   "mapping_status": "MAPPED_INTERNAL",
+   "validation_status": "INTERNAL_UNVALIDATED",
+   "external_validation": false,
+   "mapped_by": "Engineering Lead (in-house)",
+   "semantic_scope": "Cease business revenue, write down business equity, include documented personal guarantees/liabilities",
+   "financial_engines": [
+    "F02",
+    "F09",
+    "F13",
+    "F14",
+    "F18"
+   ],
+   "required_facts": [
+    "business_debt",
+    "liability_guarantees",
+    "income_history",
+    "personal_exposure"
+   ],
+   "guardrail": "Do not automatically transfer company debt to individual",
+   "timing_rule": "Revenue stops at a documented closure date; personal exposure only for documented guarantees.",
+   "missing_data_behaviour": "Block: company debt is never automatically transferred to the individual.",
+   "incompatible_with": [
+    "S043",
+    "S006"
+   ],
+   "applicable_decisions": [
+    "D09",
+    "D10",
+    "D12",
+    "D16"
+   ],
+   "coverage": {
+    "mapped": true,
+    "implemented": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "golden_tested": false,
+    "domain_approved": false
+   },
+   "component_tests": [
+    "tests/test_cpf_and_scenario_contracts_v26.py::test_unimplemented_events_do_not_silently_run"
+   ],
+   "rationale": "Liabilities, guarantees and income must be documented together (F02/F18); fail-closed."
+  }
+ ]
+}
