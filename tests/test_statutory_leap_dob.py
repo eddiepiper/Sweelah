@@ -184,3 +184,45 @@ def test_attained_age_dates_agree_with_age_on_for_29_feb():
         assert following == prior + 1
         assert age_on(dob, expected) == age
         assert age_on(dob, expected - timedelta(days=1)) == age - 1
+
+def test_attained_age_date_refuses_calendar_year_past_9999():
+    """Years past datetime.date's 9999 limit must be a controlled refusal.
+
+    Synthetic far-future dates only. date(year+age, ...) raises a bare
+    ValueError once the result year exceeds 9999; that must not leak out
+    of the helper. 9945-02-29 is not a real date (9945 is not a leap year).
+    """
+    from retirepilot.core import ValidationError
+    from retirepilot.statutory_2026 import _attained_age_date
+
+    # 9950-01-15 + 55 = year 10005, past the calendar limit.
+    with pytest.raises(ValidationError, match="outside the supported date range") as exc:
+        _attained_age_date(date(9950, 1, 15), 55)
+    assert type(exc.value) is ValidationError
+
+    # 9944-02-29 is a real leap-day DOB near the limit; age 56 lands on year 10000.
+    with pytest.raises(ValidationError, match="outside the supported date range") as exc:
+        _attained_age_date(date(9944, 2, 29), 56)
+    assert type(exc.value) is ValidationError
+
+
+def test_attained_age_date_9944_feb29_age_55_still_falls_on_1_mar_of_9999():
+    """The last in-range 29-Feb / age-55 anniversary still uses the 1-Mar rule."""
+    from retirepilot.statutory_2026 import _attained_age_date
+
+    # 9944 + 55 = 9999, a common year, so the attained-age date is 9999-03-01.
+    assert _attained_age_date(date(9944, 2, 29), 55) == date(9999, 3, 1)
+
+
+def test_band_index_refuses_dob_whose_cutoff_year_exceeds_9999():
+    """Callers of _band_index must see ValidationError, not a bare ValueError."""
+    from retirepilot.core import ValidationError
+
+    with pytest.raises(ValidationError, match="outside the supported date range") as exc:
+        _band_index("9950-01-15", 2026, 1, EMPLOYEE_CUTOFFS)
+    assert type(exc.value) is ValidationError
+
+    # Leap-day DOB whose age-55 year is already past 9999 (9948+55=10003).
+    with pytest.raises(ValidationError, match="outside the supported date range") as exc:
+        _band_index("9948-02-29", 2026, 1, EMPLOYEE_CUTOFFS)
+    assert type(exc.value) is ValidationError

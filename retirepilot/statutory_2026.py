@@ -7,7 +7,7 @@ into the household cash-flow forecast. Values are not payment instructions.
 from __future__ import annotations
 from datetime import date
 from decimal import Decimal, ROUND_FLOOR, ROUND_HALF_UP
-from .core import dec, money, age_on
+from .core import dec, money, age_on, ValidationError
 
 SOURCE_EMPLOYEE_2026='https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay'
 SOURCE_EMPLOYEE_2027='https://www.cpf.gov.sg/service/article/what-are-the-changes-to-the-cpf-contribution-rates-for-senior-workers-that-will-take-effect-from-1-january-2027'
@@ -44,12 +44,18 @@ def _attained_age_date(born: date, age: int) -> date:
     convention (Phase 7 external review skipped): a 29-Feb person attains the
     new age on 1 Mar in a common year, matching core.age_on.
     """
+    year = born.year + age
+    if year < date.min.year or year > date.max.year:
+        raise ValidationError(
+            'Attained-age calendar year is outside the supported date range '
+            f'({date.min.year}-{date.max.year})'
+        )
     try:
-        return date(born.year + age, born.month, born.day)
+        return date(year, born.month, born.day)
     except ValueError:
         # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
         # first day the new age is attained.
-        return date(born.year + age, 3, 1)
+        return date(year, 3, 1)
 
 
 def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:

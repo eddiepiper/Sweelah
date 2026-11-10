@@ -92,5 +92,5 @@ PASS S016 browser accessibility (Chromium 156.0.8078.47)
 .PASS S016 browser cxuid0509d01-cap-375 (Chromium 156.0.8078.47)
 
 .
-46 passed in 78.01s (0:01:18)
+46 passed in 88.03s (0:01:28)
 EXIT:0

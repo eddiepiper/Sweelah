@@ -4,7 +4,7 @@
 **Worktree:** `/workspace/sweelah-stat-leapdob`  
 **Branch:** `fix/statutory-leap-dob` (no upstream; not pushed)  
 **Parent:** `823ef724cdcf5dfada91a895a51baa60fd6c41ec` (`origin/main`, confirmed)  
-**Status:** Implemented but unverified (G5 not started). Do not push, amend, rebase, or open a PR.
+**Status:** Implemented but unverified. G5 at `e9b7509` was PASS with conditions; report wording was corrected at `cde5c9f`. This follow-up (`SWEELAH-LEAPDOB-YEARCAP`) is a new commit on top of `cde5c9f`. Do not push, amend, rebase, or open a PR.
 
 ## 1. Root cause
 
@@ -96,3 +96,35 @@ This branch must land **back to back with #9** (`fix/issue-9-partial-month`), **
 ## 8. Constraints observed
 
 No push, PR, merge, force-push or amend. Synthetic dates only; no NRIC, CPF account, bank or real user data; no secrets; no paid services or deploys; no Supermemory or connectors. Existing named worktrees (including `sweelah-issue-8`, `sweelah-issue-9`, `sweelah-cxui-*`, `sweelah-qa-*`, `/workspace/sweelah`, `eng-onb-*`) were left untouched. Previews on 8769–8773 were not stopped. No preview was required on 8776.
+
+## 9. Follow-up: SWEELAH-LEAPDOB-YEARCAP (QA G5 condition, 10 Nov 2026)
+
+The same helper overflow QA found on CPF55 exists here. `_attained_age_date` raised a bare `ValueError: year 10000 is out of range` when `born.year + age` exceeds 9999, because the 29-Feb fallback `except ValueError` also constructs a date in that year. A 29-Feb DOB near the limit, for example `9944-02-29` at age 56, hit the same path.
+
+**Fix.** The helper now checks the target year against `date.min.year` / `date.max.year` (1–9999) before constructing a date, and raises `core.ValidationError` with a clear message: `Attained-age calendar year is outside the supported date range (1-9999)`. The 29-Feb → 1-Mar fallback is unchanged for in-range years.
+
+**Why `ValidationError`.** `statutory_2026` has no `CPFUnsupportedCase` (that type lives in `cpf_retirement_v26`). Unsupported monetary cases in this module usually return a `_blocked` dict (`status: requires_review`), but `_attained_age_date` must return a `date` and `_band_index` must return an int, so a dict cannot be used at the helper. `core.ValidationError` is the engine's existing validation / unsupported-input exception. `policy.py` and `service.evaluate` already let it propagate, and `POST /api/evaluate` already maps `ValueError` (and therefore `ValidationError`) to HTTP 422, so callers get a 4xx with a clear message rather than a 500 or a bare `year 10000 is out of range`.
+
+**Helper copy.** This `_attained_age_date` and the copy in CPF55 (`retirepilot/cpf_retirement_v26.py` on `fix/cpf55-leap-dob`) are verbatim copies of each other, apart from the exception type (`ValidationError` here, `CPFUnsupportedCase` there).
+
+**Tests** (written first) in `tests/test_statutory_leap_dob.py`:
+- `9950-01-15` at age 55 (year 10005) and the leap-day DOB `9944-02-29` at age 56 (year 10000) raise `ValidationError`, not a bare `ValueError`, both on the helper and via `_band_index` (the public-path leap-day case is `9948-02-29`).
+- `9944-02-29` at age 55, the last in-range 29-Feb / age-55 anniversary, still returns `9999-03-01`.
+
+Red: `yearcap-red.log`, **2 failed, 28 passed**. Both failures are `ValueError: year 10005 is out of range` from the helper. Green: `yearcap-green.log`, **30 passed**.
+
+### Suites re-run on this commit
+
+All runs used `/workspace/sweelah-baseline-venv` (Python 3.13.5) with `PYTHONPATH=.` in this worktree. Host previews on ports 8769–8773 were left running.
+
+| Suite | Result | Log |
+|---|---|---|
+| Year-cap tests, red | 2 failed, 28 passed | `yearcap-red.log` |
+| Year-cap tests, green | **30 passed** | `yearcap-green.log` |
+| `pytest -q -rs --ignore=tests/test_s016_browser.py` | **805 passed**, 0 failed, 1 dependency deprecation warning | `pytest.log` |
+| Browser `tests/test_s016_browser.py -q -s` with `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` (real Chromium 156.0.8078.47) | **46 passed**; `axe WCAG checks PASS` | `browser.log` |
+| Combined pytest + browser | **851 passed** (821 on main + 30 on this branch) | — |
+| Rule contracts `audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `rules.log` |
+| API `audit/run_api_checks.py` | **PASS 20/20**, run under `unshare -rn` with loopback up (its own :8769 inside the namespace; host previews 8769–8773 untouched) | `api.log` |
+| Release documents `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `release.log` |
+| Design assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
