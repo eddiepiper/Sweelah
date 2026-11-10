@@ -1,0 +1,2 @@
+release_exit=0
+pytest_exit=0
