@@ -234,10 +234,10 @@ Interpretation decisions:
   In `precision`/`mobile375`, `1e-3` was dropped from the precision list (now numeric,
   covered by `cxuifu-exponent`), and the `1e2` success row became `100`.
 
-Follow-ups (not built): full SweeLah navigation and Swee artwork (D09). D05 residual
+Follow-ups (not built at the time): full SweeLah navigation and Swee artwork (D09). D05 residual
 copy (“Practice mode: use made-up numbers…”, Swee's “illustrative total”) was not in
 this assignment. The non-interactive “Life Line → Care for family” trail is part of
-the nav work.
+the nav work. All three were later closed in the CXUI-001-D05/D09 section below.
 
 Evidence (uncommitted): `test-artifacts/cxui-001-followup/` holds suite logs, the red-phase
 log, 1280px and 375px screenshots, heading geometry and 8 axe reports (0 violations).
@@ -306,3 +306,33 @@ Interpretation decisions:
 The new cases fail against `411a868` (the first leading-zero forgery renders a result) and pass
 with this change. Evidence (uncommitted): `test-artifacts/qa-fu2d01-l01/` (red-phase log,
 suite logs, screenshots, axe reports).
+
+## CXUI-001-D05 residual copy and CXUI-001-D09 SweeLah shell (Sponsor t102u)
+
+Status: **Verified** locally by the automated checks below; independent QA (G5) and
+designer (G5X) re-verification are still pending. Branch `fix/cxui-d05-d09` from
+`60c759e` (PR 20 merge). Only `retirepilot/s016.html`, the S016 tests and this document
+change. `retirepilot/api.py`, `core.py`, `ui.html`, `data/`, the API response, the
+dashboard at `/` and every file under `design/sweelah/` are unchanged.
+
+| Item | Change (`retirepilot/s016.html`) | Proving case/test |
+|---|---|---|
+| CXUI-001-D05 (residual) | Header now reads “Practice mode: use made-up numbers, not your real finances.” Intro ends “Use made-up numbers, not your real finances.” Swee now says “…to explore a different total.” No “synthetic figures” or “illustrative total” remain. The limitations notice is unchanged (subsidies and grants, CareShield LIFE, MediSave, lost pay or unpaid leave, not financial advice, no inflation) and “entitlement” stays removed. | `cxuid0509-copy`, `-768`, `-375` (exact header/intro/Swee text on setup, result and after “Change my numbers”; old wording absent from page source and visible text; notice complete; no overflow; axe); updated `cxui-d05`; `test_cxui_d05_d09_static_copy_and_shell` |
+| CXUI-001-D09 (deferred nav and artwork) | SweeLah shell from the preserved design: a “Main navigation” bar with Home, Life Line, Ask Swee and My Moves (labels and order from `DESIGN_TOKENS.json`, icons copied verbatim from `SweeLah_Main_Dashboard_Prototype.html`). Life Line has `aria-current="page"`. The trail is a real breadcrumb (`nav` “Breadcrumb”, `ol`) with “Care for family” as `aria-current="page"`. Home, Ask Swee and My Moves are not built in this app. They show an in-page “<item> isn't available in this preview” panel with Swee and a “Back to Care for family” button. They never navigate, so they never reach `/` or a 404. Answers and results are kept, and focus moves to the panel heading, then back to the page title. The Swee otter (Talk to Swee reply and the unavailable panel) and the Singapore city illustration are the prototype's inline SVG symbols, copied byte-for-byte. “Back to RetirePilot lab” still opens `/` and is still the only link out. Tokens are unchanged (#1C806E green on the current nav item, button and links). | `cxuid0509-nav`, `-768`, `-375` (labels/order, current item, breadcrumb, ≥44px targets, Tab order lab → 4 nav items → cost field, Enter opens each unavailable state with no URL change and no `/` or 404 request, keyboard return, answers kept, result survives a round trip, lab link → `/`, axe); `cxuid0509-art` (symbols equal the prototype's, artwork rendered at 1280/768/375 in setup, result and Swee states, computed #1C806E, nav inside the viewport, no horizontal overflow, unavailable state, error heading margin-top 0, aligned bullets, axe); updated `cxui-d09`; `test_cxui_d05_d09_static_copy_and_shell` |
+
+Interpretation decisions:
+- Artwork is inlined as the prototype's own SVG symbols (`swee-otter`, `swee-city`,
+  `ic-home`, `ic-route`, `ic-chat`, `ic-list`). The hashed PNG/WebP assets are not served
+  by `api.py`, which is out of scope, so no design files were added and the manifest is untouched.
+  The prototype's cloud and train animations aren't carried over: the shell is static and
+  respects reduced motion.
+- The nav sits as a top bar under the header at every width (the prototype's phone
+  bottom bar is a phone-frame pattern). On an unavailable state the clicked item becomes
+  current, so screen readers hear where they are. Life Line or the button returns.
+- The breadcrumb's “Life Line” is plain text: no Life Line overview exists in this app, so
+  it isn't made into a link. Its current item and the current nav item make the trail meaningful.
+- The `cxui-d05` assertion that expected “synthetic figures only” now expects the new
+  practice-mode header. `cxui-d09` uses the first `.eyebrow` because the unavailable panel adds one.
+
+New cases fail against `60c759e` (9 failed) and pass with this change (red-phase log in
+the evidence folder). Evidence (uncommitted): `test-artifacts/cxui-d05-d09/`.

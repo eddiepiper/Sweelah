@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [mode, base] = process.argv.slice(2);
-const output = path.resolve(__dirname, mode.startsWith('qafu2d01l01-') ? '../../test-artifacts/qa-fu2d01-l01' : mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
+const output = path.resolve(__dirname, mode.startsWith('cxuid0509-') ? '../../test-artifacts/cxui-d05-d09' : mode.startsWith('qafu2d01l01-') ? '../../test-artifacts/qa-fu2d01-l01' : mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
 const monthsLabel = 'For how many months?';
 (async () => {
@@ -18,7 +18,7 @@ const monthsLabel = 'For how many months?';
   }
   try {
     if (mode === 'probe') { console.log('Chromium ' + browser.version()); return; }
-    const page = await browser.newPage({viewport:(mode==='mobile375'||mode==='cxui-mobile375'||mode.endsWith('-375'))?{width:375,height:844}:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
+    const page = await browser.newPage({viewport:(mode==='mobile375'||mode==='cxui-mobile375'||mode.endsWith('-375'))?{width:375,height:844}:mode.endsWith('-768')?{width:768,height:1024}:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
     const errors=[];
     page.on('pageerror', e=>errors.push(e.message));
     await page.route('**/*', route => new URL(route.request().url()).origin===base ? route.continue() : route.abort());
@@ -73,7 +73,9 @@ const monthsLabel = 'For how many months?';
       assert.doesNotMatch(await page.locator('body').innerText(),/Illustrative scenario setup|household projection|research dashboard|Synthetic-only|Local preview|Single user/i);
       await fill('1200','12');await preview();
       assert.doesNotMatch(await page.locator('body').innerText(),/household projection|Limited preview|Illustrative scenario setup/i);
-      assert.match(await page.locator('body').innerText(),/synthetic figures only/i);
+      // CXUI-001-D05 residual: the practice safeguard is kept, in the Designer's plain wording.
+      assert.ok((await page.locator('header').innerText()).includes('Practice mode: use made-up numbers, not your real finances.'));
+      assert.doesNotMatch(await page.locator('body').innerText(),/synthetic figures|illustrative total/i);
     } else if (mode==='cxui-d06'||mode==='cxui-mapping') {
       await fill('1200','12');
       const cases=mode==='cxui-d06'?[500,403,'abort']:[
@@ -421,9 +423,127 @@ const monthsLabel = 'For how many months?';
       const tokens=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../design/sweelah/DESIGN_TOKENS.json'))).palette;
       for(const key of ['ink','cream','mint','green','coral']) assert.equal((await page.locator('html').evaluate((el,key)=>getComputedStyle(el).getPropertyValue('--'+key).trim(),key)).toLowerCase(),tokens[key].toLowerCase());
       assert.equal(await page.locator('.wordmark b').evaluate(el=>getComputedStyle(el).color),'rgb(250, 98, 73)');
-      assert.equal(await page.locator('.eyebrow').evaluate(el=>getComputedStyle(el).textTransform),'uppercase');
+      assert.equal(await page.locator('.eyebrow').first().evaluate(el=>getComputedStyle(el).textTransform),'uppercase');
       await screenshot('setup');await axe('setup');await submit.click();await screenshot('field-errors');await axe('field-errors');
       await fill('1200','12');await preview();await screenshot('result');await axe('result');
+    } else if(mode.startsWith('cxuid0509-copy')) {
+      // CXUI-001-D05 residual copy: exact Designer wording on setup, result and after returning.
+      const header='Practice mode: use made-up numbers, not your real finances.';
+      const intro='Compare the additional monthly cost without automatically assuming a government benefit. Use made-up numbers, not your real finances.';
+      const swee="Swee says: You can change the extra monthly cost and duration to explore a different total. This preview doesn't change your main retirement plan.";
+      const html=await (await page.request.get(base+'/sweelah')).text();
+      assert.doesNotMatch(html,/synthetic figures|illustrative total|entitlement/i);
+      for(const state of ['setup','result','return']) {
+        if(state==='result') {await fill('1200','12');await preview();}
+        if(state==='return') await page.getByRole('button',{name:'Change my numbers'}).click();
+        assert.equal((await page.locator('header p').innerText()).trim(),header,state);
+        if(state!=='result') assert.equal((await page.locator('#care-setup > p').innerText()).trim(),intro,state);
+        await page.getByRole('button',{name:'Talk to Swee',exact:true}).click();
+        assert.equal((await page.locator('#care-talk p').innerText()).trim(),swee,state);
+        assert.equal(await page.locator('#care-talk').isVisible(),true,state);
+        const text=await page.locator('body').innerText();
+        assert.doesNotMatch(text,/synthetic figures|illustrative total|entitlement/i,state);
+        await limitations(page.locator('#care-setup-notice'));
+        assert.equal(await page.locator('#care-setup-notice').isVisible(),true,state);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,state);
+        await screenshot(state);await axe(state);
+      }
+    } else if(mode.startsWith('cxuid0509-nav')) {
+      // CXUI-001-D09: SweeLah shell nav (Home, Life Line, Ask Swee, My Moves) from DESIGN_TOKENS.json navigation.
+      const tokens=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../design/sweelah/DESIGN_TOKENS.json')));
+      const nav=page.getByRole('navigation',{name:'Main navigation'});
+      const items=nav.getByRole('button');
+      assert.deepEqual((await items.allInnerTexts()).map(t=>t.trim()),tokens.navigation);
+      const current=async()=>nav.locator('[aria-current="page"]').allInnerTexts();
+      assert.deepEqual((await current()).map(t=>t.trim()),['Life Line']);
+      const trail=page.getByRole('navigation',{name:'Breadcrumb'});
+      assert.equal((await trail.locator('li').allInnerTexts()).map(t=>t.trim()).join(' → '),'Life Line → Care for family');
+      assert.equal((await trail.locator('[aria-current="page"]').innerText()).trim(),'Care for family');
+      for(const item of await items.all()) {const box=await item.boundingBox();assert.ok(box.width>=44&&box.height>=44,JSON.stringify(box));}
+      const lab=page.locator('header a');assert.equal(await lab.getAttribute('href'),'/');assert.equal((await lab.innerText()).trim(),'Back to RetirePilot lab');
+      const noOverflow=async label=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,label);
+      await noOverflow('setup');await screenshot('setup');await axe('setup');
+      // Keyboard: lab link -> Home -> Life Line -> Ask Swee -> My Moves -> cost field.
+      await page.locator('body').focus();await page.keyboard.press('Tab');await focused('header a');
+      for(const key of ['home','line','ask','moves']) {await page.keyboard.press('Tab');await focused(`[data-nav="${key}"]`);}
+      await page.keyboard.press('Tab');await focused('#care-cost');
+      // Keep the user's answers while they look around.
+      await fill('1200','12');
+      const requests=[];page.on('request',r=>requests.push(r.url()));
+      for(const [key,label] of [['home','Home'],['ask','Ask Swee'],['moves','My Moves']]) {
+        const before=page.url();
+        await page.locator(`[data-nav="${key}"]`).focus();await page.keyboard.press('Enter');
+        await page.locator('#nav-unavailable:not([hidden])').waitFor();
+        assert.equal(page.url(),before,label+' must not navigate');
+        assert.equal((await page.locator('#unavailable-heading').innerText()).trim(),`${label} isn't available in this preview`);
+        await focused('#unavailable-heading');
+        assert.ok((await page.locator('#nav-unavailable').innerText()).includes('Life Line → Care for family'));
+        assert.equal(await page.locator('#nav-unavailable .otter svg').getAttribute('aria-label'),'Swee the smiling otter');
+        assert.equal(await page.locator('#care-view').isVisible(),false);
+        assert.deepEqual((await current()).map(t=>t.trim()),[label]);
+        const levels=await page.locator('h1,h2,h3').evaluateAll(els=>els.filter(el=>el.getClientRects().length).map(el=>el.tagName));
+        assert.deepEqual(levels,['H1']);
+        await noOverflow(label);
+        if(key==='home') {await screenshot('unavailable-home');await axe('unavailable-home');}
+        if(key==='ask') await screenshot('unavailable-ask');
+        // Return by keyboard to the preview with answers intact.
+        await page.keyboard.press('Tab');await focused('#back-to-care');await page.keyboard.press('Enter');
+        await page.locator('#care-view:not([hidden])').waitFor();await focused('#care-title');
+        assert.deepEqual((await current()).map(t=>t.trim()),['Life Line']);
+        assert.equal(await cost.inputValue(),'1200');assert.equal(await months.inputValue(),'12');
+        assert.equal(await page.title(),'SweeLah! | Parent-care cost preview');
+      }
+      // The Life Line nav item itself also returns to Care for family.
+      await page.locator('[data-nav="moves"]').click();await page.locator('#nav-unavailable:not([hidden])').waitFor();
+      await page.locator('[data-nav="line"]').click();await page.locator('#care-view:not([hidden])').waitFor();
+      assert.ok(requests.every(u=>!/\/$|\/404|\/home|\/ask|\/moves/.test(new URL(u).pathname)),requests.join(','));
+      // Result survives a nav round trip; prior behaviour still works.
+      await preview();await page.locator('[data-nav="ask"]').click();await page.locator('[data-nav="line"]').click();
+      assert.ok((await page.locator('#care-result').innerText()).includes('An extra S$1,200.00 a month for 12 months adds up to S$14,400.00.'));
+      await screenshot('result');await axe('result');await noOverflow('result');
+      // Back to RetirePilot lab still opens the lab at / (R-D01).
+      await lab.click();await page.waitForURL(base+'/');assert.match(await page.title(),/RetirePilot/);
+    } else if(mode==='cxuid0509-art') {
+      // CXUI-001-D09: Swee otter and city artwork reused from the preserved dashboard prototype; tokens; 1280/768/375 geometry.
+      const proto=fs.readFileSync(path.resolve(__dirname,'../../design/sweelah/prototypes/SweeLah_Main_Dashboard_Prototype.html'),'utf8');
+      for(const id of ['swee-otter','swee-city','ic-home','ic-route','ic-chat','ic-list']) {
+        const mine=await page.locator('#'+id).evaluate(el=>el.outerHTML.replace(/\s+/g,' '));
+        const source=proto.match(new RegExp(`<symbol id="${id}"[\\s\\S]*?</symbol>`))[0];
+        const normal=await page.evaluate(src=>{const t=document.createElement('template');t.innerHTML='<svg>'+src+'</svg>';return t.content.firstChild.firstChild.outerHTML.replace(/\s+/g,' ');},source);
+        assert.equal(mine,normal,id+' must match the prototype symbol');
+      }
+      const tokens=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../design/sweelah/DESIGN_TOKENS.json'))).palette;
+      assert.equal(tokens.green,'#1C806E');
+      for(const [width,height] of [[1280,960],[768,1024],[375,844]]) {
+        await page.setViewportSize({width,height});
+        for(const state of ['setup','result','swee']) {
+          if(state==='result') {await fill('1200','12');await preview();}
+          if(state==='swee') await page.getByRole('button',{name:'Talk to Swee',exact:true}).last().click();
+          const art=page.locator('svg.city-art');
+          assert.equal(await art.getAttribute('role'),'img');assert.ok((await art.getAttribute('aria-label')).length>10);
+          const box=await art.boundingBox();assert.ok(box.width>100&&box.height>40,JSON.stringify(box));
+          if(state==='swee') {const otter=await page.locator('#care-talk .otter svg').boundingBox();assert.ok(otter.width>=40&&otter.height>=40);}
+          assert.equal(await page.locator('.btn.primary-wide, [aria-current="page"].nav-item').first().evaluate(el=>getComputedStyle(el).borderColor),'rgb(28, 128, 110)');
+          assert.equal(await page.locator('header a').evaluate(el=>getComputedStyle(el).color),'rgb(28, 128, 110)');
+          const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
+          assert.equal(overflow,false,`${width} ${state}`);
+          const navBoxes=await page.locator('.nav-item').evaluateAll(els=>els.map(e=>e.getBoundingClientRect()).map(r=>({l:r.left,r:r.right,h:r.height,w:r.width})));
+          for(const b of navBoxes) {assert.ok(b.l>=0&&b.r<=width&&b.h>=44&&b.w>=44,JSON.stringify(b));}
+          await screenshot(`${width}-${state}`);
+          if(state==='swee') await page.getByRole('button',{name:'Change my numbers'}).click();
+        }
+        await page.locator('[data-nav="home"]').click();await page.locator('#nav-unavailable:not([hidden])').waitFor();
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+        await screenshot(`${width}-unavailable`);await axe(`${width}-unavailable`);
+        await page.locator('#back-to-care').click();
+        // Field errors still render with margin-top 0 and aligned bullets in the shell.
+        await fill('','');await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+        assert.equal(await page.locator('#care-error-heading').evaluate(el=>getComputedStyle(el).marginTop),'0px');
+        const bullets=await page.locator('#care-errors li').evaluateAll(items=>items.map(li=>Math.abs(li.querySelector('a').getBoundingClientRect().top-li.getBoundingClientRect().top)));
+        for(const d of bullets) assert.ok(d<1);
+        await screenshot(`${width}-field-errors`);await axe(`${width}-field-errors`);
+        await page.reload();await cost.waitFor();
+      }
     } else if(mode==='cxui-d10') {
       for(const state of ['setup','errors','result']) {
         if(state==='errors') await submit.click();

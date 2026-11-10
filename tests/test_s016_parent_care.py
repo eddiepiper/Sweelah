@@ -1,5 +1,6 @@
 """S016 bounded preview contracts; all inputs are synthetic."""
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -241,3 +242,26 @@ def test_cxuifu_static_page_copy_and_style():
     assert '.error-summary h3{font-size:20px;margin-top:0}' in html
     assert 'entitlement' not in html.lower()
     assert '[eE]' not in html  # client no longer parses exponent notation
+
+
+def test_cxui_d05_d09_static_copy_and_shell():
+    """CXUI-001-D05 residual copy and CXUI-001-D09 shell; synthetic page source only."""
+    html = CLIENT.get('/sweelah').text
+    assert '<p>Practice mode: use made-up numbers, not your real finances.</p>' in html
+    assert 'to explore a different total. ' in html
+    assert 'synthetic figures' not in html.lower() and 'illustrative total' not in html.lower()
+    for term in ('CareShield LIFE', 'MediSave', 'lost pay or unpaid leave', 'not financial advice'):
+        assert term in html
+    tokens = json.loads((ROOT / 'design/sweelah/DESIGN_TOKENS.json').read_text())
+    for label in tokens['navigation']:
+        assert f'</svg>{label}</button>' in html
+    assert 'data-nav="line" aria-current="page"' in html
+    assert '<li aria-current="page">Care for family</li>' in html
+    assert '--green:#1C806E' in html
+    proto = (ROOT / 'design/sweelah/prototypes/SweeLah_Main_Dashboard_Prototype.html').read_text()
+    for symbol in ('swee-otter', 'swee-city'):
+        start = proto.index(f'<symbol id="{symbol}"')
+        source = proto[start:proto.index('</symbol>', start) + len('</symbol>')]
+        assert source in html, symbol
+    # Other destinations stay in-page: no new links besides the honest lab link.
+    assert re.findall(r'<a href="(?!#)[^"]*"', html) == ['<a href="/"'] and '<a href="/">Back to RetirePilot lab</a>' in html

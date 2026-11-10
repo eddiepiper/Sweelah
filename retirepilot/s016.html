@@ -28,21 +28,81 @@ button{font:inherit;cursor:pointer;min-height:48px;padding:12px 16px;border-radi
 .btn.primary-wide{flex:1;background:var(--green);color:#fff;border:2px solid var(--green)}
 .btn-ghost{background:#fffdf7;border:2px solid #52656b;color:var(--ink)}button:disabled{cursor:wait}
 a,button{min-height:24px}header a{display:inline-flex;align-items:center;min-height:44px}a:focus,button:focus,input:focus,[tabindex="-1"]:focus{outline:3px solid #253646;outline-offset:4px}
-[hidden]{display:none!important}@media(max-width:480px){header,main{padding:16px}.scenario-panel{padding:16px}}
+/* CXUI-001-D09: SweeLah shell (nav items, Swee otter and city artwork) reused from
+   design/sweelah/prototypes/SweeLah_Main_Dashboard_Prototype.html and DESIGN_TOKENS.json. */
+.app-nav{max-width:760px;margin:12px auto 0;padding:0 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.nav-item{background:#fffdf7;border:2px solid #e8dfd1;border-radius:14px;min-height:56px;padding:6px 4px;display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;color:#40585e;font-size:14px;font-weight:800;line-height:1.2}
+.nav-item svg{width:20px;height:20px;flex-shrink:0}.nav-item[aria-current="page"]{background:#d6efdf;border-color:var(--green);color:var(--ink);box-shadow:inset 0 -4px 0 var(--green)}
+.trail ol{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;color:#40585e;font-weight:700}
+.trail li+li::before{content:"→";margin-right:6px;color:#40585e}.trail [aria-current="page"]{color:var(--ink);font-weight:800}
+.city-art{display:block;width:100%;height:auto;max-height:170px;margin-top:14px;border-radius:17px;background:#e5f0f8;border:1px solid #bdd5df}
+.swee-message{background:#fff;border:1px dashed #e1c99f;padding:12px;display:flex;gap:12px;align-items:center;border-radius:18px;margin:16px 0}
+.swee-message p{margin:0}.otter{width:54px;height:54px;flex-shrink:0}.otter svg{width:100%;height:100%}
+.unavailable{background:#fff;border:1px solid #eadac7;border-radius:17px;padding:24px;margin-top:14px}
+[hidden]{display:none!important}@media(max-width:480px){header,main{padding:16px}.app-nav{padding:0 16px;gap:4px}.nav-item{font-size:13px;padding:6px 2px}.scenario-panel,.unavailable{padding:16px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<header><div class="wordmark">SweeLah<b>!</b></div><p>For practice: use synthetic figures only.</p><a href="/">Back to RetirePilot lab</a></header>
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
+  <symbol id="swee-otter" viewBox="0 0 64 64"><circle cx="15" cy="14" r="9" fill="#c48650" stroke="#253b4a" stroke-width="3"/><circle cx="49" cy="14" r="9" fill="#c48650" stroke="#253b4a" stroke-width="3"/><ellipse cx="32" cy="34" rx="27" ry="27" fill="#c48650" stroke="#253b4a" stroke-width="3"/><ellipse cx="32" cy="43" rx="18" ry="13" fill="#fbe1b9"/><circle cx="22" cy="31" r="3.4" fill="#253b4a"/><circle cx="42" cy="31" r="3.4" fill="#253b4a"/><path d="M28 40q4-5 8 0l-4 4z" fill="#253b4a"/><path d="M32 44q0 7-7 5M32 44q0 7 7 5" fill="none" stroke="#253b4a" stroke-width="2" stroke-linecap="round"/><ellipse cx="16" cy="42" rx="5" ry="3" fill="#f2aa9b"/><ellipse cx="48" cy="42" rx="5" ry="3" fill="#f2aa9b"/></symbol>
+  <symbol id="ic-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v10H3zM9 21v-8h6v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-route" viewBox="0 0 24 24"><path d="M5 20V5h14v15H5m4-12h6m-6 5h6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="5" cy="5" r="2" fill="currentColor"/><circle cx="19" cy="20" r="2" fill="currentColor"/></symbol>
+  <symbol id="ic-chat" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 1-8 8 9 9 0 0 1-4-.9L3 20l2-4.7A8 8 0 1 1 20 11zM8 11h8m-8 4h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-list" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="19" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8 10 2 2 5-5M8 17h8" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="swee-city" viewBox="0 0 600 335">
+    <circle cx="485" cy="66" r="46" fill="#ffd069"/>
+    <g class="cloud" fill="#fffdf2"><ellipse cx="101" cy="61" rx="48" ry="17"/><circle cx="86" cy="51" r="23"/><circle cx="127" cy="51" r="21"/></g>
+    <g class="cloud two" fill="#fdf8e8"><ellipse cx="348" cy="37" rx="36" ry="13"/><circle cx="335" cy="29" r="18"/><circle cx="361" cy="28" r="16"/></g>
+    <g stroke="#304950" stroke-width="2.6" stroke-linejoin="round">
+      <rect x="40" y="92" width="115" height="203" fill="#ed9e8d"/><path d="M32 92h131l-10-23H43z" fill="#e4c4b6"/>
+      <rect x="163" y="113" width="98" height="182" fill="#b7dfce"/><path d="M156 113h111l-11-22h-88z" fill="#e4b8d7"/>
+      <rect x="271" y="70" width="114" height="225" fill="#d6c8eb"/><path d="M261 71h133l-12-20H273z" fill="#f4d0a0"/>
+      <rect x="395" y="108" width="106" height="187" fill="#f4b786"/><path d="M385 108h123l-9-19H396z" fill="#fff1cd"/>
+      <rect x="511" y="132" width="84" height="163" fill="#a8c3dd"/>
+    </g>
+    <g fill="#fff6d6" stroke="#304950" stroke-width="2">
+      <rect x="52" y="109" width="23" height="29"/><rect x="84" y="109" width="23" height="29"/><rect x="117" y="109" width="24" height="29"/>
+      <rect x="52" y="150" width="23" height="29"/><rect x="84" y="150" width="23" height="29"/><rect x="117" y="150" width="24" height="29"/>
+      <rect x="52" y="192" width="23" height="29"/><rect x="84" y="192" width="23" height="29"/><rect x="117" y="192" width="24" height="29"/>
+      <rect x="174" y="129" width="20" height="28"/><rect x="203" y="129" width="20" height="28"/><rect x="233" y="129" width="18" height="28"/>
+      <rect x="174" y="173" width="20" height="28"/><rect x="203" y="173" width="20" height="28"/><rect x="233" y="173" width="18" height="28"/>
+      <rect x="282" y="84" width="23" height="25"/><rect x="318" y="84" width="23" height="25"/><rect x="353" y="84" width="20" height="25"/>
+      <rect x="282" y="125" width="23" height="25"/><rect x="318" y="125" width="23" height="25"/><rect x="353" y="125" width="20" height="25"/>
+      <rect x="282" y="167" width="23" height="25"/><rect x="318" y="167" width="23" height="25"/><rect x="353" y="167" width="20" height="25"/>
+      <rect x="407" y="126" width="21" height="27"/><rect x="441" y="126" width="21" height="27"/><rect x="476" y="126" width="16" height="27"/>
+      <rect x="407" y="168" width="21" height="27"/><rect x="441" y="168" width="21" height="27"/><rect x="476" y="168" width="16" height="27"/>
+      <rect x="522" y="149" width="16" height="25"/><rect x="550" y="149" width="16" height="25"/>
+    </g>
+    <g stroke="#304950" stroke-width="2.5">
+      <rect x="38" y="245" width="119" height="50" fill="#fff0c2"/><rect x="163" y="247" width="98" height="48" fill="#fff3d3"/><rect x="395" y="248" width="106" height="47" fill="#fff4d1"/>
+      <path d="M35 246h123M160 248h103M392 248h110" stroke="#f9cc77" stroke-width="9"/>
+      <rect x="48" y="259" width="98" height="27" fill="#bfdecd"/><rect x="173" y="260" width="77" height="26" fill="#d1a9d9"/><rect x="403" y="261" width="87" height="25" fill="#ffc7ae"/>
+    </g>
+    <g fill="#68b889" stroke="#304950" stroke-width="2"><circle cx="7" cy="277" r="28"/><circle cx="20" cy="258" r="23"/><circle cx="546" cy="267" r="27"/><circle cx="581" cy="259" r="30"/></g>
+    <path d="M0 298h600" stroke="#41655b" stroke-width="9"/><rect y="304" width="600" height="31" fill="#efc281"/>
+    <path d="M0 319h600" stroke="#fff1ca" stroke-width="3" stroke-dasharray="25 17"/>
+    <g class="mrt-shuttle" stroke="#304950" stroke-width="2.5"><rect x="-130" y="272" width="128" height="25" rx="11" fill="#fffdfa"/><rect x="-119" y="277" width="93" height="11" rx="3" fill="#83c1c3"/><path d="M-123 293h116" stroke="#f06e50" stroke-width="3.5"/></g>
+  </symbol>
+</defs></svg>
+<header><div class="wordmark">SweeLah<b>!</b></div><p>Practice mode: use made-up numbers, not your real finances.</p><a href="/">Back to RetirePilot lab</a></header>
+<nav class="app-nav" aria-label="Main navigation">
+<button class="nav-item" type="button" data-nav="home"><svg aria-hidden="true"><use href="#ic-home"/></svg>Home</button>
+<button class="nav-item" type="button" data-nav="line" aria-current="page"><svg aria-hidden="true"><use href="#ic-route"/></svg>Life Line</button>
+<button class="nav-item" type="button" data-nav="ask"><svg aria-hidden="true"><use href="#ic-chat"/></svg>Ask Swee</button>
+<button class="nav-item" type="button" data-nav="moves"><svg aria-hidden="true"><use href="#ic-list"/></svg>My Moves</button>
+</nav>
 <main>
-<nav aria-label="Location">Life Line → Care for family</nav>
-<h1>Parent-care cost preview</h1>
+<div id="care-view">
+<nav class="trail" aria-label="Breadcrumb"><ol><li>Life Line</li><li aria-current="page">Care for family</li></ol></nav>
+<h1 id="care-title" tabindex="-1">Parent-care cost preview</h1>
+<svg class="city-art" viewBox="0 0 600 335" role="img" aria-label="Illustrated Singapore shophouses and HDB blocks"><use href="#swee-city"/></svg>
 <div id="scenario-detail">
 <section class="scenario-panel" aria-labelledby="care-heading">
 <div id="care-setup">
 <div class="eyebrow">Explore care costs</div>
 <h2 id="care-heading">Care for family</h2>
-<p>Compare the additional monthly cost without automatically assuming a government benefit. Enter synthetic figures only, not actual financial records.</p>
+<p>Compare the additional monthly cost without automatically assuming a government benefit. Use made-up numbers, not your real finances.</p>
 <form id="care-form" novalidate>
 <div id="care-errors" class="error-summary" tabindex="-1" role="alert" aria-labelledby="care-error-heading" hidden></div>
 <label class="field-label" for="care-cost">Extra care cost each month (S$)</label>
@@ -58,14 +118,22 @@ a,button{min-height:24px}header a{display:inline-flex;align-items:center;min-hei
 </div>
 <div id="care-result" hidden></div>
 <div class="secure-notice" id="care-setup-notice">This adds up only the numbers you entered. It leaves out government subsidies and grants, CareShield LIFE and other insurance payouts, MediSave, and lost pay or unpaid leave. We don't assume you'll get any of these. This is general information to help you plan, not financial advice. It uses a flat monthly amount with no inflation.</div>
-<p id="care-talk" class="secure-notice" role="status" hidden>Swee says: You can change the extra monthly cost and duration to explore a different illustrative total. This preview doesn't change your main retirement plan.</p>
+<div id="care-talk" class="swee-message" role="status" hidden><div class="otter"><svg role="img" aria-label="Swee the smiling otter"><use href="#swee-otter"/></svg></div><p>Swee says: You can change the extra monthly cost and duration to explore a different total. This preview doesn't change your main retirement plan.</p></div>
 </section>
+</div>
+</div>
+<div id="nav-unavailable" class="unavailable" hidden>
+<div class="eyebrow" id="unavailable-section"></div>
+<h1 id="unavailable-heading" tabindex="-1"></h1>
+<div class="swee-message"><div class="otter"><svg role="img" aria-label="Swee the smiling otter"><use href="#swee-otter"/></svg></div><p>Swee says: This practice preview only includes Life Line → Care for family. This part of SweeLah! isn't built here yet, so there's nothing to show.</p></div>
+<div class="onboard-actions"><button class="btn primary-wide" type="button" id="back-to-care">Back to Care for family</button></div>
 </div>
 </main>
 <script>
 (() => {
 'use strict';
 const byId = id => document.getElementById(id);
+const careTitle = document.title;
 const form = byId('care-form');
 const cost = byId('care-cost'), months = byId('care-months');
 const result = byId('care-result'), summary = byId('care-errors');
@@ -195,7 +263,25 @@ document.addEventListener('click', event => {
     clearErrors(); cost.focus();
   }
   if (event.target.closest('[data-talk]')) { byId('care-talk').hidden = false; }
+  // CXUI-001-D09: only Life Line → Care for family is built; other destinations show an
+  // in-page "not available in this preview" state and never navigate away.
+  const item = event.target.closest('[data-nav]');
+  if (item) showDestination(item.dataset.nav, item.textContent.trim());
+  if (event.target.closest('#back-to-care')) showDestination('line');
 });
+function showDestination(key, label) {
+  const care = key === 'line';
+  for (const button of document.querySelectorAll('[data-nav]')) {
+    if (button.dataset.nav === key) button.setAttribute('aria-current', 'page');
+    else button.removeAttribute('aria-current');
+  }
+  byId('care-view').hidden = !care; byId('nav-unavailable').hidden = care;
+  if (care) { document.title = careTitle; byId('care-title').focus(); return; }
+  document.title = 'SweeLah! | ' + label + ' (not in this preview)';
+  byId('unavailable-section').textContent = label;
+  byId('unavailable-heading').textContent = label + ' isn\'t available in this preview';
+  byId('unavailable-heading').focus();
+}
 })();
 </script>
 </body>
