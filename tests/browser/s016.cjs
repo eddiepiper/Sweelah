@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [mode, base] = process.argv.slice(2);
-const output = path.resolve(__dirname, mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
+const output = path.resolve(__dirname, mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
 const monthsLabel = 'For how many months?';
 (async () => {
@@ -220,6 +220,87 @@ const monthsLabel = 'For how many months?';
         await limitations(page.locator('#care-setup-notice'));
       }
       assert.doesNotMatch(await page.locator('body').innerText(),/entitlement/i);
+    } else if(mode==='cxuifu2-months'||mode==='cxuifu2-months-375') {
+      // CXUI-FU-D01: "1 month" singular; 2+ plural; 0 never reaches a result.
+      for(const [n,total] of [[1,'S$1,200.00'],[2,'S$2,400.00'],[12,'S$14,400.00'],[120,'S$144,000.00']]) {
+        await fill('1200',String(n));await preview();
+        const text=await page.locator('#care-result').innerText();
+        const unit=n===1?'1 month':`${n} months`;
+        assert.ok(text.includes(`Over ${unit}`),text);
+        assert.ok(text.includes(`An extra S$1,200.00 a month for ${unit} adds up to ${total}.`),text);
+        assert.doesNotMatch(text,/\b1 months\b/);
+        if(n!==1) assert.doesNotMatch(text,new RegExp(`\\b${n} month\\b`));
+        if(n===1) {await screenshot('one-month');await axe('one-month');}
+        if(n===2) await screenshot('two-months');
+        if(mode.endsWith('-375')) assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+        await page.getByRole('button',{name:'Change my numbers'}).click();
+      }
+      let requests=0;const count=r=>{if(r.url().endsWith('/api/scenarios/S016/preview')) requests++;};
+      page.on('request',count);
+      await fill('1200','0');await submit.click();
+      assert.equal(await page.locator('#care-months-error').innerText(),'Error: Enter the number of months, from 1 to 120 (10 years).');
+      assert.equal(await page.locator('#care-result').isVisible(),false);
+      assert.equal(requests,0);page.off('request',count);
+      // A forged response with months 0 is treated as a failure, never shown as "0 months".
+      await page.route('**/api/scenarios/S016/preview',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({
+        status:'LIMITED_RECURRING_COST_PREVIEW_ONLY',synthetic_only:true,may_post_to_household_projection:false,
+        extra_monthly_cost:'1200.00',period_cash_cost:'0.00',months:0})}));
+      await fill('1200','1');await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+      assert.equal(await page.locator('#care-error-heading').innerText(),'Something went wrong');
+      assert.equal(await page.locator('#care-result').isVisible(),false);
+      assert.doesNotMatch(await page.locator('body').innerText(),/\b0 months?\b/);
+    } else if(mode==='cxuifu2-heading'||mode==='cxuifu2-heading-375') {
+      // CXUI-001-F-D01: force a general failure and field error(s) to coexist, as in the Designer's repro.
+      const general="We couldn't work this out just now. Your answers are kept. Please try again.";
+      const force=async()=>page.locator('#care-errors').evaluate((el,text)=>{
+        el.querySelector('#care-error-heading').textContent='Something went wrong';
+        const p=document.createElement('p');p.textContent=text;el.querySelector('#care-error-heading').after(p);
+      },general);
+      const heading=()=>page.locator('#care-error-heading').innerText();
+      // (a) server-mapped months error + general; edit cost.
+      await fill('1200','12');
+      await page.route('**/api/scenarios/S016/preview',route=>route.fulfill({status:422,contentType:'application/json',body:JSON.stringify({detail:'x',field:'months',code:'months'})}));
+      await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+      await force();
+      assert.equal(await heading(),'Something went wrong');
+      assert.equal(await page.getByText(general,{exact:true}).isVisible(),true);
+      await screenshot('combined-before-edit');
+      await cost.fill('1500');
+      assert.equal(await page.locator('#care-errors').isVisible(),true);
+      assert.equal(await heading(),'Please check these answers');
+      assert.equal(await page.getByText(general,{exact:true}).count(),0,'R-D02: general message cleared on edit');
+      assert.equal(await page.locator('#care-errors a[href="#care-months"]').count(),1,'D03: months error kept');
+      assert.equal(await months.getAttribute('aria-invalid'),'true');
+      assert.equal(await page.locator('#care-months-error').isVisible(),true);
+      assert.equal(await cost.getAttribute('aria-invalid'),'false');
+      await screenshot('combined-after-edit');await axe('combined-after-edit');
+      await months.fill('12');
+      assert.equal(await page.locator('#care-errors').isVisible(),false);
+      // (b) both client field errors + general; edit months; cost error kept, heading corrected.
+      await page.unroute('**/api/scenarios/S016/preview');
+      await fill('','0');await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+      await force();
+      await months.fill('6');
+      assert.equal(await heading(),'Please check these answers');
+      assert.equal(await page.getByText(general,{exact:true}).count(),0);
+      assert.equal(await page.locator('#care-errors a[href="#care-cost"]').count(),1);
+      assert.equal(await page.locator('#care-errors a[href="#care-months"]').count(),0);
+      assert.equal(await cost.getAttribute('aria-invalid'),'true');
+      // Clicking the remaining link still moves focus to its field.
+      await page.locator('#care-errors a[href="#care-cost"]').click();await focused('#care-cost');
+      // (c) pure general failure (R-D02 path): edit hides the whole summary.
+      await page.route('**/api/scenarios/S016/preview',route=>route.abort());
+      await fill('1200','12');await submit.click();await page.getByText(general,{exact:true}).waitFor();
+      assert.equal(await heading(),'Something went wrong');
+      await months.fill('24');
+      assert.equal(await page.locator('#care-errors').isVisible(),false);
+      // (d) field-only summary is unchanged by the fix.
+      await page.unroute('**/api/scenarios/S016/preview');
+      await fill('','');await submit.click();await cost.fill('5');
+      assert.equal(await heading(),'Please check these answers');
+      assert.equal(await page.locator('#care-errors a[href="#care-months"]').count(),1);
+      await months.fill('3');await preview();
+      assert.ok((await page.locator('#care-result').innerText()).includes('An extra S$5.00 a month for 3 months adds up to S$15.00.'));
     } else if(mode==='cxui-d09') {
       const tokens=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../design/sweelah/DESIGN_TOKENS.json'))).palette;
       for(const key of ['ink','cream','mint','green','coral']) assert.equal((await page.locator('html').evaluate((el,key)=>getComputedStyle(el).getPropertyValue('--'+key).trim(),key)).toLowerCase(),tokens[key].toLowerCase());

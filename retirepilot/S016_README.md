@@ -241,3 +241,26 @@ the nav work.
 
 Evidence (uncommitted): `test-artifacts/cxui-001-followup/` holds suite logs, the red-phase
 log, 1280px and 375px screenshots, heading geometry and 8 axe reports (0 violations).
+
+## CXUI-001-FOLLOWUP2: residual Low items from the G5/G5X re-check of `85f8109`
+
+Status: **Verified** locally by the automated checks below; independent QA (G5) and
+designer (G5X) re-verification are still pending. Branch `fix/cxui-001-followup2`
+from `85f8109`. Only `retirepilot/s016.html`, S016 browser tests and this document
+change. `retirepilot/api.py`, the API response, the dashboard at `/`, preserved
+prototypes and the design tree are unchanged.
+
+| Item | Change (`retirepilot/s016.html`) | Proving case/test |
+|---|---|---|
+| CXUI-FU-D01 | Result copy uses `monthCount()`: “Over 1 month” / “for 1 month”; 2–120 stay “months”. The API `months` value is checked as an integer 1–120 before display; anything else is treated as an unexpected response (“Something went wrong”), so “0 months” can never render. | `cxuifu2-months`, `cxuifu2-months-375` (1, 2, 12, 120 via the real API; 0 refused before any request; forged `months: 0` response; 375px overflow; axe) |
+| CXUI-001-F-D01 | After an edit removes the general message, if field errors remain the heading is rewritten to “Please check these answers”; if none remain the summary hides (R-D02 unchanged). Only the edited field's error clears (D03 unchanged). | `cxuifu2-heading`, `cxuifu2-heading-375` (forced general + server-mapped months error, edit cost; forced general + two client errors, edit months; pure network failure still hides; field-only summary unchanged; recovery; axe) |
+
+Interpretation decisions:
+- The combined general + field state isn't produced by `showErrors` in normal use, so
+  the tests force it the same way the Designer did (inject the general paragraph and
+  heading into a field-error summary), then edit a field.
+- The months grammar is UI-only; the API still returns the integer `months`.
+
+Both new cases fail against `85f8109` and pass with this change (red-phase log in the
+evidence folder). Browser runs used `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js`;
+the 4 new axe reports show 0 violations. Evidence (uncommitted): `test-artifacts/cxui-001-followup2/`.
