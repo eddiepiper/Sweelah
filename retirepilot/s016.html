@@ -166,10 +166,12 @@ form.addEventListener('submit', async event => {
     // CXUI-FU2-D01: months must already be a whole JSON number (no coercion of true, "1", [5], "1e1").
     const count = data.months;
     if (typeof count !== 'number' || !Number.isInteger(count) || count < 1 || count > 120) throw new Error('Unexpected preview contract');
-    // Amounts must be plain cent strings, and monthly x months must equal the total exactly (integer cents, no floats).
-    const cents = value => typeof value === 'string' && /^\d+\.\d{2}$/.test(value) ? BigInt(value.replace('.', '')) : null;
+    // Amounts must be canonical cent strings (QA-FU2D01-L01: no leading zeros, sign, or other forms), monthly must be
+    // S$0.01-S$100,000.00, and monthly x months must equal the total exactly (integer cents, no floats).
+    const cents = value => typeof value === 'string' && /^(0|[1-9]\d*)\.\d{2}$/.test(value) ? BigInt(value.replace('.', '')) : null;
     const monthlyCents = cents(data.extra_monthly_cost), totalCents = cents(data.period_cash_cost);
-    if (monthlyCents === null || totalCents === null || monthlyCents * BigInt(count) !== totalCents) throw new Error('Unexpected preview contract');
+    if (monthlyCents === null || totalCents === null || monthlyCents < 1n || monthlyCents > 10000000n ||
+        monthlyCents * BigInt(count) !== totalCents) throw new Error('Unexpected preview contract');
     const monthly = sgd(data.extra_monthly_cost), total = sgd(data.period_cash_cost);
     const span = monthCount(count);
     result.innerHTML = `<div class="eyebrow">Your estimate</div>
