@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [mode, base] = process.argv.slice(2);
-const output = path.resolve(__dirname, mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
+const output = path.resolve(__dirname, mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
 const monthsLabel = 'For how many months?';
 (async () => {
@@ -18,7 +18,7 @@ const monthsLabel = 'For how many months?';
   }
   try {
     if (mode === 'probe') { console.log('Chromium ' + browser.version()); return; }
-    const page = await browser.newPage({viewport:(mode==='mobile375'||mode==='cxui-mobile375')?{width:375,height:844}:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
+    const page = await browser.newPage({viewport:(mode==='mobile375'||mode==='cxui-mobile375'||mode.endsWith('-375'))?{width:375,height:844}:mode==='mobile'?{width:390,height:844}:{width:1280,height:960},reducedMotion:'reduce'});
     const errors=[];
     page.on('pageerror', e=>errors.push(e.message));
     await page.route('**/*', route => new URL(route.request().url()).origin===base ? route.continue() : route.abort());
@@ -101,11 +101,11 @@ const monthsLabel = 'For how many months?';
       await screenshot('server-error');
     } else if (mode==='cxui-d07') {
       let requests=0;page.on('request',r=>{if(r.url().endsWith('/api/scenarios/S016/preview')) requests++;});
-      for(const amount of ['100000.01','1e12','999999999999','1e400']) {
+      for(const amount of ['100000.01','999999999999','100001']) {
         await fill(amount,'12');await submit.click();
         assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount no more than S$100,000.');
       }
-      for(const amount of ['Infinity','NaN','-Infinity','sNaN']) {
+      for(const amount of ['Infinity','NaN','-Infinity','sNaN','1e12','1e400']) {
         await fill(amount,'12');await submit.click();
         assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter numbers only, for example 1200.');
       }
@@ -137,6 +137,89 @@ const monthsLabel = 'For how many months?';
         await page.getByText("We couldn't work this out just now. Your answers are kept. Please try again.",{exact:true}).waitFor();
         await screenshot('server-error');await axe('server-error');
       }
+    } else if(mode==='cxuifu-rd01'||mode==='cxuifu-rd01-375') {
+      const link=page.locator('header a');
+      assert.equal(await link.count(),1);
+      assert.equal((await link.innerText()).trim(),'Back to RetirePilot lab');
+      assert.equal(await link.getAttribute('href'),'/');
+      assert.doesNotMatch(await page.locator('header').innerText(),/overview/i);
+      const box=await link.boundingBox();assert.ok(box.width>=44&&box.height>=44,JSON.stringify(box));
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      await screenshot('header');await axe('setup');
+      await link.click();await page.waitForURL(base+'/');
+      assert.match(await page.title(),/RetirePilot/);
+      await page.locator('#metrics').waitFor();
+      await screenshot('destination');
+    } else if(mode==='cxuifu-rd02'||mode==='cxuifu-rd02-375') {
+      const general="We couldn't work this out just now. Your answers are kept. Please try again.";
+      await fill('1200','12');
+      await page.route('**/api/scenarios/S016/preview',route=>route.abort());
+      await submit.click();await page.getByText(general,{exact:true}).waitFor();
+      assert.equal(await page.locator('#care-error-heading').innerText(),'Something went wrong');
+      await screenshot('server-error-before-edit');
+      await cost.fill('1500');
+      assert.equal(await page.locator('#care-errors').isVisible(),false,'server error must clear on edit');
+      assert.equal(await page.getByText('Something went wrong').isVisible(),false);
+      assert.equal(await cost.getAttribute('aria-invalid'),'false');assert.equal(await months.getAttribute('aria-invalid'),'false');
+      assert.equal(await cost.inputValue(),'1500');assert.equal(await months.inputValue(),'12');
+      await screenshot('server-error-after-edit');await axe('after-edit');
+      // Editing months also clears a fresh server error.
+      await submit.click();await page.getByText(general,{exact:true}).waitFor();
+      await months.fill('24');assert.equal(await page.locator('#care-errors').isVisible(),false);
+      // D03 still holds: a server-mapped months error survives a cost edit.
+      await page.unroute('**/api/scenarios/S016/preview');
+      await page.route('**/api/scenarios/S016/preview',route=>route.fulfill({status:422,contentType:'application/json',body:JSON.stringify({detail:'x',field:'months',code:'months'})}));
+      await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+      assert.equal(await page.locator('#care-error-heading').innerText(),'Please check these answers');
+      await cost.fill('1600');
+      assert.equal(await months.getAttribute('aria-invalid'),'true');
+      assert.equal(await page.locator('#care-months-error').isVisible(),true);
+      assert.equal(await page.locator('#care-errors').isVisible(),true);
+      assert.equal(await page.locator('#care-errors a[href="#care-months"]').count(),1);
+      // D03 still holds for client-side errors.
+      await page.unroute('**/api/scenarios/S016/preview');
+      await fill('','0');await submit.click();await cost.fill('5');
+      assert.equal(await months.getAttribute('aria-invalid'),'true');
+      assert.equal(await page.locator('#care-errors a[href="#care-months"]').count(),1);
+      assert.equal(await page.locator('#care-errors a[href="#care-cost"]').count(),0);
+      // Recovery: a real preview still works afterwards.
+      await months.fill('12');await preview();
+      assert.ok((await page.locator('#care-result').innerText()).includes('S$5.00'));
+    } else if(mode==='cxuifu-rd03'||mode==='cxuifu-rd03-375') {
+      await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+      const m=await page.locator('#care-error-heading').evaluate(el=>{
+        const s=getComputedStyle(el),box=el.getBoundingClientRect(),parent=el.parentElement.getBoundingClientRect(),ps=getComputedStyle(el.parentElement);
+        return {marginTop:s.marginTop,gap:box.top-parent.top-parseFloat(ps.borderTopWidth)-parseFloat(ps.paddingTop)};
+      });
+      fs.writeFileSync(path.join(output,`${mode}-heading-geometry.json`),JSON.stringify(m,null,2));
+      assert.equal(m.marginTop,'0px');assert.ok(Math.abs(m.gap)<1,JSON.stringify(m));
+      await screenshot('field-errors');await axe('field-errors');
+      await fill('1200','12');await page.route('**/api/scenarios/S016/preview',route=>route.abort());
+      await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+      assert.equal(await page.locator('#care-error-heading').evaluate(el=>getComputedStyle(el).marginTop),'0px');
+      await screenshot('server-error');await axe('server-error');
+    } else if(mode==='cxuifu-exponent') {
+      let requests=0;page.on('request',r=>{if(r.url().endsWith('/api/scenarios/S016/preview')) requests++;});
+      for(const amount of ['1e2','1E2','1e-3','1.005e2','1e400','2e+3','S$1e2']) {
+        await fill(amount,'12');await submit.click();
+        await page.locator('#care-errors:not([hidden])').waitFor();
+        assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter numbers only, for example 1200.',amount);
+        assert.equal(await cost.inputValue(),amount);
+      }
+      assert.equal(requests,0);
+      await screenshot('rejected');
+      await fill('100','12');await preview();
+      assert.ok((await page.locator('#care-result').innerText()).includes('An extra S$100.00 a month for 12 months adds up to S$1,200.00.'));
+    } else if(mode==='cxuifu-wording') {
+      for(const state of ['setup','result','return']) {
+        if(state==='result') {await fill('1200','12');await preview();}
+        if(state==='return') await page.getByRole('button',{name:'Change my numbers'}).click();
+        const text=await page.locator('#care-setup-notice').innerText();
+        assert.doesNotMatch(text,/entitlement/i,state);
+        assert.match(text,/no inflation/,state);
+        await limitations(page.locator('#care-setup-notice'));
+      }
+      assert.doesNotMatch(await page.locator('body').innerText(),/entitlement/i);
     } else if(mode==='cxui-d09') {
       const tokens=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../design/sweelah/DESIGN_TOKENS.json'))).palette;
       for(const key of ['ink','cream','mint','green','coral']) assert.equal((await page.locator('html').evaluate((el,key)=>getComputedStyle(el).getPropertyValue('--'+key).trim(),key)).toLowerCase(),tokens[key].toLowerCase());
@@ -166,7 +249,7 @@ const monthsLabel = 'For how many months?';
       await focused('#care-result h2');
       const text=await page.locator('section').innerText();
       for (const expected of ['YOUR ESTIMATE','Your parent-care cost estimate','S$1,200.00','S$14,400.00',
-        "This doesn't change your main retirement plan.",'no inflation','no assumed entitlement',
+        "This doesn't change your main retirement plan.",'no inflation',
         'CareShield LIFE','lost pay or unpaid leave']) assert.ok(text.includes(expected),expected);
       await page.screenshot({path:path.join(output,'success-'+mode+'.png'),fullPage:true});
       await page.getByRole('button',{name:'Change my numbers',exact:true}).click();
@@ -232,7 +315,7 @@ const monthsLabel = 'For how many months?';
       let precisionRequests=0;
       const countPreview=request=>{if(request.url().endsWith('/api/scenarios/S016/preview')) precisionRequests++;};
       page.on('request',countPreview);
-      for (const invalid of ['1.500','0.0001','1e-3','1.005']) {
+      for (const invalid of ['1.500','0.0001','1.005']) {
         await fill(invalid,'12');await submit.click();
         await page.locator('#care-errors:not([hidden])').waitFor();await focused('#care-errors');
         assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount with up to 2 decimal places, for example 1200.50.');
@@ -251,7 +334,7 @@ const monthsLabel = 'For how many months?';
       assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount with up to 2 decimal places, for example 1200.50.');
       assert.equal(await page.locator('#care-result').isVisible(),false);
       await page.unroute('**/api/scenarios/S016/preview');
-      for(const [amount,monthly,total] of [['1.50','S$1.50','S$18.00'],['1,200.5','S$1,200.50','S$14,406.00'],['1e2','S$100.00','S$1,200.00']]) {
+      for(const [amount,monthly,total] of [['1.50','S$1.50','S$18.00'],['1,200.5','S$1,200.50','S$14,406.00'],['100','S$100.00','S$1,200.00']]) {
         await fill(amount,'12');await preview();
         assert.ok((await page.locator('#care-result').innerText()).includes(`An extra ${monthly} a month for 12 months adds up to ${total}.`));
         if(mode==='mobile375') await geometry();

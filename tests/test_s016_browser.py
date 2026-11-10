@@ -66,7 +66,9 @@ def browser_server():
         process.wait(timeout=5)
 
 
-@pytest.mark.parametrize('case', ['success', 'errors', 'server-refusal', 'nonmutation', 'mobile', 'accessibility', 'precision', 'mobile375', *['cxui-d%02d' % i for i in range(1, 12)], 'cxui-mapping', 'cxui-mobile375'])
+@pytest.mark.parametrize('case', ['success', 'errors', 'server-refusal', 'nonmutation', 'mobile', 'accessibility', 'precision', 'mobile375', *['cxui-d%02d' % i for i in range(1, 12)], 'cxui-mapping', 'cxui-mobile375',
+    'cxuifu-rd01', 'cxuifu-rd01-375', 'cxuifu-rd02', 'cxuifu-rd02-375', 'cxuifu-rd03', 'cxuifu-rd03-375',
+    'cxuifu-exponent', 'cxuifu-wording'])
 def test_s016_real_browser(browser_server, case):
     node, env, base = browser_server
     result = subprocess.run([node, str(ROOT / 'tests/browser/s016.cjs'), case, base],

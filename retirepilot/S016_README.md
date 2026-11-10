@@ -204,3 +204,40 @@ also verifies the dashboard's rendered snapshot and household evaluation remain
 unchanged after preview. The one warning is Starlette TestClient's deprecated
 `anyio.abc.BlockingPortal` alias, not an application error. Python 3.11 CI remains
 a separate verification after the CoS publishes; no push or merge was performed.
+
+
+## CXUI-001-FOLLOWUP: residual Low items from the G5X re-audit of `3f396aa`
+
+Status: **Verified** locally by the automated checks below; independent QA (G5) and
+designer (G5X) re-verification are still pending. Branch `fix/cxui-001-followup`
+from `397a0bd`. Only `retirepilot/s016.html`, S016 tests and this document change.
+`retirepilot/api.py`, the dashboard at `/`, preserved prototypes and the design tree
+are unchanged. This section supersedes two statements in CXUI-001-FIX above: the
+header link label, and browser acceptance of exponent notation.
+
+| Item | Change (`retirepilot/s016.html`) | Proving case/test |
+|---|---|---|
+| R-D01 | Header link relabelled “Back to RetirePilot lab” (still `/`, still 44px). No SweeLah home exists, so none was invented. | `cxuifu-rd01`, `cxuifu-rd01-375` (label, href, 44px, no “overview”, destination title, axe); `test_cxuifu_static_page_copy_and_style` |
+| R-D02 | Any field edit removes the general “Something went wrong” message and hides the summary if no field links remain. Only the edited field's own error/link/ARIA clear (D03 kept). | `cxuifu-rd02`, `cxuifu-rd02-375` (network failure cleared by a cost edit and by a months edit; server-mapped and client months errors survive a cost edit; recovery; axe) |
+| R-D03 | `.error-summary h3{margin-top:0}` | `cxuifu-rd03`, `cxuifu-rd03-375` (computed 0px, heading flush with padding in field and server error states; axe); static test |
+| Wording | Dropped “no assumed entitlement”. The notice now ends “It uses a flat monthly amount with no inflation.” | `cxuifu-wording` (setup/result/return); static test; `success` assertion updated |
+| Exponent | The browser now accepts plain decimals only. `1e2`, `1E2`, `1e-3`, `1.005e2`, `1e400` and `2e+3` get “Enter numbers only, for example 1200.” and are not sent to the API. | `cxuifu-exponent`; `cxui-d07` and `precision`/`mobile375` assertions updated (see below) |
+
+Interpretation decisions:
+- R-D01: relabel rather than repoint, because no customer SweeLah home is served. The
+  label names the page it opens (title “RetirePilot | Financial Planning Lab”).
+- Exponents are refused in the customer UI only. The API contract that documents
+  exponent acceptance within bounds and the two-place rule is unchanged, and no API
+  test or smoke assertion changed. Direct API callers still get `1e2` = 100.
+- Updated browser assertions: in `cxui-d07`, `1e12` and `1e400` now expect the numeric
+  message (plain `100000.01`, `999999999999` and `100001` still expect the cap message).
+  In `precision`/`mobile375`, `1e-3` was dropped from the precision list (now numeric,
+  covered by `cxuifu-exponent`), and the `1e2` success row became `100`.
+
+Follow-ups (not built): full SweeLah navigation and Swee artwork (D09). D05 residual
+copy (“Practice mode: use made-up numbers…”, Swee's “illustrative total”) was not in
+this assignment. The non-interactive “Life Line → Care for family” trail is part of
+the nav work.
+
+Evidence (uncommitted): `test-artifacts/cxui-001-followup/` holds suite logs, the red-phase
+log, 1280px and 375px screenshots, heading geometry and 8 axe reports (0 violations).
