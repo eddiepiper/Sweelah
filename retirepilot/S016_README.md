@@ -264,3 +264,23 @@ Interpretation decisions:
 Both new cases fail against `85f8109` and pass with this change (red-phase log in the
 evidence folder). Browser runs used `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js`;
 the 4 new axe reports show 0 violations. Evidence (uncommitted): `test-artifacts/cxui-001-followup2/`.
+
+## CXUI-FU2-D01: strict months guard on preview responses
+
+Status: **Verified** locally by the automated checks below; independent QA (G5) and
+designer (G5X) re-verification are still pending. Branch `fix/cxui-fu2-d01` from
+`6d8bbf3`. Only `retirepilot/s016.html`, S016 browser tests and this document change.
+`retirepilot/api.py`, the API response, the dashboard at `/`, nav and artwork are unchanged.
+
+| Item | Change (`retirepilot/s016.html`) | Proving case/test |
+|---|---|---|
+| CXUI-FU2-D01 | The 200-response guard no longer coerces `months` with `Number()`. It must be `typeof 'number'`, `Number.isInteger` (so not NaN/Infinity) and 1–120. `extra_monthly_cost` and `period_cash_cost` must be plain `digits.2dp` strings, and monthly × months must equal the total in integer cents (BigInt, no float drift). Anything else is “Something went wrong” with no result. | `cxuifu2d01-guard`, `cxuifu2d01-guard-375` (forged 200s: months `true`, `"1"`, `[5]`, `"1e1"`, `1.5`, raw `NaN`, raw `Infinity`, `1e400`, `-1e400`; months 1 with total 14400.00; off-by-one-cent total; numeric, 1-dp and exponent amounts all refused. Valid forged 1, 3×0.10, 7×99999.99, 120×100000.00 render with “1 month” / “N months”; real API months=1 still renders; 375px overflow; axe) |
+
+Interpretation decisions:
+- The monthly × months = total check was added. The real API always returns
+  `money()` strings with exactly 2 decimals, so the strict `^\d+\.\d{2}$` format is safe.
+- Raw `NaN`/`Infinity` tokens are invalid JSON, so they are refused by the existing
+  parse-failure path; `1e400` parses to a real `Infinity` number and is refused by the guard.
+
+The new cases fail against `6d8bbf3` and pass with this change (red-phase log in the
+evidence folder). Evidence (uncommitted): `test-artifacts/cxui-fu2-d01/`.
