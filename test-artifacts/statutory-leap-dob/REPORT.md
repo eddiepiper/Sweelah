@@ -41,7 +41,7 @@ Money math is unchanged (still Decimal, same rounding helpers). The change is li
 | `projection_v22._anniversary` | No — already clamps with `monthrange` to 28 Feb in a common year | **Not changed.** That clamp disagrees with `age_on` (boundary falls a day early). It is issue #9, already being fixed on a separate branch from main. Out of scope here. |
 | `core.age_on` | No — tuple comparison `(month, day)` | Left unchanged; this is the convention the fix follows |
 | `cpf_retirement_v26.transition_at_55` | No — compares `(today.month, today.day)` to the DOB. An "exact 55th-birthday" snapshot for a 29-Feb DOB is only possible when `as_of` itself is 29 Feb (so the 55th year must be a leap year). A common-year `as_of` of 1 Mar raises the existing `CPFUnsupportedCase`, not `ValueError`. | Listed, not changed |
-| `policy.py` (`dob.year + 55` as an integer year only) | No | Listed, not changed |
+| `policy.py` | **Yes (correction, QA G5 at e9b7509).** `policy.py:47` calls `statutory_2026._band_index` for the CPF employee reference, so a 29-Feb DOB crashed there with the same `ValueError`. Its own `dob.year + 55` arithmetic is integer-only and does not crash. | **Fixed by this commit** through `_band_index`; `policy.py` itself is unchanged |
 | `date(year, month, 1)` / `monthrange` end-of-month constructions | No | Listed, not changed |
 
 ## 4. Red / green
@@ -70,11 +70,21 @@ All runs used `/workspace/sweelah-baseline-venv` (Python 3.13.5) with `PYTHONPAT
 | Release documents `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `release.log` |
 | Design assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
 
-## 6. Visible UI output change: **No** for shipped samples
+## 6. Visible UI output change: **Yes** for 29-Feb profiles; **No** for shipped samples
 
 `service.evaluate()` for all three bundled households (`data/*household*.json`) is **byte-identical** to `origin/main`'s `statutory_2026.py`. None of those profiles has a 29-Feb DOB (`ui-compare.log`). Default UI chart text and "Baseline projected accessible assets" do not change. Labels and copy are unchanged.
 
-The UI takes editable JSON. For a synthetic profile with a 29-Feb DOB, `employee_ow_cpf` / `platform_cpf` / `cpf_contribution_review` previously raised `ValueError` and would now return a bounded reference (and, in a common-year attained-age month, keep the prior band through March). Cash-flow and projection still use user-supplied deductions, not these statutory references, so the default forecast chart is unaffected unless a later path starts displaying the reference amounts. Recommendation: G5X is not required for shipped content; CoS to decide whether the newly-non-crashing 29-Feb statutory reference counts as a visible change.
+**Correction (QA G5 at e9b7509): the visible fix.** On main `823ef72`, any household where a person with a 29-Feb DOB reaches the CPF employee reference path makes `service.evaluate` raise `ValueError: day is out of range for month`. That path is a Singapore citizen, or a PR in CPF year 3 or later, with `as_of` in 2026 or 2027. The UI and `POST /api/evaluate` then return **422**. On this branch the same households return **200** with a full evaluation. I checked this by setting every person's DOB to `1972-02-29` in the bundled `retired_household` and `salaried_household`:
+- SG and PR: 422/`ValueError` on main, success on this branch.
+- Foreign residents: success on both, because they do not reach `_band_index`.
+
+So every 29-Feb user on that path goes from an error to a result. That is a user-visible change, although no labels, copy or layout change.
+
+Previous wording, kept for history: for a synthetic profile with a 29-Feb DOB, `employee_ow_cpf` / `platform_cpf` / `cpf_contribution_review` previously raised `ValueError` and would now return a bounded reference (and, in a common-year attained-age month, keep the prior band through March). Cash-flow and projection still use user-supplied deductions, not these statutory references, so the default forecast chart is unaffected unless a later path starts displaying the reference amounts. Recommendation: G5X is not required for shipped content; CoS to decide whether the newly-non-crashing 29-Feb statutory reference counts as a visible change.
+
+## 6a. Merge-order requirement: land together with #9
+
+This branch must land **back to back with #9** (`fix/issue-9-partial-month`), **with no release in between**. Merge order: STAT-LEAPDOB first, then #9. On its own, this branch makes statutory references use the 1-Mar convention, while `projection_v22._anniversary` on main still uses 28 Feb. The two conventions would be mixed in one evaluation. #9 aligns the projection to 1 Mar. Manifest-pin updates for both branches may be needed after SWEELAH-MANIFEST-PINS lands; that report will list them.
 
 ## 7. Residual risks
 
