@@ -1,0 +1,25 @@
+.........F................                                               [100%]
+=================================== FAILURES ===================================
+__________ test_mapping_follows_research_contract_and_registry[S025] ___________
+tests/test_scenario_mapping_internal_issue8.py:123: in test_mapping_follows_research_contract_and_registry
+    assert m['semantic_scope'] == spec['Event and calculation rule']
+E   AssertionError: assert 'ALTERED SCOP... the contract' == 'Apply real-r...ths per asset'
+E     
+E     - Apply real-return sensitivity to explicit nominal return and inflation paths per asset
+E     + ALTERED SCOPE TEXT that is not the contract
+=========================== short test summary info ============================
+FAILED tests/test_scenario_mapping_internal_issue8.py::test_mapping_follows_research_contract_and_registry[S025]
+1 failed, 25 passed in 0.04s
+
+===== full tests/test_scenario_mapping_internal_issue8.py with S025 semantic_scope mutated =====
+..........................................F............................. [ 92%]
+......                                                                   [100%]
+=================================== FAILURES ===================================
+E   AssertionError: assert 'ALTERED SCOP... the contract' == 'Apply real-r...ths per asset'
+      
+      - Apply real-return sensitivity to explicit nominal return and inflation paths per asset
+      + ALTERED SCOPE TEXT that is not the contract
+/workspace/sweelah-issue-8-v2/tests/test_scenario_mapping_internal_issue8.py:123: AssertionError: assert 'ALTERED SCOP... the contract' == 'Apply real-r...ths per asset'
+=========================== short test summary info ============================
+FAILED tests/test_scenario_mapping_internal_issue8.py::test_mapping_follows_research_contract_and_registry[S025]
+1 failed, 77 passed in 0.32s

@@ -87,7 +87,8 @@ def reference_errors(doc: dict | None = None) -> list[str]:
     registry = {r['id']: r for r in v26_registry()}
     engines = {e['ID'] for e in _load(RESEARCH_DIR / 'financial_engine_contracts_18.json')}
     decisions = {d['ID'] for d in _load(RESEARCH_DIR / 'APPROVED_PRODUCT_DECISIONS_D08_D16.json')}
-    research = {s['ID'] for s in _load(RESEARCH_DIR / 'scenario_engine_contracts_46.json')}
+    research_specs = {s['ID']: s for s in _load(RESEARCH_DIR / 'scenario_engine_contracts_46.json')}
+    all_guardrails = {s['Guardrail / refusal'] for s in research_specs.values()}
     errors: list[str] = []
     seen: set[str] = set()
     for m in doc.get('entries', []):
@@ -98,8 +99,27 @@ def reference_errors(doc: dict | None = None) -> list[str]:
         if sid not in registry:
             errors.append(f'{sid}: not in v2.6 catalogue registry')
             continue
-        if sid not in research:
+        spec = research_specs.get(sid)
+        if spec is None:
             errors.append(f'{sid}: not in research scenario contracts')
+        else:
+            expected_facts = [x.strip() for x in spec['Required facts'].split(';')]
+            actual_facts = list(m.get('required_facts') or [])
+            if actual_facts != expected_facts:
+                extras = [f for f in actual_facts if f not in expected_facts]
+                missing = [f for f in expected_facts if f not in actual_facts]
+                for fact in extras:
+                    errors.append(f'{sid}: dangling required fact {fact}')
+                for fact in missing:
+                    errors.append(f'{sid}: missing required fact {fact}')
+                if not extras and not missing:
+                    errors.append(f'{sid}: required_facts do not match research contract')
+            actual_guardrail = m.get('guardrail')
+            if actual_guardrail != spec['Guardrail / refusal']:
+                if actual_guardrail not in all_guardrails:
+                    errors.append(f'{sid}: dangling guardrail')
+                else:
+                    errors.append(f'{sid}: guardrail does not match research contract')
         reg = registry[sid]
         if reg['previous_status'] != 'UNMAPPED':
             errors.append(f'{sid}: was not one of the formerly unmapped entries')

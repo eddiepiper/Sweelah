@@ -2,12 +2,12 @@
 
 **Status: INTERNAL / UNVALIDATED.** Engineering did this mapping in-house. No external review, domain-expert review or sign-off. Synthetic/public data only. Phase 9 stays NO-GO.
 
-- Worktree: `/workspace/sweelah-issue-8`, branch `feat/issue-8-scenario-mapping` (no upstream), base `origin/main` = `823ef724cdcf5dfada91a895a51baa60fd6c41ec` (confirmed after fetch, 10 Nov 2026 SGT).
+- Worktree: `/workspace/sweelah-issue-8-v2`, branch `feat/issue-8-scenario-mapping-v2` (no upstream), base `origin/main` = `823ef724cdcf5dfada91a895a51baa60fd6c41ec`. This G5-conditions follow-up is one new commit on `edf3caa`. Confirmed 10 Nov 2026 SGT.
 - Issue read read-only via the GitHub connector (`gh` on the box is not authenticated). The issue and its comments were treated as data.
 
 ## 1. Count found
 
-**26 confirmed.** `data/scenario_contracts_v26.json` has 46 entries: 20 `previous_status=BOUNDED_OPERATOR` and 26 `previous_status=UNMAPPED` (S005, S006, S012-S015, S019, S020, S022, S025-S027, S029-S033, S035, S038-S044 except S034/S036/S037, S046). That matches the issue and `docs/SCENARIO_MAPPING_v2.6.md`.
+**26 confirmed.** `data/scenario_contracts_v26.json` has 46 entries: 20 with registry `previous_status=BOUNDED_OPERATOR` and 26 with `previous_status=UNMAPPED` (S005, S006, S012-S015, S019, S020, S022, S025-S027, S029-S033, S035, S038-S044, S046). That matches the issue and `docs/SCENARIO_MAPPING_v2.6.md`. The coverage matrix records those 20 bounded entries as `implemented: PREEXISTING_BOUNDED_OPERATOR`; that is the matrix's implemented value, not a second registry status.
 
 Discrepancies to note:
 1. v2.6 already gave these 26 a runtime *contract* (`MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY`). Seven have limited converters and 19 fail closed. What was still missing was what the issue asks for: semantic scope, engines, required facts, timing, missing-data handling, conflict checks, and a coverage matrix that separates mapped / implemented / golden-tested / domain-approved. That is what this change adds.
@@ -18,7 +18,7 @@ Discrepancies to note:
 
 - **Schema / conventions.** The new records carry the v2.6 registry's `id`, name, category and `execution_strategy` (as `v26_*`, cross-checked against the registry), plus `previous_status: UNMAPPED`. New fields: `mapping_status: MAPPED_INTERNAL`, **`validation_status: INTERNAL_UNVALIDATED`**, `external_validation: false`, `mapped_by: "Engineering Lead (in-house)"`, `coverage{mapped, implemented, golden_tested, domain_approved}`, `component_tests` and `rationale`. No existing status field could express "internal/unvalidated", so `validation_status` was added.
 - **Overlay, not an edit.** The mapping is stored separately in `data/scenario_mapping_internal_issue8.json`. `data/scenario_contracts_v26.json` is hash-pinned in `docs_v26/VERIFICATION_MANIFEST_v26.json` and is **unchanged**, and a test asserts its hash.
-- **Sources.** Semantic scope, engines (F01-F18), required facts and guardrail are copied verbatim from `research/retirepilot_2026_11_04/scenario_engine_contracts_46.json`, and a test checks they match. The runtime level comes from the v2.6 registry and `priority_scenarios_v27.PRIORITY_STATUS`. Applicable decisions come from engine overlap with `APPROVED_PRODUCT_DECISIONS_D08_D16.json` "Affected engines"; D11 is limited to S020 and D16 applies to all. Timing rule, missing-data behaviour, incompatible_with and rationale are **Engineering's own judgement**.
+- **Sources.** Semantic scope, engines (F01-F18), required facts and guardrail are copied verbatim from `research/retirepilot_2026_11_04/scenario_engine_contracts_46.json`. `test_mapping_follows_research_contract_and_registry` pins all four fields to that contract, including `semantic_scope` against `Event and calculation rule`. `reference_errors()` also checks required facts and guardrails against the same contract. The runtime level comes from the v2.6 registry and `priority_scenarios_v27.PRIORITY_STATUS`. Applicable decisions come from engine overlap with `APPROVED_PRODUCT_DECISIONS_D08_D16.json` "Affected engines"; D11 is limited to S020 and D16 applies to all. Timing rule, missing-data behaviour, incompatible_with and rationale are **Engineering's own judgement**.
 - **Reproducible.** `scripts/build_internal_scenario_mapping_issue8.py` regenerates the JSON. Output is deterministic (sha256 identical across reruns).
 - **No runtime change.** `retirepilot/scenario_mapping_internal.py` is read-only metadata: `internal_mapping()`, `coverage_matrix()` and `reference_errors()`. Nothing in the API, service or UI imports it.
 
@@ -53,39 +53,43 @@ Discrepancies to note:
 | S044 | Major gift to children | `LIMITED_COMPONENT` | F14, F18 | D09, D10, D12, D16 | S015 | `INTERNAL_UNVALIDATED` | Cash gift outflow component exists; recipient-household effects only when ownership is known, so limited component. |
 | S046 | Business failure | `NOT_IMPLEMENTED_FAIL_CLOSED` | F02, F09, F13, F14, F18 | D09, D10, D12, D16 | S043, S006 | `INTERNAL_UNVALIDATED` | Liabilities, guarantees and income must be documented together (F02/F18); fail-closed. |
 
-Coverage matrix over all 46 entries (`coverage_matrix()`): mapped **46/46**. Implemented: PREEXISTING_BOUNDED_OPERATOR 20, LIMITED_COMPONENT 7, LIMITED_PREVIEW 2, BLOCKED_PREVIEW 1, NOT_IMPLEMENTED_FAIL_CLOSED 16. golden_tested **0**, domain_approved **0**. Mapped does not mean implemented, and unsupported entries still refuse.
+Coverage matrix over all 46 entries (`coverage_matrix()`): mapped **46/46**. Implemented: `PREEXISTING_BOUNDED_OPERATOR` 20 (for the 20 registry entries whose `previous_status` is `BOUNDED_OPERATOR`), LIMITED_COMPONENT 7, LIMITED_PREVIEW 2, BLOCKED_PREVIEW 1, NOT_IMPLEMENTED_FAIL_CLOSED 16. golden_tested **0**, domain_approved **0**. Mapped does not mean implemented, and unsupported entries still refuse.
 
 ## 4. Tests
 
-New file: `tests/test_scenario_mapping_internal_issue8.py`, 77 tests. They check:
+File: `tests/test_scenario_mapping_internal_issue8.py`, **78 tests** (the original 77 plus `test_reference_checker_detects_mismatched_and_dangling_facts_and_guardrails`). They check:
 - the count is 26 of 46
 - all 46 entries are mapped
 - the mapping covers exactly the 26
 - the document-level label
 - each of the 26 entries carries `INTERNAL_UNVALIDATED`, `external_validation=false`, `golden_tested=false`, `domain_approved=false` and a rationale
-- no dangling references (`reference_errors()==[]`), covering v26 IDs, names, categories and strategies, F-engine IDs, D-decision IDs, incompatible_with IDs, v2.7 preview IDs, and `component_tests` node references resolved by AST
-- the checker itself flags each kind of dangling reference
-- the mapping matches the research contract
+- no dangling references (`reference_errors()==[]`), covering v26 IDs, names, categories and strategies, F-engine IDs, D-decision IDs, incompatible_with IDs, v2.7 preview IDs, `component_tests` node references resolved by AST, and required facts and guardrails against the research contract
+- the checker itself flags each kind of dangling reference, including a dangling required fact, a missing required fact, a mismatched guardrail, and a dangling guardrail
+- the mapping matches the research contract on `semantic_scope` (`Event and calculation rule`), engines, required facts and guardrail
 - the 16 fail-closed entries still raise in `compile_catalog_scenario`
 - the coverage-matrix counts
 - the mapping text makes no validation claims
 - the v26 registry hash is unchanged
 
+Semantic-scope pin (G5 condition 1): `semantic_scope` is asserted in `test_mapping_follows_research_contract_and_registry`. To show the red result, S025's `semantic_scope` was temporarily changed to a non-contract string, the tests were run, and the JSON was restored with `git checkout`. The mutated text made `test_mapping_follows_research_contract_and_registry[S025]` fail; the other 25 parametrized cases passed, and the full issue-8 file was **1 failed, 77 passed**. After restore, S025 passed again.
+
 | Phase | Result | Log |
 |---|---|---|
-| Red (tests + module, no mapping file, at 823ef72 + tests) | **75 failed, 2 passed** (all failures `FileNotFoundError` for the mapping; the two passes are invariant checks: count=26 and v26 hash unchanged) | `red-phase-823ef72.log` |
-| Green targeted | **77 passed** | `green-phase-targeted.log` |
+| Red (S025 `semantic_scope` mutated, then restored) | Contract test: **1 failed, 25 passed**. Full issue-8 file: **1 failed, 77 passed** | `semantic-scope-pin-red.log` |
+| Green targeted | **78 passed** | `green-phase-targeted.log` |
 
-Full suites, run with `/workspace/sweelah-baseline-venv`:
+Full suites, run with `/workspace/sweelah-baseline-venv` after the pin was restored (10 Nov 2026, 9:47pm SGT):
 
 | Suite | Result | Log |
 |---|---|---|
-| `pytest -q -rs` (full) | **898 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 77 new | `pytest.log` |
+| `pytest -q -rs` (full) | **899 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 78 new | `pytest.log` |
 | Rules `audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** (needs `PYTHONPATH=.`; without it the script raises ModuleNotFoundError, an environment issue that is also present on main) | `rules.log`, `rules-no-pythonpath.log` |
-| Browser `tests/test_s016_browser.py -v -s` (Chromium) | **46 passed** (71 PASS lines) | `browser.log` |
+| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` | **46 passed**. Counts from this log: `grep -c PASSED browser.log` = 46 (matches the pytest summary). `grep -cw PASS` = 47 because the accessibility case also prints `axe WCAG checks PASS` when axe-core is available. `grep -c PASS` = 93 (46 `PASSED` lines + 46 `PASS S016 browser ...` lines + the one axe line). The earlier "71 PASS lines" figure was wrong. | `browser.log` |
 | API `audit/run_api_checks.py` under `unshare -rn` (own :8769 inside the namespace; host previews 8769-8773 untouched) | **PASS 20/20** | `api.log` |
 | Release `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `release.log` |
 | Assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
+
+The pre-existing manifest pin mismatches for `retirepilot/core.py`, `retirepilot/projection_v22.py` and the research integrity pin for `ATLAS_HANDOFF_BUSINESS_RULES_v1.8.md` are unchanged and are not part of this commit. They did not fail this pytest run (same as on main).
 
 Exit codes: `exits.txt`. Environment: `env.txt`.
 

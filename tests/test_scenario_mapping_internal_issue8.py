@@ -81,9 +81,46 @@ def test_reference_checker_detects_each_dangling_kind():
         assert needle in errors
 
 
+def test_reference_checker_detects_mismatched_and_dangling_facts_and_guardrails():
+    """Facts and guardrails are checked against the research contract, not only IDs."""
+    base = internal_mapping()
+
+    invented = copy.deepcopy(base)
+    s006 = next(e for e in invented['entries'] if e['id'] == 'S006')
+    s006['required_facts'] = list(s006['required_facts']) + ['invented_fact']
+    invented_errors = '\n'.join(reference_errors(invented))
+    assert 'S006: dangling required fact invented_fact' in invented_errors
+
+    dropped = copy.deepcopy(base)
+    s013 = next(e for e in dropped['entries'] if e['id'] == 'S013')
+    assert len(s013['required_facts']) >= 1
+    missing = s013['required_facts'][0]
+    s013['required_facts'] = s013['required_facts'][1:]
+    dropped_errors = '\n'.join(reference_errors(dropped))
+    assert f'S013: missing required fact {missing}' in dropped_errors
+
+    mismatched = copy.deepcopy(base)
+    s038 = next(e for e in mismatched['entries'] if e['id'] == 'S038')
+    # Swap in a real guardrail from another contract so this is a mismatch, not a dangling string.
+    other = next(e['guardrail'] for e in mismatched['entries'] if e['id'] == 'S025')
+    assert other != s038['guardrail']
+    s038['guardrail'] = other
+    mismatch_errors = '\n'.join(reference_errors(mismatched))
+    assert 'S038: guardrail does not match research contract' in mismatch_errors
+
+    dangling_g = copy.deepcopy(base)
+    s025 = next(e for e in dangling_g['entries'] if e['id'] == 'S025')
+    s025['guardrail'] = 'softened invented guardrail'
+    dangling_g_errors = '\n'.join(reference_errors(dangling_g))
+    assert 'S025: dangling guardrail' in dangling_g_errors
+
+    assert reference_errors() == []
+
+
 @pytest.mark.parametrize('sid', FORMERLY_UNMAPPED)
 def test_mapping_follows_research_contract_and_registry(sid):
     m, spec = _entry(sid), RESEARCH[sid]
+    assert m['semantic_scope'] == spec['Event and calculation rule']
     assert m['financial_engines'] == spec['Financial engines'].split(',')
     assert m['required_facts'] == [x.strip() for x in spec['Required facts'].split(';')]
     assert m['guardrail'] == spec['Guardrail / refusal']
