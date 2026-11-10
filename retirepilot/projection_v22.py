@@ -9,6 +9,7 @@ from __future__ import annotations
 from calendar import monthrange
 from datetime import date, timedelta
 from decimal import Decimal
+from . import core as _core
 from .core import (ValidationError, validate, dec, money, age_on, _scenario_spec, _pct)
 
 EARNED={'salary','platform','commission','self_employed','business'}
@@ -34,11 +35,12 @@ def _anniversary(dob,age):
     INTERNAL ASSUMPTION (not checked against the CPF Board or any statutory
     convention; Phase 7 external review skipped): the 1 Mar leap-day rule
     follows the engine's existing core.age_on only.
+
+    Delegates to core.attained_age_date. A calendar year outside 1-9999 raises
+    core.ValidationError, the error projection_v22 already uses for invalid
+    input (mapped to HTTP 422), instead of a raw ValueError/OverflowError.
     """
-    d=date.fromisoformat(dob)
-    year=d.year+age
-    if d.day>monthrange(year,d.month)[1]:return date(year,d.month+1,1)
-    return date(year,d.month,d.day)
+    return _core.attained_age_date(date.fromisoformat(dob),age,error=ValidationError)
 
 def _overlap_fraction(start,end,begin=None,finish=None):
     a=max([v for v in (start,begin) if v is not None])

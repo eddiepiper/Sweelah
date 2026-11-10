@@ -1,0 +1,143 @@
+diff --git a/retirepilot/core.py b/retirepilot/core.py
+index 974ce27..63c7591 100644
+--- a/retirepilot/core.py
++++ b/retirepilot/core.py
+@@ -38,6 +38,33 @@ def age_on(dob: str, on: date) -> int:
+     born = date.fromisoformat(dob)
+     return on.year - born.year - ((on.month,on.day) < (born.month,born.day))
+ 
++def attained_age_date(born: date, age: int, *, error: type[Exception] = ValidationError) -> date:
++    """First date on which ``age_on(born, d) == age`` (the exclusive age boundary).
++
++    Single shared implementation for statutory_2026, cpf_retirement_v26 and
++    projection_v22 (SWEELAH-ATTAIN-CORE). ``error`` is the exception class each
++    caller already exposes for an unsupported calendar year: ValidationError
++    (default; statutory and projection, mapped to HTTP 422) or
++    cpf_retirement_v26.CPFUnsupportedCase. The year is range-checked before any
++    date is built, so huge ages raise ``error`` rather than OverflowError.
++
++    INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory
++    convention (Phase 7 external review skipped): a 29-Feb person attains the
++    new age on 1 Mar in a common year, matching age_on.
++    """
++    year = born.year + age
++    if year < date.min.year or year > date.max.year:
++        raise error(
++            'Attained-age calendar year is outside the supported date range '
++            f'({date.min.year}-{date.max.year})'
++        )
++    try:
++        return date(year, born.month, born.day)
++    except ValueError:
++        # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
++        # first day the new age is attained.
++        return date(year, 3, 1)
++
+ def _id_set(rows, group):
+     ids=[r['id'] for r in rows]
+     if len(set(ids)) != len(ids): raise ValidationError(f'{group}: duplicate id')
+diff --git a/retirepilot/cpf_retirement_v26.py b/retirepilot/cpf_retirement_v26.py
+index c45e348..e81e892 100644
+--- a/retirepilot/cpf_retirement_v26.py
++++ b/retirepilot/cpf_retirement_v26.py
+@@ -8,6 +8,7 @@ premiums, official eligibility, property pledges or payouts from balances.
+ from __future__ import annotations
+ from datetime import date
+ from decimal import Decimal, InvalidOperation
++from . import core as _core
+ 
+ SOURCE_RA='https://www.cpf.gov.sg/service/article/what-happens-to-my-cpf-savings-when-i-turn-55'
+ SOURCE_SA='https://www.cpf.gov.sg/service/article/what-is-the-closure-of-special-account-for-members-aged-55-and-above-about'
+@@ -37,22 +38,10 @@ def _nonnegative_decimal(value, field):
+ def _attained_age_date(born: date, age: int) -> date:
+     """First date on which a person born on ``born`` attains ``age``.
+ 
+-    INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory
+-    convention (Phase 7 external review skipped): a 29-Feb person attains the
+-    new age on 1 Mar in a common year, matching core.age_on.
++    Thin wrapper over core.attained_age_date (INTERNAL ASSUMPTION: 29 Feb ->
++    1 Mar in a common year). Out-of-range years raise CPFUnsupportedCase.
+     """
+-    year = born.year + age
+-    if year < date.min.year or year > date.max.year:
+-        raise CPFUnsupportedCase(
+-            'Attained-age calendar year is outside the supported date range '
+-            f'({date.min.year}-{date.max.year})'
+-        )
+-    try:
+-        return date(year, born.month, born.day)
+-    except ValueError:
+-        # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
+-        # first day the new age is attained.
+-        return date(year, 3, 1)
++    return _core.attained_age_date(born, age, error=CPFUnsupportedCase)
+ 
+ def transition_at_55(*, dob:str, as_of:str, oa, sa, ma, existing_ra='0', cpf_membership_confirmed:bool=False, property_pledge:bool=False):
+     """Transfers SA first, OA second into a new RA up to cohort FRS.
+diff --git a/retirepilot/projection_v22.py b/retirepilot/projection_v22.py
+index 37c0815..3ffa08b 100644
+--- a/retirepilot/projection_v22.py
++++ b/retirepilot/projection_v22.py
+@@ -9,6 +9,7 @@ from __future__ import annotations
+ from calendar import monthrange
+ from datetime import date, timedelta
+ from decimal import Decimal
++from . import core as _core
+ from .core import (ValidationError, validate, dec, money, age_on, _scenario_spec, _pct)
+ 
+ EARNED={'salary','platform','commission','self_employed','business'}
+@@ -34,11 +35,12 @@ def _anniversary(dob,age):
+     INTERNAL ASSUMPTION (not checked against the CPF Board or any statutory
+     convention; Phase 7 external review skipped): the 1 Mar leap-day rule
+     follows the engine's existing core.age_on only.
++
++    Delegates to core.attained_age_date. A calendar year outside 1-9999 raises
++    core.ValidationError, the error projection_v22 already uses for invalid
++    input (mapped to HTTP 422), instead of a raw ValueError/OverflowError.
+     """
+-    d=date.fromisoformat(dob)
+-    year=d.year+age
+-    if d.day>monthrange(year,d.month)[1]:return date(year,d.month+1,1)
+-    return date(year,d.month,d.day)
++    return _core.attained_age_date(date.fromisoformat(dob),age,error=ValidationError)
+ 
+ def _overlap_fraction(start,end,begin=None,finish=None):
+     a=max([v for v in (start,begin) if v is not None])
+diff --git a/retirepilot/statutory_2026.py b/retirepilot/statutory_2026.py
+index aaf5da2..684aa31 100644
+--- a/retirepilot/statutory_2026.py
++++ b/retirepilot/statutory_2026.py
+@@ -7,6 +7,7 @@ into the household cash-flow forecast. Values are not payment instructions.
+ from __future__ import annotations
+ from datetime import date
+ from decimal import Decimal, ROUND_FLOOR, ROUND_HALF_UP
++from . import core as _core
+ from .core import dec, money, age_on, ValidationError
+ 
+ SOURCE_EMPLOYEE_2026='https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay'
+@@ -40,22 +41,10 @@ def _floor_worker(amount):return amount.quantize(Decimal('1'),rounding=ROUND_FLO
+ def _attained_age_date(born: date, age: int) -> date:
+     """First date on which a person born on ``born`` attains ``age``.
+ 
+-    INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory
+-    convention (Phase 7 external review skipped): a 29-Feb person attains the
+-    new age on 1 Mar in a common year, matching core.age_on.
++    Thin wrapper over core.attained_age_date (INTERNAL ASSUMPTION: 29 Feb ->
++    1 Mar in a common year). Out-of-range years raise core.ValidationError (422).
+     """
+-    year = born.year + age
+-    if year < date.min.year or year > date.max.year:
+-        raise ValidationError(
+-            'Attained-age calendar year is outside the supported date range '
+-            f'({date.min.year}-{date.max.year})'
+-        )
+-    try:
+-        return date(year, born.month, born.day)
+-    except ValueError:
+-        # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
+-        # first day the new age is attained.
+-        return date(year, 3, 1)
++    return _core.attained_age_date(born, age, error=ValidationError)
+ 
+ 
+ def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
