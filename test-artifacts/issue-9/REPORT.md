@@ -54,7 +54,7 @@ New file: `tests/test_issue9_partial_month.py` (40 tests). Expected values come 
 | Design assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
 | `pytest -q -rs` (full) | **861 passed**, 0 failed, 0 skipped (821 existing + 40 new) | `pytest.log` |
 | Rule contracts `audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `rules.log` |
-| Browser `tests/test_s016_browser.py -v -s` (real Chromium) | **46 passed** (71 PASS lines) | `browser.log` |
+| Browser `tests/test_s016_browser.py -v -s` (real Chromium) | **46 passed** (92 PASS lines) | `browser.log` |
 | API `audit/run_api_checks.py` | **PASS 20/20**, run under `unshare -rn` (its own :8769 inside the namespace; host previews 8769-8773 untouched) | `api.log` |
 
 Exit codes: `exits.txt`. Environment: `env.txt`.
@@ -63,12 +63,12 @@ Exit codes: `exits.txt`. Environment: `env.txt`.
 
 - No HTML, CSS, copy, layout or API schema changed.
 - `service.evaluate()` projection output for all three bundled households (`data/*household*.json`) is **byte-identical** before and after the fix. None of them has a 29-Feb DOB. So the default UI chart and "Baseline projected accessible assets" text do not change.
-- The UI takes editable JSON. For a profile with a **29 Feb DOB** (none ships), the projection numbers shown (chart points, "Baseline projected accessible assets", combined-shock difference) can shift by about one day of the affected flows. For example, a S$7,200/mo flow moves by S$257.14 in that year. No labels or text change.
+- **Correction (QA G5 at 3f9884f):** today, with a **29 Feb DOB**, the UI and `/api/evaluate` return **422 "day is out of range for month"** on both main 823ef72 and this branch. The cause is the `statutory_2026` crash (section 7.2), which every `service.evaluate` call hits. So this fix is **not user-visible yet**. It becomes visible only once SWEELAH-STAT-LEAPDOB (`fix/statutory-leap-dob`) merges. The planned merge order is STAT-LEAPDOB first, then #9. After both merge, a user-edited profile with a 29 Feb DOB (none ships) shows projection numbers about one day's worth of the affected flows different. For example, a S$7,200/mo flow moves by S$257.14 in that year. No labels or text change.
 - Recommendation: G5X is not required by the "visible UI output changes" rule for shipped content. CoS to decide whether the 29-Feb numeric case counts.
 
 ## 7. Residual risks / follow-ups (not changed here, out of scope)
 
 1. **Leap-day convention is an assumption.** I aligned the boundaries to the engine's existing `age_on`, where a 29-Feb person reaches the new age on 1 Mar in common years. I did not verify the CPF Board/statutory convention. That needs finance review (independent reviewer not engaged). Per CoS (10 Nov 2026), this is recorded as an **internal assumption, not checked against the CPF Board**. Phase 7 (external review) is skipped, and the same note is in the `_anniversary` docstring. The `statutory_2026.py` 29-Feb `ValueError` is being fixed on a separate branch, not in this commit.
-2. **`statutory_2026` crashes for 29-Feb DOBs.** Line ~45 does `date(born.year+threshold, born.month, born.day)`, so `employee_ow_cpf(dob='1972-02-29', month='2027-03', ...)` raises `ValueError: day is out of range for month`. Separate CPF-rate module; suggest a separate ticket.
+2. **`statutory_2026` crashes for 29-Feb DOBs.** Line ~45 does `date(born.year+threshold, born.month, born.day)`, so any 29-Feb DOB raises `ValueError: day is out of range for month`. This is not limited to `employee_ow_cpf`: **every `service.evaluate` call** for a 29-Feb DOB hits it, and the API returns 422. It is being fixed separately as SWEELAH-STAT-LEAPDOB (`fix/statutory-leap-dob`), which merges before #9.
 3. Partial-month returns are prorated linearly, as `monthly_rate * fraction`, not as `(1+r)^fraction - 1`. Linear is slightly higher for fractions below 1 (about 1e-6 relative per partial month). This is intended and documented by the new test, not changed.
 4. Issue #9 says not to close until a reviewed result is linked to GitHub CI. This commit uses "Refs #9" only.
