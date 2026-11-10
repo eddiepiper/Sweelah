@@ -15,7 +15,9 @@
   "decision_3A": "Labels are internal only. They must not appear in the consumer UI, API or exports until reviewed. All personas are retained. Matching gates, weights and results are unchanged.",
   "decision_7A": "evidence_level is None: internal design, no research. Favourable consumer testing is not assumed.",
   "derivation_rule": "First pass derived from existing gate, criteria predicates, name, family and planning_focus. Use varies or spans_stages rather than guessing an age band, work type, CPF situation or household context.",
-  "usage_restriction": "Do not use these labels to infer a user's age, CPF status or any other attribute. Do not change matching gates, weights or results.",
+  "usage_restriction": "Do not use these labels to infer a user's age, CPF status or any other attribute. Do not change matching gates, weights or results. Do not use them to sort, filter or prioritise personas before the decision 7A research gate.",
+  "hop_review": "Head of Product review, Status: Proposed: four hundred and seventy-five of four hundred and eighty values accepted; five field corrections applied. Labels stay DRAFT_NOT_INDEPENDENTLY_REVIEWED with evidence_level None.",
+  "planning_complexity_reason_visibility": "INTERNAL_ONLY (decision 3A). planning_complexity_reason text, including specialist review and protective referral, must not appear in the consumer UI, API, exports or the assistant.",
   "phase_nine": "NO-GO",
   "records": [
     {
@@ -54,8 +56,8 @@
       "work_income_type": "salaried",
       "cpf_retirement_situation": "varies",
       "household_context": "varies",
-      "planning_complexity": "elevated",
-      "planning_complexity_reason": "High income with lifestyle inflation and asset-growth goals raises planning difficulty.",
+      "planning_complexity": "standard",
+      "planning_complexity_reason": "High income with investment assets and a retirement goal, and no constraint predicate, is a standard planning situation, on the same footing as H02.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
       "rationale": "Gate employee; criteria income_high, executive_role, investment_assets, retirement_goal; planning_focus Lifestyle inflation, asset growth and retirement target. No age-band predicate, so life_stage is spans_stages; gate employee maps to salaried; no CPF-retirement predicate, so cpf_retirement_situation is varies; no household predicate, so household_context is varies."
@@ -68,8 +70,8 @@
       "work_income_type": "salaried",
       "cpf_retirement_situation": "varies",
       "household_context": "couple",
-      "planning_complexity": "elevated",
-      "planning_complexity_reason": "Joint planning for a dual-earner household raises coordination difficulty.",
+      "planning_complexity": "standard",
+      "planning_complexity_reason": "Joint dual-earner planning with no constraint predicate is a standard planning situation, on the same footing as D01.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
       "rationale": "Gate household_dual_earner; criteria employee, income_high_household, partner_earns, joint_goal; planning_focus Joint planning and income concentration. No age-band predicate, so life_stage is spans_stages; criteria employee maps to salaried; no CPF-retirement predicate, so cpf_retirement_situation is varies; household_dual_earner and partner_earns map to couple."
@@ -94,13 +96,13 @@
       "name": "Contract employee",
       "life_stage": "spans_stages",
       "work_income_type": "salaried",
-      "cpf_retirement_situation": "varies",
+      "cpf_retirement_situation": "accumulating",
       "household_context": "varies",
       "planning_complexity": "elevated",
       "planning_complexity_reason": "Contract renewal uncertainty and contribution gaps raise planning difficulty.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
-      "rationale": "Gate contract_work; criteria employee, short_contract, renewal_uncertain, income_variable; planning_focus Renewal uncertainty and contribution gaps. No age-band predicate, so life_stage is spans_stages; criteria employee and gate contract_work map to salaried; contribution gaps in the planning_focus are not a CPF pattern predicate, so cpf_retirement_situation is varies."
+      "rationale": "Gate contract_work; criteria employee, short_contract, renewal_uncertain, income_variable; planning_focus Renewal uncertainty and contribution gaps. No age-band predicate, so life_stage is spans_stages; criteria employee and gate contract_work map to salaried; a contribution pathway with gaps, cited in the planning_focus, maps to accumulating as a pattern, not an entitlement."
     },
     {
       "persona_id": "A07",
@@ -122,13 +124,13 @@
       "name": "Late-career employee",
       "life_stage": "spans_stages",
       "work_income_type": "salaried",
-      "cpf_retirement_situation": "varies",
+      "cpf_retirement_situation": "payout_started",
       "household_context": "varies",
       "planning_complexity": "elevated",
       "planning_complexity_reason": "Working later than a typical retirement goal raises timing difficulty.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
-      "rationale": "Gate employee; criteria age_60plus, working_beyond_65, retirement_goal_late, cpf_income; planning_focus Working beyond typical retirement expectations. age_60plus and working_beyond_65 span more than one life-stage band, so life_stage is spans_stages; gate employee maps to salaried; cpf_income may or may not mean payout has started while still working, so cpf_retirement_situation is varies."
+      "rationale": "Gate employee; criteria age_60plus, working_beyond_65, retirement_goal_late, cpf_income; planning_focus Working beyond typical retirement expectations. age_60plus and working_beyond_65 span more than one life-stage band, so life_stage is spans_stages; gate employee maps to salaried; cpf_income maps to payout_started as a pattern, not an entitlement, consistent with B08, G08, I07, L03 and L04; current work is recorded separately in work_income_type and does not negate a payout pattern."
     },
     {
       "persona_id": "B01",
@@ -492,7 +494,7 @@
       "planning_complexity_reason": "CPF and capital after a divorce settlement near retirement suggest specialist review.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
-      "rationale": "Gate divorced_status; criteria age_55plus, cpf_settlement, asset_division, retirement_soon; planning_focus CPF and retirement capital after settlement. Name 'Divorced pre-retiree' plus age_55plus and retirement_soon map to near_retirement_55_64, but age_55plus is open-ended so this needs Head of Product review; work type is not stated, so work_income_type is not_applicable; cpf_settlement is not a tight CPF-retirement pattern, so cpf_retirement_situation is varies; post-divorce household context is not stated, so household_context is varies."
+      "rationale": "Gate divorced_status; criteria age_55plus, cpf_settlement, asset_division, retirement_soon; planning_focus CPF and retirement capital after settlement. Name 'Divorced pre-retiree' plus age_55plus and retirement_soon map to near_retirement_55_64; work type is not stated, so work_income_type is not_applicable; cpf_settlement is not a tight CPF-retirement pattern, so cpf_retirement_situation is varies; post-divorce household context is not stated, so household_context is varies."
     },
     {
       "persona_id": "E03",
@@ -1160,8 +1162,8 @@
       "work_income_type": "not_applicable",
       "cpf_retirement_situation": "accumulating",
       "household_context": "varies",
-      "planning_complexity": "elevated",
-      "planning_complexity_reason": "A new PR transition involving CPF and overseas assets raises planning difficulty.",
+      "planning_complexity": "specialist_review_suggested",
+      "planning_complexity_reason": "foreign_pension and overseas_assets, with a transition in CPF and overseas assets, match the same multi-jurisdiction pattern as K06 and K08 and suggest specialist review.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
       "rationale": "Gate pr_status; criteria new_pr, foreign_pension, overseas_assets, cpf_contrib; planning_focus Transition in CPF and overseas assets. No age-band or work-type predicate, so life_stage is spans_stages and work_income_type is not_applicable; cpf_contrib indicates accumulating even with foreign_pension present."
@@ -1220,7 +1222,7 @@
       "planning_complexity_reason": "Non-CPF retirement planning for an Employment Pass holder suggests specialist review.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
-      "rationale": "Gate employment_pass; criteria foreign_pension, no_cpf, overseas_assets, foreign_spending; planning_focus Non-CPF retirement planning. No age-band predicate, so life_stage is spans_stages; gate employment_pass is treated as salaried because that pass is an employment pass, which needs Head of Product review; no_cpf maps to limited_or_no_cpf as a pattern, not an entitlement."
+      "rationale": "Gate employment_pass; criteria foreign_pension, no_cpf, overseas_assets, foreign_spending; planning_focus Non-CPF retirement planning. No age-band predicate, so life_stage is spans_stages; gate employment_pass is treated as salaried because that pass is an employer-sponsored employment pass; no_cpf maps to limited_or_no_cpf as a pattern, not an entitlement."
     },
     {
       "persona_id": "K07",
@@ -1234,7 +1236,7 @@
       "planning_complexity_reason": "Overseas family obligations and non-CPF savings raise planning difficulty.",
       "label_status": "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
       "evidence_level": "None",
-      "rationale": "Gate work_permit_or_spass; criteria no_cpf, overseas_family_support, foreign_spending, income_low; planning_focus Overseas family obligations and non-CPF savings. No age-band predicate, so life_stage is spans_stages; gate work_permit_or_spass is treated as salaried because those passes are employment passes, which needs Head of Product review; no_cpf maps to limited_or_no_cpf as a pattern, not an entitlement; overseas_family_support maps to dependants."
+      "rationale": "Gate work_permit_or_spass; criteria no_cpf, overseas_family_support, foreign_spending, income_low; planning_focus Overseas family obligations and non-CPF savings. No age-band predicate, so life_stage is spans_stages; gate work_permit_or_spass is treated as salaried because those passes are employer-sponsored employment passes; no_cpf maps to limited_or_no_cpf as a pattern, not an entitlement; overseas_family_support maps to dependants."
     },
     {
       "persona_id": "K08",

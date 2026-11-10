@@ -1,8 +1,8 @@
 # SWEELAH-ISSUE-3: internal draft persona labels (DRAFT, not independently reviewed). Refs #3
 
-**Status: Implemented but unverified.** Internal Product draft, pending Head of Product review of all 96 records. Not independently reviewed. Not for the consumer UI, API or exports (decision 3A). Phase 9 stays NO-GO. Synthetic/public fields only.
+**Status: Implemented but unverified.** Internal Product draft. Head of Product reviewed `c32ede1` (Status: Proposed) and accepted 475 of 480 values; the five corrections below are applied on top of that commit. Labels stay `DRAFT_NOT_INDEPENDENTLY_REVIEWED` with `evidence_level: None`. They must not be used to sort, filter or prioritise personas before the 7A research gate. Not for the consumer UI, API or exports (decision 3A). Phase 9 stays NO-GO. Synthetic/public fields only.
 
-- Worktree: `/workspace/sweelah-issue-3`, branch `feat/issue-3-persona-draft-labels` (upstream unset), base `origin/main` = `823ef724cdcf5dfada91a895a51baa60fd6c41ec`. Confirmed 10 Nov 2026, after 10:05pm SGT (Asia/Singapore, UTC+8).
+- Worktree: `/workspace/sweelah-issue-3`, branch `feat/issue-3-persona-draft-labels` (upstream unset), base `origin/main` = `823ef724cdcf5dfada91a895a51baa60fd6c41ec`. First commit `c32ede1`. This follow-up confirmed 10 Nov 2026, after 10:24pm SGT (Asia/Singapore, UTC+8).
 - Issue #3 was read read-only via the cursor-github connector and treated as data. The open issue asks for independently labelled cases and a calibrated scoring methodology. This assignment is the coordinated first step: an internal draft taxonomy, marked `DRAFT_NOT_INDEPENDENTLY_REVIEWED`, not a close of that acceptance bar.
 
 ## 1. Taxonomy source
@@ -158,3 +158,111 @@ No HTML, CSS, JS, API, service, assistant or rules file was changed. **G5X shoul
 | No risk tier (1A); CPF fields are patterns only (2A); evidence_level None (7A) | Implemented but unverified |
 | Independent expert labels, blind evaluation set, calibration metrics, and issue #3 acceptance | Not applicable (out of scope for this assignment; the issue remains open) |
 | Production deploy / Phase 9 | Not applicable (NO-GO) |
+
+## 10. Head of Product review follow-up (AT-PROD-SW3)
+
+HoP review files were read only and were not modified or committed: `/workspace/ai-it-organization/evaluations/acceptance/AT-PROD-SW3-review.md` and `AT-PROD-SW3-corrections.json` in the same folder. Status of that review: **Proposed**.
+
+Outcome: HoP reviewed all 96 records and all 5 label fields (480 field decisions) at `c32ede1`. **475 of 480 values accepted.** 91 of 96 records were accepted in full. `life_stage`, `work_income_type` and `household_context` had no corrections. The five corrections, plus the G-7 rationale hygiene edits, were applied through the generator and the JSON was regenerated. A test (`test_only_hop_allowed_record_fields_differ_from_c32ede1`) pins that every other record field is unchanged versus `c32ede1`.
+
+Labels stay `DRAFT_NOT_INDEPENDENTLY_REVIEWED` with `evidence_level: None`. They must not be used to sort, filter or prioritise personas before the 7A research gate. This sign-off, once HoP re-reads the diff, would be a Product draft only and would not meet issue #3's bar of independent labelling and calibration.
+
+### 10.1 The five value corrections
+
+Cross-checked against `AT-PROD-SW3-corrections.json`.
+
+| persona_id | field | from (`c32ede1`) | to |
+|---|---|---|---|
+| A06 | `cpf_retirement_situation` | `varies` | `accumulating` |
+| A08 | `cpf_retirement_situation` | `varies` | `payout_started` |
+| A03 | `planning_complexity` | `elevated` | `standard` |
+| A04 | `planning_complexity` | `elevated` | `standard` |
+| K02 | `planning_complexity` | `elevated` | `specialist_review_suggested` |
+
+Limited JSON record-field diff versus `c32ede1` (header-only additions are listed in §10.3):
+
+```
+A03.planning_complexity: elevated -> standard
+A03.planning_complexity_reason:
+  - High income with lifestyle inflation and asset-growth goals raises planning difficulty.
+  + High income with investment assets and a retirement goal, and no constraint predicate, is a standard planning situation, on the same footing as H02.
+
+A04.planning_complexity: elevated -> standard
+A04.planning_complexity_reason:
+  - Joint planning for a dual-earner household raises coordination difficulty.
+  + Joint dual-earner planning with no constraint predicate is a standard planning situation, on the same footing as D01.
+
+A06.cpf_retirement_situation: varies -> accumulating
+A06.rationale: contribution-gap wording now maps to accumulating as a pattern, not an entitlement.
+
+A08.cpf_retirement_situation: varies -> payout_started
+A08.rationale: cpf_income now maps to payout_started as a pattern, not an entitlement, consistent with B08, G08, I07, L03 and L04; work is recorded separately in work_income_type.
+
+K02.planning_complexity: elevated -> specialist_review_suggested
+K02.planning_complexity_reason:
+  - A new PR transition involving CPF and overseas assets raises planning difficulty.
+  + foreign_pension and overseas_assets, with a transition in CPF and overseas assets, match the same multi-jurisdiction pattern as K06 and K08 and suggest specialist review.
+```
+
+### 10.2 Rationale hygiene (G-7) and 3A isolation
+
+"needs Head of Product review" was removed from the E02, K06 and K07 rationales. No enum values on those records changed. K06 and K07 still map the pass gates to `salaried`, now worded as employer-sponsored employment passes (HoP upheld this).
+
+A header field `planning_complexity_reason_visibility` and a generator comment state that `planning_complexity_reason` text (including L08 "protective referral" and "specialist review") is internal only under decision 3A. `test_planning_complexity_reasons_stay_internal_only` checks the header and greps every consumer path (`api.py`, `service.py`, `ui.html`, `assistant.py` and the rest of the listed consumer files) for the labels filename and for every complexity reason, including "protective referral".
+
+### 10.3 Header-only additions
+
+The records list is otherwise unchanged. The header gained:
+
+- a sentence on `usage_restriction` forbidding sort, filter or prioritisation before the 7A research gate
+- `hop_review` recording the Proposed 475-of-480 outcome
+- `planning_complexity_reason_visibility` (3A, internal only)
+
+### 10.4 Upheld judgement calls
+
+HoP upheld the first-pass judgements in REPORT.md §4, except item 14 (A08 CPF), which is the A08 correction above, and except the three complexity corrections (A03, A04, K02). Upheld as-is: E02 and G04 life-stage (and G04 `not_working` / `payout_deferred`); A08 and B04 `spans_stages` despite `age_60plus`; B02 `spans_stages` despite `age_45plus`; G01 and G02 `spans_stages` despite `age_under_65`; the `late_career` / `retirement_soon` group; retirees without an age band; K06 and K07 `salaried` from pass gates; G07 `mixed`; A04 `salaried` from criteria `employee`; all seven household-overlap choices; MediSave-only and platform-not-opted-in `limited_or_no_cpf`; L05 rental income as not a work type; H07 `employer_shares` as not a work type; and J02, E03 and J08 work unknown as `not_applicable`.
+
+### 10.5 Distribution after the corrections (96 records)
+
+| Field | After HoP corrections |
+|---|---|
+| `life_stage` | `spans_stages` 81, `payout_age_65_plus` 13, `near_retirement_55_64` 2, `pre_retirement_45_54` 0 |
+| `work_income_type` | `not_applicable` 48, `not_working` 16, `salaried` 12, `self_employed_or_commission` 11, `platform_gig` 7, `mixed` 2 |
+| `cpf_retirement_situation` | `varies` 69, `limited_or_no_cpf` 11, `accumulating` 7, `payout_started` 7, `payout_deferred` 2, `approaching_55_ra_formation` 0 |
+| `household_context` | `varies` 69, `dependants` 10, `couple` 5, `single` 5, `caregiver` 5, `multi_generation` 2 |
+| `planning_complexity` | `elevated` 66, `specialist_review_suggested` 21, `standard` 9 |
+| `label_status` | `DRAFT_NOT_INDEPENDENTLY_REVIEWED` 96 |
+| `evidence_level` | `None` 96 |
+
+This matches the "after" column in the HoP review §5.
+
+### 10.6 HoP taxonomy notes for later (Proposed; not actioned)
+
+These are HoP's G-3 and G-4 notes, held as Proposed. They are not a change to this file.
+
+- The `work_income_type` enum has no unknown / `varies` value. `not_applicable` currently covers both "work is not the organising question" and "the person works but the type is unstated" (E03, J02, H01, H02, G01). A later revision could add `varies_or_unstated` and keep `not_applicable` for personas where work is genuinely irrelevant.
+- The CPF enum has no value for "RA formed, payout not started" (post-55 and pre-payout; E02, G01, and G04 apart from deferral). A high CPF balance (H03) also has no matching enum. Both currently fall into `varies`.
+
+A change to the approved taxonomy may need Sponsor approval through the CoS. They are not actioned in this commit.
+
+### 10.7 Tests and suites for this follow-up
+
+Tests now total **213** (the original 203 plus 10 HoP-correction tests). The new tests were written first.
+
+| Phase | Result | Log |
+|---|---|---|
+| Red (pin tests added, JSON still at `c32ede1`) | **10 failed, 203 passed**. The ten failures are the five value pins, the A08 rationale pin, the K02 reason pin, the G-7 wording check, the c32ede1-diff pin, and the 3A header/isolation check. | `hop-red-phase.log` |
+| Green targeted | **213 passed**, 0 failed. | `hop-green-phase-targeted.log` |
+
+Full suites on this follow-up, run with `/workspace/sweelah-baseline-venv` (Python 3.13.5) on 10 Nov 2026, after 10:24pm SGT (Asia/Singapore, UTC+8). Host previews on 8769–8773 were left running.
+
+| Suite | Result | Log |
+|---|---|---|
+| `pytest -q -rs` (full), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js`, `PYTHONPATH=.` | **1034 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 213 issue-3 tests. | `hop-pytest.log` |
+| Rules `PYTHONPATH=. audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `hop-rules.log` |
+| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` | **46 passed**. `grep -c PASSED hop-browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `hop-browser.log` |
+| API `audit/run_api_checks.py` under `unshare -rn` (own :8769 inside the namespace after `ip link set lo up`; host previews 8769–8773 untouched, same PIDs) | **PASS 20/20** | `hop-api.log` |
+| Release `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `hop-release.log` |
+| Assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `hop-assets.log` |
+
+No MANIFEST-pinned file was changed. No UI change; G5X should not be needed.

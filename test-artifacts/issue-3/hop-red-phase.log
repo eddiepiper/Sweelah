@@ -1,0 +1,54 @@
+........................................................................ [ 33%]
+........................................................................ [ 67%]
+...........................................................FFFFFFFFFF    [100%]
+=================================== FAILURES ===================================
+E   AssertionError: assert 'varies' == 'accumulating'
+      
+      - accumulating
+      + varies
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:382: AssertionError: assert 'varies' == 'accumulating'
+E   AssertionError: assert 'varies' == 'payout_started'
+      
+      - payout_started
+      + varies
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:382: AssertionError: assert 'varies' == 'payout_started'
+E   AssertionError: assert 'elevated' == 'standard'
+      
+      - standard
+      + elevated
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:382: AssertionError: assert 'elevated' == 'standard'
+E   AssertionError: assert 'elevated' == 'standard'
+      
+      - standard
+      + elevated
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:382: AssertionError: assert 'elevated' == 'standard'
+E   AssertionError: assert 'elevated' == 'specialist_review_suggested'
+      
+      - specialist_review_suggested
+      + elevated
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:382: AssertionError: assert 'elevated' == 'specialist_review_suggested'
+E   AssertionError: assert 'varies' == 'payout_started'
+      
+      - payout_started
+      + varies
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:388: AssertionError: assert 'varies' == 'payout_started'
+E   AssertionError: assert 'elevated' == 'specialist_review_suggested'
+      
+      - specialist_review_suggested
+      + elevated
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:399: AssertionError: assert 'elevated' == 'specialist_review_suggested'
+E   AssertionError: assert 'needs Head ...oduct review' not in 'Gate divorc... dependants.'
+      
+      'needs Head of Product review' is contained here:
+        d so this needs Head of Product review; work type is not stated, so work_income_type is not_applicable; cpf_settlement is not a tight CPF-retirement pattern, so cpf_retirement_situation is varies; post-divorce household context is not stated, so household_context is varies. Gate employment_pass; criteria foreign_pension, no_cpf, overseas_assets, foreign_spending; planning_focus Non-CPF retirement planning. No age-band predicate, so life_stage is spans_stages; gate employment_pass is treated as salaried because that pass...
+      
+      ...Full output truncated (2 lines hidden), use '-vv' to show
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:407: AssertionError: assert 'needs Head ...oduct review' not in 'Gate divorc... dependants.'
+E   AssertionError: assert 'varies' == 'accumulating'
+      
+      - accumulating
+      + varies
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:428: AssertionError: assert 'varies' == 'accumulating'
+E   assert ('planning_complexity_reason' in '{"document_title": "internal draft persona labels (sweelah-issue-3, refs #3)", "document_status": "internal_draft", "...\'s age, cpf status or any other attribute. do not change matching gates, weights or results.", "phase_nine": "no-go"}' or 'protective referral' in '{"document_title": "internal draft persona labels (sweelah-issue-3, refs #3)", "document_status": "internal_draft", "...\'s age, cpf status or any other attribute. do not change matching gates, weights or results.", "phase_nine": "no-go"}')
+/workspace/sweelah-issue-3/tests/test_persona_draft_labels_issue3.py:438: assert ('planning_complexity_reason' in '{"document_title": "internal draft persona labels (sweelah-issue-3, refs #3)", "document_status": "internal_draft", "...\'s age, cpf status or any other attribute. do not change matching gates, weights or results.", "phase_nine": "no-go"}' or 'protective referral' in '{"document_title": "internal draft persona labels (sweelah-issue-3, refs #3)", "document_status": "internal_draft", "...\'s age, cpf status or any other attribute. do not change matching gates, weights or results.", "phase_nine": "no-go"}')
+10 failed, 203 passed in 0.32s

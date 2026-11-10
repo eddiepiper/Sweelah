@@ -332,3 +332,121 @@ def test_generator_reproduces_the_committed_file(tmp_path):
     dest = tmp_path / "persona_draft_labels_issue3.json"
     subprocess.check_call([sys.executable, str(script), str(dest)])
     assert dest.read_bytes() == LABELS_PATH.read_bytes()
+
+
+# Head of Product review (AT-PROD-SW3, Status: Proposed) of c32ede1:
+# 475 of 480 values accepted; these five field values must change.
+HOP_VALUE_CORRECTIONS = [
+    ("A06", "cpf_retirement_situation", "accumulating"),
+    ("A08", "cpf_retirement_situation", "payout_started"),
+    ("A03", "planning_complexity", "standard"),
+    ("A04", "planning_complexity", "standard"),
+    ("K02", "planning_complexity", "specialist_review_suggested"),
+]
+# Enum and identity fields that must otherwise match c32ede1 exactly.
+FROZEN_RECORD_FIELDS = (
+    "persona_id", "family", "name", "life_stage", "work_income_type",
+    "cpf_retirement_situation", "household_context", "planning_complexity",
+    "label_status", "evidence_level",
+)
+# Rationale / reason text may change only on the corrected records and on the
+# G-7 hygiene edits (E02, K06, K07).
+ALLOWED_TEXT_EDITS = {
+    "A03": {"planning_complexity_reason"},
+    "A04": {"planning_complexity_reason"},
+    "A06": {"rationale"},
+    "A08": {"rationale"},
+    "K02": {"planning_complexity_reason"},
+    "E02": {"rationale"},
+    "K06": {"rationale"},
+    "K07": {"rationale"},
+}
+C32EDE1_LABELS = "c32ede1:data/persona_draft_labels_issue3.json"
+
+
+def _c32ede1_labels():
+    import subprocess
+    raw = subprocess.check_output(
+        ["git", "-C", str(ROOT), "show", C32EDE1_LABELS],
+        text=True,
+    )
+    return json.loads(raw)
+
+
+def _row(pid):
+    return next(r for r in _records() if r["persona_id"] == pid)
+
+
+@pytest.mark.parametrize("pid,field,expected", HOP_VALUE_CORRECTIONS)
+def test_hop_review_corrections_are_applied(pid, field, expected):
+    assert _row(pid)[field] == expected
+
+
+def test_a08_rationale_matches_payout_started_consistent_with_peers():
+    row = _row("A08")
+    text = row["rationale"]
+    assert row["cpf_retirement_situation"] == "payout_started"
+    assert "cpf_income" in text
+    assert "payout_started" in text
+    for peer in ("B08", "G08", "I07", "L03", "L04"):
+        assert peer in text, f"A08 rationale should cite {peer}"
+    assert "varies" not in text
+
+
+def test_k02_complexity_reason_cites_foreign_pension_and_peer_pattern():
+    row = _row("K02")
+    reason = row["planning_complexity_reason"]
+    assert row["planning_complexity"] == "specialist_review_suggested"
+    assert "foreign_pension" in reason
+    assert "overseas_assets" in reason
+    assert "K06" in reason or "K08" in reason
+
+
+def test_g7_rationales_do_not_say_needs_head_of_product_review():
+    blob = " ".join(_row(pid)["rationale"] for pid in ("E02", "K06", "K07"))
+    assert "needs Head of Product review" not in blob
+    assert "needs head of product review" not in blob.lower()
+
+
+def test_only_hop_allowed_record_fields_differ_from_c32ede1():
+    old_by_id = {r["persona_id"]: r for r in _c32ede1_labels()["records"]}
+    new_by_id = {r["persona_id"]: r for r in _records()}
+    assert set(old_by_id) == set(new_by_id) == set(_rules()["personas"])
+    unexpected = []
+    expected_value_changes = {(pid, field) for pid, field, _ in HOP_VALUE_CORRECTIONS}
+    for pid, old in old_by_id.items():
+        new = new_by_id[pid]
+        assert set(old) == set(new) == set(RECORD_KEYS)
+        for field in FROZEN_RECORD_FIELDS:
+            if old[field] != new[field] and (pid, field) not in expected_value_changes:
+                unexpected.append(f"{pid}.{field}: {old[field]!r} -> {new[field]!r}")
+        for field in ("planning_complexity_reason", "rationale"):
+            if old[field] != new[field] and field not in ALLOWED_TEXT_EDITS.get(pid, set()):
+                unexpected.append(f"{pid}.{field} changed without HoP leave")
+    for pid, field, expected in HOP_VALUE_CORRECTIONS:
+        assert old_by_id[pid][field] != expected
+        assert new_by_id[pid][field] == expected
+    assert unexpected == [], "unexpected record changes vs c32ede1:\n" + "\n".join(unexpected)
+
+
+def test_planning_complexity_reasons_stay_internal_only():
+    """Decision 3A: complexity reasons (for example L08 'protective referral')
+    must not appear in the consumer UI, API, exports or the assistant."""
+    doc = _labels()
+    header = json.dumps({k: v for k, v in doc.items() if k != "records"})
+    lowered = header.lower()
+    assert "planning_complexity_reason" in lowered or "protective referral" in lowered
+    assert "internal" in lowered
+    assert "3A" in header
+    assert any(word in lowered for word in ("consumer", "ui", "api", "export", "assistant"))
+
+    reasons = [rec["planning_complexity_reason"] for rec in _records()]
+    assert any("protective referral" in reason for reason in reasons)
+    needles = list(NEEDLES) + ["protective referral"] + reasons
+    hits = []
+    for rel in CONSUMER_PATHS:
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        for needle in needles:
+            if needle and needle in text:
+                hits.append(f"{rel} contains {needle!r}")
+    assert hits == [], "complexity reasons or the labels file leaked into a consumer path:\n" + "\n".join(hits)
