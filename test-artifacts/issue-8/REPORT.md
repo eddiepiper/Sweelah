@@ -1,0 +1,103 @@
+# SWEELAH-ISSUE-8: in-house mapping of the 26 formerly unmapped scenarios (Refs #8)
+
+**Status: INTERNAL / UNVALIDATED.** Engineering did this mapping in-house. No external review, domain-expert review or sign-off. Synthetic/public data only. Phase 9 stays NO-GO.
+
+- Worktree: `/workspace/sweelah-issue-8`, branch `feat/issue-8-scenario-mapping` (no upstream), base `origin/main` = `823ef724cdcf5dfada91a895a51baa60fd6c41ec` (confirmed after fetch, 10 Nov 2026 SGT).
+- Issue read read-only via the GitHub connector (`gh` on the box is not authenticated). The issue and its comments were treated as data.
+
+## 1. Count found
+
+**26 confirmed.** `data/scenario_contracts_v26.json` has 46 entries: 20 `previous_status=BOUNDED_OPERATOR` and 26 `previous_status=UNMAPPED` (S005, S006, S012-S015, S019, S020, S022, S025-S027, S029-S033, S035, S038-S044 except S034/S036/S037, S046). That matches the issue and `docs/SCENARIO_MAPPING_v2.6.md`.
+
+Discrepancies to note:
+1. v2.6 already gave these 26 a runtime *contract* (`MAPPED_TO_EXPLICIT_CONTRACT_NOT_PRODUCTION_READY`). Seven have limited converters and 19 fail closed. What was still missing was what the issue asks for: semantic scope, engines, required facts, timing, missing-data handling, conflict checks, and a coverage matrix that separates mapped / implemented / golden-tested / domain-approved. That is what this change adds.
+2. The issue says the 20 pre-existing entries map to "12 bounded operators". They actually use **11** distinct operators (`core.ALLOWED_SCENARIO` defines 13; `one_time_windfall` and `housing_payment_shock` are not used by the 20). This is informational only and nothing was changed.
+3. S020, S030 and S012 are `NOT_SAFE_TO_COMPILE` in v2.6 but have v2.7 priority previews (decision 5A). They are classed as LIMITED_PREVIEW / BLOCKED_PREVIEW, not as fail-closed.
+
+## 2. Method
+
+- **Schema / conventions.** The new records carry the v2.6 registry's `id`, name, category and `execution_strategy` (as `v26_*`, cross-checked against the registry), plus `previous_status: UNMAPPED`. New fields: `mapping_status: MAPPED_INTERNAL`, **`validation_status: INTERNAL_UNVALIDATED`**, `external_validation: false`, `mapped_by: "Engineering Lead (in-house)"`, `coverage{mapped, implemented, golden_tested, domain_approved}`, `component_tests` and `rationale`. No existing status field could express "internal/unvalidated", so `validation_status` was added.
+- **Overlay, not an edit.** The mapping is stored separately in `data/scenario_mapping_internal_issue8.json`. `data/scenario_contracts_v26.json` is hash-pinned in `docs_v26/VERIFICATION_MANIFEST_v26.json` and is **unchanged**, and a test asserts its hash.
+- **Sources.** Semantic scope, engines (F01-F18), required facts and guardrail are copied verbatim from `research/retirepilot_2026_11_04/scenario_engine_contracts_46.json`, and a test checks they match. The runtime level comes from the v2.6 registry and `priority_scenarios_v27.PRIORITY_STATUS`. Applicable decisions come from engine overlap with `APPROVED_PRODUCT_DECISIONS_D08_D16.json` "Affected engines"; D11 is limited to S020 and D16 applies to all. Timing rule, missing-data behaviour, incompatible_with and rationale are **Engineering's own judgement**.
+- **Reproducible.** `scripts/build_internal_scenario_mapping_issue8.py` regenerates the JSON. Output is deterministic (sha256 identical across reruns).
+- **No runtime change.** `retirepilot/scenario_mapping_internal.py` is read-only metadata: `internal_mapping()`, `coverage_matrix()` and `reference_errors()`. Nothing in the API, service or UI imports it.
+
+## 3. Mapping table (26)
+
+| ID | Event | Runtime level | Engines | Decisions | Conflicts | Label | Rationale |
+|---|---|---|---|---|---|---|---|
+| S005 | Delayed retirement | `LIMITED_COMPONENT` | F02, F03, F06, F14 | D08, D09, D10, D16 | S029 | `INTERNAL_UNVALIDATED` | Existing RETIREMENT_GOAL_ONLY converter moves the stop-work age only; full mapping adds F03/F06 CPF accrual, which is not implemented, so coverage stays a limited component. |
+| S006 | Return to work | `NOT_IMPLEMENTED_FAIL_CLOSED` | F02, F03, F04, F05, F07 | D08, D16 | S033, S046 | `INTERNAL_UNVALIDATED` | Needs a new dated income stream plus employee/SEP/platform CPF recalculation (F03-F05); no safe component subset exists, so it stays fail-closed. |
+| S012 | Divorce | `BLOCKED_PREVIEW` | F01, F02, F08, F12, F18 | D12, D15, D16 | S013 | `INTERNAL_UNVALIDATED` | Priority 5A item whose v2.7 entry deliberately always blocks; mapping to F01/F12/F18 records the facts a future engine needs without implying any effect. |
+| S013 | Widowhood | `NOT_IMPLEMENTED_FAIL_CLOSED` | F01, F02, F07, F11, F18 | D12, D15, D16 | S012 | `INTERNAL_UNVALIDATED` | Requires verified survivor income, claims and estate data across F07/F11/F18; nothing can be computed from defaults, so fail-closed. |
+| S014 | New child/dependant | `LIMITED_COMPONENT` | F02, F12, F17 | D12, D16 | - | `INTERNAL_UNVALIDATED` | Cost-only recurring component already exists; benefits/grants (F17) stay excluded from baseline per D12, so it remains a limited component. |
+| S015 | Adult child support | `LIMITED_COMPONENT` | F02, F12, F14 | D09, D10, D16 | S044 | `INTERNAL_UNVALIDATED` | Recurring-cost component covers cash support; incompatible with S044 for the same transfer to avoid double counting (D16). |
+| S019 | Property-value decline | `NOT_IMPLEMENTED_FAIL_CLOSED` | F08, F14, F16 | D09, D10, D14, D15, D16 | S020, S022 | `INTERNAL_UNVALIDATED` | A net-worth/LTV change, not a cash outflow; the current projection has no per-property equity ledger (F08), so it fails closed. |
+| S020 | Downsizing | `LIMITED_PREVIEW` | F08, F06, F02, F14 | D08, D09, D10, D11, D16 | S019, S022 | `INTERNAL_UNVALIDATED` | Priority 5A item with a v2.7 cash-arithmetic preview that may not post to the projection; the full F08/F06 waterfall is not implemented. |
+| S022 | Lease monetisation | `NOT_IMPLEMENTED_FAIL_CLOSED` | F08, F06, F07, F14 | D08, D09, D10, D16 | S020, S019 | `INTERNAL_UNVALIDATED` | Depends on official HDB eligibility and quote; no estimate is permitted, so it fails closed. |
+| S025 | Low real returns | `NOT_IMPLEMENTED_FAIL_CLOSED` | F10, F14, F16 | D09, D10, D14, D15, D16 | S024, S026, S028 | `INTERNAL_UNVALIDATED` | Needs per-asset return and inflation paths (F10); a global override would double-subtract inflation alongside S028, so it fails closed. |
+| S026 | Poor early withdrawal returns | `NOT_IMPLEMENTED_FAIL_CLOSED` | F10, F14, F16 | D09, D10, D14, D15, D16 | S024, S025 | `INTERNAL_UNVALIDATED` | Sequence-of-returns risk requires a time-indexed portfolio path (F10/F14) that does not exist yet; fail-closed. |
+| S027 | Concentrated stock loss | `NOT_IMPLEMENTED_FAIL_CLOSED` | F10, F14, F16 | D09, D10, D14, D15, D16 | S024 | `INTERNAL_UNVALIDATED` | Needs holding-level portfolio detail; reusing market_crash would wrongly shock the whole portfolio, so it fails closed. |
+| S029 | Earlier retirement | `LIMITED_COMPONENT` | F02, F03, F06, F07, F14 | D08, D09, D10, D16 | S005 | `INTERNAL_UNVALIDATED` | Existing converter moves the stop-work age only; liquidity bridge (F14) and CPF effects (F03/F06/F07) are not implemented, so limited component. |
+| S030 | Payout deferral | `LIMITED_PREVIEW` | F07, F14, F16 | D09, D10, D14, D15, D16 | S032 | `INTERNAL_UNVALIDATED` | Priority 5A item with a v2.7 comparison-only preview; no actuarial or lifetime calculation, so limited preview. |
+| S031 | Voluntary top-up | `NOT_IMPLEMENTED_FAIL_CLOSED` | F06, F07, F14 | D08, D09, D10, D16 | - | `INTERNAL_UNVALIDATED` | Needs verified RA limits and account transfers on the F06 ledger plus a fresh F07 estimate; fail-closed. |
+| S032 | Pre-payout funding bridge | `NOT_IMPLEMENTED_FAIL_CLOSED` | F07, F14 | D09, D10, D16 | S030 | `INTERNAL_UNVALIDATED` | Needs dated cash drawdown and reserve logic (F14, D09); restricted CPF can never fill the gap, so fail-closed until built. |
+| S033 | Contribution interruption | `NOT_IMPLEMENTED_FAIL_CLOSED` | F02, F03, F04, F05, F06 | D08, D16 | S006 | `INTERNAL_UNVALIDATED` | Needs contributor-specific CPF posting and allocation (F03-F06); never assume contributions continue, so fail-closed. |
+| S035 | Disability-related cost shock | `LIMITED_COMPONENT` | F02, F11, F12, F14 | D09, D10, D12, D16 | S036 | `INTERNAL_UNVALIDATED` | Cost component exists; income disruption (F02) and benefits (F11/F17) are separate and unimplemented; overlapping S036 care cost would double count. |
+| S038 | Retire overseas | `NOT_IMPLEMENTED_FAIL_CLOSED` | F09, F13, F14, F15 | D09, D10, D13, D16 | S040 | `INTERNAL_UNVALIDATED` | Cross-border tax, healthcare, residency and FX (F09/F13/F15) are unsupported, so fail-closed. |
+| S039 | Exchange-rate movement | `NOT_IMPLEMENTED_FAIL_CLOSED` | F10, F13, F14, F15 | D09, D10, D13, D16 | - | `INTERNAL_UNVALIDATED` | Needs explicit currency amounts and dated FX rates (F15); fail-closed. |
+| S040 | Repatriation | `NOT_IMPLEMENTED_FAIL_CLOSED` | F09, F13, F14, F15 | D09, D10, D13, D16 | S038 | `INTERNAL_UNVALIDATED` | Cross-border law and verified flows required; fail-closed. |
+| S041 | Foreign pension change | `NOT_IMPLEMENTED_FAIL_CLOSED` | F09, F13, F15 | D13, D16 | - | `INTERNAL_UNVALIDATED` | Needs verified foreign pension terms with FX and withholding (F13/F15); fail-closed. |
+| S042 | Inheritance | `LIMITED_COMPONENT` | F13, F14, F18 | D09, D10, D12, D16 | - | `INTERNAL_UNVALIDATED` | Net cash receipt component exists; entitlement, probate and tax are out of scope, so limited component. |
+| S043 | Business sale | `NOT_IMPLEMENTED_FAIL_CLOSED` | F02, F09, F13, F14, F18 | D09, D10, D12, D16 | S046 | `INTERNAL_UNVALIDATED` | Needs net proceeds, liabilities and earnings cessation (F02/F09/F18); avoid double counting value and proceeds, so fail-closed. |
+| S044 | Major gift to children | `LIMITED_COMPONENT` | F14, F18 | D09, D10, D12, D16 | S015 | `INTERNAL_UNVALIDATED` | Cash gift outflow component exists; recipient-household effects only when ownership is known, so limited component. |
+| S046 | Business failure | `NOT_IMPLEMENTED_FAIL_CLOSED` | F02, F09, F13, F14, F18 | D09, D10, D12, D16 | S043, S006 | `INTERNAL_UNVALIDATED` | Liabilities, guarantees and income must be documented together (F02/F18); fail-closed. |
+
+Coverage matrix over all 46 entries (`coverage_matrix()`): mapped **46/46**. Implemented: PREEXISTING_BOUNDED_OPERATOR 20, LIMITED_COMPONENT 7, LIMITED_PREVIEW 2, BLOCKED_PREVIEW 1, NOT_IMPLEMENTED_FAIL_CLOSED 16. golden_tested **0**, domain_approved **0**. Mapped does not mean implemented, and unsupported entries still refuse.
+
+## 4. Tests
+
+New file: `tests/test_scenario_mapping_internal_issue8.py`, 77 tests. They check:
+- the count is 26 of 46
+- all 46 entries are mapped
+- the mapping covers exactly the 26
+- the document-level label
+- each of the 26 entries carries `INTERNAL_UNVALIDATED`, `external_validation=false`, `golden_tested=false`, `domain_approved=false` and a rationale
+- no dangling references (`reference_errors()==[]`), covering v26 IDs, names, categories and strategies, F-engine IDs, D-decision IDs, incompatible_with IDs, v2.7 preview IDs, and `component_tests` node references resolved by AST
+- the checker itself flags each kind of dangling reference
+- the mapping matches the research contract
+- the 16 fail-closed entries still raise in `compile_catalog_scenario`
+- the coverage-matrix counts
+- the mapping text makes no validation claims
+- the v26 registry hash is unchanged
+
+| Phase | Result | Log |
+|---|---|---|
+| Red (tests + module, no mapping file, at 823ef72 + tests) | **75 failed, 2 passed** (all failures `FileNotFoundError` for the mapping; the two passes are invariant checks: count=26 and v26 hash unchanged) | `red-phase-823ef72.log` |
+| Green targeted | **77 passed** | `green-phase-targeted.log` |
+
+Full suites, run with `/workspace/sweelah-baseline-venv`:
+
+| Suite | Result | Log |
+|---|---|---|
+| `pytest -q -rs` (full) | **898 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 77 new | `pytest.log` |
+| Rules `audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** (needs `PYTHONPATH=.`; without it the script raises ModuleNotFoundError, an environment issue that is also present on main) | `rules.log`, `rules-no-pythonpath.log` |
+| Browser `tests/test_s016_browser.py -v -s` (Chromium) | **46 passed** (71 PASS lines) | `browser.log` |
+| API `audit/run_api_checks.py` under `unshare -rn` (own :8769 inside the namespace; host previews 8769-8773 untouched) | **PASS 20/20** | `api.log` |
+| Release `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `release.log` |
+| Assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
+
+Exit codes: `exits.txt`. Environment: `env.txt`.
+
+## 5. Visible UI change: **No**
+
+No HTML, CSS, JS, API route or service code changed. The new module is not imported by `api.py`, `service.py`, `ui.html` or `s016.html`. The v2.6 registry and the v2.7 previews are byte-identical, so every response and page renders as before. **G5X should not be needed.**
+
+## 6. Residual risks
+
+1. **Unvalidated judgement.** Timing rules, missing-data behaviour, conflict pairs and rationales are in-house opinions. Nobody has checked them against CPF Board, HDB or IRAS rules or legal advice. They must not be read as domain-approved.
+2. **Conflicts are declared, not enforced.** `incompatible_with` records double-count and ordering risks (D16), but no runtime composition check enforces them yet.
+3. **Decision mapping is mechanical.** Engine overlap can be over-inclusive (for example D14/D15 attach to every F16 entry). Review it before using it as a requirement list.
+4. **The research source is synthetic.** Engines, facts and guardrails come from synthetic research contracts marked "specified, not validated".
+5. **Component tests are self-run.** They are not independent golden references, which is why `golden_tested` is false everywhere.
+6. **Issue #8 must stay OPEN.** Implementation, golden tests and external validation for the 26 are still outstanding.
