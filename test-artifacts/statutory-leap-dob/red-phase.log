@@ -1,0 +1,978 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.7.0 -- /workspace/sweelah-baseline-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/sweelah-stat-leapdob
+plugins: anyio-4.16.0
+collecting ... collected 27 items
+
+tests/test_statutory_leap_dob.py::test_age_on_29_feb_attains_new_age_on_1_mar_in_common_year PASSED [  3%]
+tests/test_statutory_leap_dob.py::test_age_on_29_feb_attains_new_age_on_29_feb_in_leap_year PASSED [  7%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2026-11] FAILED [ 11%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-02] FAILED [ 14%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-03] FAILED [ 18%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-04] FAILED [ 22%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-03] FAILED [ 25%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2026-11] FAILED [ 29%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2027-02] FAILED [ 33%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1964-02-29-2026-03] FAILED [ 37%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1964-02-29-2027-11] FAILED [ 40%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2026-01] FAILED [ 44%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2027-12] FAILED [ 48%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-02] FAILED [ 51%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-03] FAILED [ 55%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-04] FAILED [ 59%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2026-11] FAILED [ 62%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2026-06] FAILED [ 66%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2026-01] FAILED [ 70%]
+tests/test_statutory_leap_dob.py::test_self_employed_medisave_accepts_synthetic_29_feb_dob PASSED [ 74%]
+tests/test_statutory_leap_dob.py::test_employee_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year FAILED [ 77%]
+tests/test_statutory_leap_dob.py::test_platform_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year FAILED [ 81%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_common_year_uses_march_as_birthday_month FAILED [ 85%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_leap_year_uses_february_as_birthday_month FAILED [ 88%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_leap_year_platform_cutoffs FAILED [ 92%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_does_not_raise_across_common_and_leap_anniversaries FAILED [ 96%]
+tests/test_statutory_leap_dob.py::test_attained_age_dates_agree_with_age_on_for_29_feb FAILED [100%]
+
+=================================== FAILURES ===================================
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2026-11] ____
+
+dob = '1972-02-29', month = '2026-11'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2026, month = 11, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-02] ____
+
+dob = '1972-02-29', month = '2027-02'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2027, month = 2, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-03] ____
+
+dob = '1972-02-29', month = '2027-03'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2027, month = 3, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-04] ____
+
+dob = '1972-02-29', month = '2027-04'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2027, month = 4, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-03] ____
+
+dob = '1976-02-29', month = '2026-03'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1976-02-29', year = 2026, month = 3, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2026-11] ____
+
+dob = '1968-02-29', month = '2026-11'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1968-02-29', year = 2026, month = 11, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2027-02] ____
+
+dob = '1968-02-29', month = '2027-02'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1968-02-29', year = 2027, month = 2, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1964-02-29-2026-03] ____
+
+dob = '1964-02-29', month = '2026-03'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1964-02-29', year = 2026, month = 3, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1964-02-29-2027-11] ____
+
+dob = '1964-02-29', month = '2027-11'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1964-02-29', year = 2027, month = 11, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2026-01] ____
+
+dob = '1980-02-29', month = '2026-01'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1980-02-29', year = 2026, month = 1, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+____ test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2027-12] ____
+
+dob = '1980-02-29', month = '2027-12'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_55_IN_2027, "2026-11"),  # 55th anniversary year (2027) is common
+            (DOB_TURNS_55_IN_2027, "2027-02"),
+            (DOB_TURNS_55_IN_2027, "2027-03"),
+            (DOB_TURNS_55_IN_2027, "2027-04"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),  # 50th anniversary year (2026) is common
+            (DOB_TURNS_60_IN_2028, "2026-11"),  # 60th anniversary year (2028) is leap
+            (DOB_TURNS_60_IN_2028, "2027-02"),
+            ("1964-02-29", "2026-03"),  # 60th anniversary was 2024-02-29 (leap)
+            ("1964-02-29", "2027-11"),
+            ("1980-02-29", "2026-01"),  # no nearby cutoff; still constructed all of them
+            ("1980-02-29", "2027-12"),
+        ],
+    )
+    def test_employee_ow_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _employee(dob, month)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1980-02-29', year = 2027, month = 12, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_____ test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-02] ______
+
+dob = '1976-02-29', month = '2026-02'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_50_IN_2026, "2026-02"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),
+            (DOB_TURNS_50_IN_2026, "2026-04"),
+            (DOB_TURNS_55_IN_2027, "2026-11"),
+            (DOB_TURNS_60_IN_2028, "2026-06"),
+            ("1980-02-29", "2026-01"),
+        ],
+    )
+    def test_platform_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _platform(dob, month, opted_in=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:35: in _platform
+    return platform_cpf(
+retirepilot/statutory_2026.py:95: in platform_cpf
+    cutoff_idx=_band_index(dob,period.year,period.month,[x[0] for x in bandlist[:-1]])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1976-02-29', year = 2026, month = 2
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_____ test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-03] ______
+
+dob = '1976-02-29', month = '2026-03'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_50_IN_2026, "2026-02"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),
+            (DOB_TURNS_50_IN_2026, "2026-04"),
+            (DOB_TURNS_55_IN_2027, "2026-11"),
+            (DOB_TURNS_60_IN_2028, "2026-06"),
+            ("1980-02-29", "2026-01"),
+        ],
+    )
+    def test_platform_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _platform(dob, month, opted_in=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:35: in _platform
+    return platform_cpf(
+retirepilot/statutory_2026.py:95: in platform_cpf
+    cutoff_idx=_band_index(dob,period.year,period.month,[x[0] for x in bandlist[:-1]])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1976-02-29', year = 2026, month = 3
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_____ test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-04] ______
+
+dob = '1976-02-29', month = '2026-04'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_50_IN_2026, "2026-02"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),
+            (DOB_TURNS_50_IN_2026, "2026-04"),
+            (DOB_TURNS_55_IN_2027, "2026-11"),
+            (DOB_TURNS_60_IN_2028, "2026-06"),
+            ("1980-02-29", "2026-01"),
+        ],
+    )
+    def test_platform_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _platform(dob, month, opted_in=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:35: in _platform
+    return platform_cpf(
+retirepilot/statutory_2026.py:95: in platform_cpf
+    cutoff_idx=_band_index(dob,period.year,period.month,[x[0] for x in bandlist[:-1]])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1976-02-29', year = 2026, month = 4
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_____ test_platform_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2026-11] ______
+
+dob = '1972-02-29', month = '2026-11'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_50_IN_2026, "2026-02"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),
+            (DOB_TURNS_50_IN_2026, "2026-04"),
+            (DOB_TURNS_55_IN_2027, "2026-11"),
+            (DOB_TURNS_60_IN_2028, "2026-06"),
+            ("1980-02-29", "2026-01"),
+        ],
+    )
+    def test_platform_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _platform(dob, month, opted_in=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:35: in _platform
+    return platform_cpf(
+retirepilot/statutory_2026.py:95: in platform_cpf
+    cutoff_idx=_band_index(dob,period.year,period.month,[x[0] for x in bandlist[:-1]])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2026, month = 11
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_____ test_platform_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2026-06] ______
+
+dob = '1968-02-29', month = '2026-06'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_50_IN_2026, "2026-02"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),
+            (DOB_TURNS_50_IN_2026, "2026-04"),
+            (DOB_TURNS_55_IN_2027, "2026-11"),
+            (DOB_TURNS_60_IN_2028, "2026-06"),
+            ("1980-02-29", "2026-01"),
+        ],
+    )
+    def test_platform_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _platform(dob, month, opted_in=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:35: in _platform
+    return platform_cpf(
+retirepilot/statutory_2026.py:95: in platform_cpf
+    cutoff_idx=_band_index(dob,period.year,period.month,[x[0] for x in bandlist[:-1]])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1968-02-29', year = 2026, month = 6
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_____ test_platform_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2026-01] ______
+
+dob = '1980-02-29', month = '2026-01'
+
+    @pytest.mark.parametrize(
+        "dob,month",
+        [
+            (DOB_TURNS_50_IN_2026, "2026-02"),
+            (DOB_TURNS_50_IN_2026, "2026-03"),
+            (DOB_TURNS_50_IN_2026, "2026-04"),
+            (DOB_TURNS_55_IN_2027, "2026-11"),
+            (DOB_TURNS_60_IN_2028, "2026-06"),
+            ("1980-02-29", "2026-01"),
+        ],
+    )
+    def test_platform_cpf_accepts_synthetic_29_feb_dobs(dob, month):
+>       result = _platform(dob, month, opted_in=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:35: in _platform
+    return platform_cpf(
+retirepilot/statutory_2026.py:95: in platform_cpf
+    cutoff_idx=_band_index(dob,period.year,period.month,[x[0] for x in bandlist[:-1]])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1980-02-29', year = 2026, month = 1
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_ test_employee_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year _
+
+    def test_employee_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year():
+        """1972-02-29 attains 55 on 1 Mar 2027; rates change in the following month."""
+        def rates(month):
+            result = _employee(DOB_TURNS_55_IN_2027, f"2027-{month:02d}")
+            assert result["status"] == "bounded_reference"
+            return result["employer_rate_pct"], result["worker_rate_pct"]
+    
+>       assert rates(2) == ("17", "20")
+               ^^^^^^^^
+
+tests/test_statutory_leap_dob.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:114: in rates
+    result = _employee(DOB_TURNS_55_IN_2027, f"2027-{month:02d}")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_statutory_leap_dob.py:29: in _employee
+    return employee_ow_cpf(
+retirepilot/statutory_2026.py:66: in employee_ow_cpf
+    idx=_band_index(dob,period.year,period.month,[55,60,65,70])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2027, month = 2, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_ test_platform_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year _
+
+    def test_platform_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year():
+        """1976-02-29 attains 50 on 1 Mar 2026; opted-in worker rate 15 → 15.5 in April."""
+        def rate(month):
+            result = _platform(DOB_TURNS_50_IN_2026, f"2026-{month:02d}", opted_in=True)
+            assert result["status"] == "bounded_reference"
+            return result["worker_rate_pct"]
+    
+>       assert rate(2) == "15"
+               ^^^^^^^
+
+tests/test_statutory_leap_dob.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_statutory_leap_dob.py:126: in rate
+    result = _platform(DOB_TURNS_50_IN_2026, f"2026-{month:02d}", opted_in=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_statutory_leap_dob.py:35: in _platform
+    return platform_cpf(
+retirepilot/statutory_2026.py:95: in platform_cpf
+    cutoff_idx=_band_index(dob,period.year,period.month,[x[0] for x in bandlist[:-1]])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1976-02-29', year = 2026, month = 2
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_______ test_band_index_29_feb_common_year_uses_march_as_birthday_month ________
+
+    def test_band_index_29_feb_common_year_uses_march_as_birthday_month():
+        # 55th attained-age date is 2027-03-01, so March still uses the prior band.
+>       assert _band_index(DOB_TURNS_55_IN_2027, 2027, 2, EMPLOYEE_CUTOFFS) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2027, month = 2, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_______ test_band_index_29_feb_leap_year_uses_february_as_birthday_month _______
+
+    def test_band_index_29_feb_leap_year_uses_february_as_birthday_month():
+        # 60th attained-age date is 2028-02-29, so the band changes in March.
+>       assert _band_index(DOB_TURNS_60_IN_2028, 2028, 2, EMPLOYEE_CUTOFFS) == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1968-02-29', year = 2028, month = 2, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+______________ test_band_index_29_feb_leap_year_platform_cutoffs _______________
+
+    def test_band_index_29_feb_leap_year_platform_cutoffs():
+        # Same leap-year 60th birthday, platform cutoff list.
+>       assert _band_index(DOB_TURNS_60_IN_2028, 2028, 2, PLATFORM_CUTOFFS) == 4
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1968-02-29', year = 2028, month = 2
+cutoffs = [35, 45, 50, 55, 60, 65, ...]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+__ test_band_index_29_feb_does_not_raise_across_common_and_leap_anniversaries __
+
+    def test_band_index_29_feb_does_not_raise_across_common_and_leap_anniversaries():
+        # Every cutoff anniversary is constructed; at least one is always a common year
+        # and at least one nearby 29-Feb cohort has a leap anniversary (1964+60=2024).
+        dobs = (DOB_TURNS_55_IN_2027, DOB_TURNS_50_IN_2026, DOB_TURNS_60_IN_2028, "1964-02-29", "1980-02-29")
+        years = (2024, 2025, 2026, 2027, 2028)  # 2024 and 2028 leap; 2025-2027 common
+        for dob in dobs:
+            for year in years:
+                for month in range(1, 13):
+>                   idx = _band_index(dob, year, month, EMPLOYEE_CUTOFFS)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2024, month = 1, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+_____________ test_attained_age_dates_agree_with_age_on_for_29_feb _____________
+
+    def test_attained_age_dates_agree_with_age_on_for_29_feb():
+        """The statutory birthday used for banding must be the first day age_on == age."""
+        for dob, age, expected in (
+            (DOB_TURNS_55_IN_2027, 55, date(2027, 3, 1)),
+            (DOB_TURNS_50_IN_2026, 50, date(2026, 3, 1)),
+            (DOB_TURNS_60_IN_2028, 60, date(2028, 2, 29)),
+            ("1964-02-29", 60, date(2024, 2, 29)),
+        ):
+            # Infer the date the band logic treats as the birthday: first of the
+            # birthday month is when start <= that date still holds, and the next
+            # month is in the following band.
+            year = expected.year
+>           prior = _band_index(dob, year, expected.month, EMPLOYEE_CUTOFFS)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_statutory_leap_dob.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+dob = '1972-02-29', year = 2027, month = 3, cutoffs = [55, 60, 65, 70]
+
+    def _band_index(dob:str,year:int,month:int,cutoffs:list[int]) -> int:
+        """Age band changes in the month AFTER the corresponding birthday month."""
+        born=date.fromisoformat(dob)
+        start=date(year,month,1)
+        for i,threshold in enumerate(cutoffs):
+>           birthday=date(born.year+threshold,born.month,born.day)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: day is out of range for month
+
+retirepilot/statutory_2026.py:45: ValueError
+========================= 24 failed, 3 passed in 0.20s =========================

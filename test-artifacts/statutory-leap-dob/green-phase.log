@@ -1,0 +1,36 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.7.0 -- /workspace/sweelah-baseline-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/sweelah-stat-leapdob
+plugins: anyio-4.16.0
+collecting ... collected 27 items
+
+tests/test_statutory_leap_dob.py::test_age_on_29_feb_attains_new_age_on_1_mar_in_common_year PASSED [  3%]
+tests/test_statutory_leap_dob.py::test_age_on_29_feb_attains_new_age_on_29_feb_in_leap_year PASSED [  7%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2026-11] PASSED [ 11%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-02] PASSED [ 14%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-03] PASSED [ 18%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2027-04] PASSED [ 22%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-03] PASSED [ 25%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2026-11] PASSED [ 29%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2027-02] PASSED [ 33%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1964-02-29-2026-03] PASSED [ 37%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1964-02-29-2027-11] PASSED [ 40%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2026-01] PASSED [ 44%]
+tests/test_statutory_leap_dob.py::test_employee_ow_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2027-12] PASSED [ 48%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-02] PASSED [ 51%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-03] PASSED [ 55%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1976-02-29-2026-04] PASSED [ 59%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1972-02-29-2026-11] PASSED [ 62%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1968-02-29-2026-06] PASSED [ 66%]
+tests/test_statutory_leap_dob.py::test_platform_cpf_accepts_synthetic_29_feb_dobs[1980-02-29-2026-01] PASSED [ 70%]
+tests/test_statutory_leap_dob.py::test_self_employed_medisave_accepts_synthetic_29_feb_dob PASSED [ 74%]
+tests/test_statutory_leap_dob.py::test_employee_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year PASSED [ 77%]
+tests/test_statutory_leap_dob.py::test_platform_29_feb_band_changes_in_april_when_attained_on_1_mar_common_year PASSED [ 81%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_common_year_uses_march_as_birthday_month PASSED [ 85%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_leap_year_uses_february_as_birthday_month PASSED [ 88%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_leap_year_platform_cutoffs PASSED [ 92%]
+tests/test_statutory_leap_dob.py::test_band_index_29_feb_does_not_raise_across_common_and_leap_anniversaries PASSED [ 96%]
+tests/test_statutory_leap_dob.py::test_attained_age_dates_agree_with_age_on_for_29_feb PASSED [100%]
+
+============================== 27 passed in 0.05s ==============================

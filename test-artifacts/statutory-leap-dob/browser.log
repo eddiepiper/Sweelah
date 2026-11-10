@@ -1,0 +1,96 @@
+PASS S016 browser success (Chromium 156.0.8078.47)
+
+.PASS S016 browser errors (Chromium 156.0.8078.47)
+
+.PASS S016 browser server-refusal (Chromium 156.0.8078.47)
+
+.PASS S016 browser nonmutation (Chromium 156.0.8078.47)
+
+.PASS S016 browser mobile (Chromium 156.0.8078.47)
+
+.axe WCAG checks PASS
+PASS S016 browser accessibility (Chromium 156.0.8078.47)
+
+.PASS S016 browser precision (Chromium 156.0.8078.47)
+
+.PASS S016 browser mobile375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d01 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d02 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d03 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d04 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d05 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d06 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d07 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d08 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d09 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d10 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-d11 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-mapping (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxui-mobile375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-rd01 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-rd01-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-rd02 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-rd02-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-rd03 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-rd03-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-exponent (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu-wording (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu2-months (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu2-months-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu2-heading (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu2-heading-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu2d01-guard (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuifu2d01-guard-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser qafu2d01l01-guard (Chromium 156.0.8078.47)
+
+.PASS S016 browser qafu2d01l01-guard-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509-copy (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509-copy-768 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509-copy-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509-nav (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509-nav-768 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509-nav-375 (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509-art (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509d01-cap (Chromium 156.0.8078.47)
+
+.PASS S016 browser cxuid0509d01-cap-375 (Chromium 156.0.8078.47)
+
+.
+46 passed in 88.03s (0:01:28)
+EXIT:0
