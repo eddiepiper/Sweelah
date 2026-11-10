@@ -1,0 +1,35 @@
+..................F.F                                                    [100%]
+=================================== FAILURES ===================================
+____________ test_attained_age_date_refuses_calendar_year_past_9999 ____________
+retirepilot/cpf_retirement_v26.py:45: in _attained_age_date
+    return date(born.year + age, born.month, born.day)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: year 10005 is out of range
+
+During handling of the above exception, another exception occurred:
+tests/test_cpf55_leap_dob.py:316: in test_attained_age_date_refuses_calendar_year_past_9999
+    _attained_age_date(date(9950, 1, 15), 55)
+retirepilot/cpf_retirement_v26.py:49: in _attained_age_date
+    return date(born.year + age, 3, 1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: year 10005 is out of range
+________ test_transition_at_55_refuses_dob_whose_55th_year_exceeds_9999 ________
+retirepilot/cpf_retirement_v26.py:45: in _attained_age_date
+    return date(born.year + age, born.month, born.day)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: year 10005 is out of range
+
+During handling of the above exception, another exception occurred:
+tests/test_cpf55_leap_dob.py:342: in test_transition_at_55_refuses_dob_whose_55th_year_exceeds_9999
+    transition_at_55(dob="9950-01-15", as_of="2027-01-15", **kwargs)
+retirepilot/cpf_retirement_v26.py:59: in transition_at_55
+    if today != _attained_age_date(birthday, 55):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+retirepilot/cpf_retirement_v26.py:49: in _attained_age_date
+    return date(born.year + age, 3, 1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: year 10005 is out of range
+=========================== short test summary info ============================
+FAILED tests/test_cpf55_leap_dob.py::test_attained_age_date_refuses_calendar_year_past_9999
+FAILED tests/test_cpf55_leap_dob.py::test_transition_at_55_refuses_dob_whose_55th_year_exceeds_9999
+2 failed, 19 passed in 0.06s

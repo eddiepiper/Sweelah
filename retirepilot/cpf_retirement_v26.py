@@ -41,12 +41,18 @@ def _attained_age_date(born: date, age: int) -> date:
     convention (Phase 7 external review skipped): a 29-Feb person attains the
     new age on 1 Mar in a common year, matching core.age_on.
     """
+    year = born.year + age
+    if year < date.min.year or year > date.max.year:
+        raise CPFUnsupportedCase(
+            'Attained-age calendar year is outside the supported date range '
+            f'({date.min.year}-{date.max.year})'
+        )
     try:
-        return date(born.year + age, born.month, born.day)
+        return date(year, born.month, born.day)
     except ValueError:
         # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
         # first day the new age is attained.
-        return date(born.year + age, 3, 1)
+        return date(year, 3, 1)
 
 def transition_at_55(*, dob:str, as_of:str, oa, sa, ma, existing_ra='0', cpf_membership_confirmed:bool=False, property_pledge:bool=False):
     """Transfers SA first, OA second into a new RA up to cohort FRS.

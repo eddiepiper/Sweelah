@@ -9,12 +9,12 @@
 ........................................................................ [ 81%]
 ........................................................................ [ 90%]
 ........................................................................ [ 99%]
-.                                                                        [100%]
+....                                                                     [100%]
 =============================== warnings summary ===============================
 ../sweelah-baseline-venv/lib/python3.13/site-packages/starlette/testclient.py:45
   /workspace/sweelah-baseline-venv/lib/python3.13/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
     _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-793 passed, 1 warning in 1.50s
+796 passed, 1 warning in 1.33s
 EXIT:0
