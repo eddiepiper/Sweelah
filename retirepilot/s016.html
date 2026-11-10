@@ -81,6 +81,9 @@ const messages = {
 const escape = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 // Format backend cent strings without converting large decimal amounts to floats.
 const sgd = amount => 'S$' + amount.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+// CXUI-FU-D01: singular "1 month", plural otherwise.
+const monthCount = n => n === 1 ? '1 month' : n + ' months';
+const headings = {general: 'Something went wrong', fields: 'Please check these answers'};
 function clearErrors() {
   summary.hidden = true;
   for (const input of [cost, months]) {
@@ -97,7 +100,7 @@ function showErrors(errors, general) {
     inline.textContent = 'Error: ' + message; inline.hidden = false;
     links.push('<li><a href="#' + id + '">' + escape(message) + '</a></li>');
   }
-  summary.innerHTML = '<h3 id="care-error-heading">' + (general ? 'Something went wrong' : 'Please check these answers') + '</h3>' +
+  summary.innerHTML = '<h3 id="care-error-heading">' + (general ? headings.general : headings.fields) + '</h3>' +
     (general ? '<p>' + escape(general) + '</p>' : '') +
     (links.length ? '<ul>' + links.join('') + '</ul>' : '');
   summary.hidden = false; summary.focus();
@@ -117,7 +120,12 @@ form.addEventListener('input', event => {
   // A general (server/network) failure is stale once any answer changes; field errors stay.
   const general = summary.querySelector('p');
   if (general) general.remove();
+  // CXUI-001-F-D01: once only field errors remain, the heading must say so.
   if (!summary.querySelector('li')) summary.hidden = true;
+  else {
+    const heading = byId('care-error-heading');
+    if (heading) heading.textContent = headings.fields;
+  }
 });
 form.addEventListener('submit', async event => {
   event.preventDefault(); clearErrors(); result.hidden = true;
@@ -156,11 +164,14 @@ form.addEventListener('submit', async event => {
     if (data.may_post_to_household_projection !== false || data.synthetic_only !== true ||
         data.status !== 'LIMITED_RECURRING_COST_PREVIEW_ONLY') throw new Error('Unexpected preview contract');
     const monthly = sgd(data.extra_monthly_cost), total = sgd(data.period_cash_cost);
+    const count = Number(data.months);
+    if (!Number.isInteger(count) || count < 1 || count > 120) throw new Error('Unexpected preview contract');
+    const span = monthCount(count);
     result.innerHTML = `<div class="eyebrow">Your estimate</div>
       <h2 tabindex="-1">Your parent-care cost estimate</h2>
       <div class="summary-sheet"><div class="line"><span>Extra each month</span><strong>${escape(monthly)}</strong></div>
-      <div class="line"><span>Over ${data.months} months</span><strong>${escape(total)}</strong></div></div>
-      <p>An extra ${escape(monthly)} a month for ${data.months} months adds up to ${escape(total)}.</p>
+      <div class="line"><span>Over ${escape(span)}</span><strong>${escape(total)}</strong></div></div>
+      <p>An extra ${escape(monthly)} a month for ${escape(span)} adds up to ${escape(total)}.</p>
       <p>This doesn't change your main retirement plan.</p>
       <div class="onboard-actions"><button class="btn-ghost" type="button" id="care-change">Change my numbers</button><button class="btn-ghost" type="button" data-talk>Talk to Swee</button></div>`;
     byId('care-setup').hidden = true;
