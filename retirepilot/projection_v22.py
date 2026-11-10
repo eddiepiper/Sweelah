@@ -26,8 +26,15 @@ def incomplete_financial_records(p):
     return issues
 
 def _anniversary(dob,age):
+    """First date on which core.age_on(dob, date) == age (exclusive boundary).
+
+    Must agree with age_on: a 29 Feb birthday is attained on 1 Mar in a common
+    year, not 28 Feb, else age-bounded flows start or stop a day early (#9).
+    """
     d=date.fromisoformat(dob)
-    return date(d.year+age,d.month,min(d.day,monthrange(d.year+age,d.month)[1]))
+    year=d.year+age
+    if d.day>monthrange(year,d.month)[1]:return date(year,d.month+1,1)
+    return date(year,d.month,d.day)
 
 def _overlap_fraction(start,end,begin=None,finish=None):
     a=max([v for v in (start,begin) if v is not None])
