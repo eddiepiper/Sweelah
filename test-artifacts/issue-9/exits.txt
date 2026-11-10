@@ -1,0 +1,6 @@
+release exit=0
+assets exit=0
+pytest exit=0
+rules exit=0
+browser exit=0
+api exit=0 (unshare -rn loopback namespace; script's own :8769 inside namespace, host previews untouched)

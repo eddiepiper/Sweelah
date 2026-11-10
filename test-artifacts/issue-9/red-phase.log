@@ -1,0 +1,239 @@
+...................FFFF.FF...FF...FF....                                 [100%]
+=================================== FAILURES ===================================
+______ test_leap_day_birthday_horizon_includes_28_february_of_common_year ______
+
+    def test_leap_day_birthday_horizon_includes_28_february_of_common_year():
+        # Born 29 Feb 1976: age_on says still 52 on 28 Feb 2029 and 53 on 1 Mar 2029.
+        x = profile("1976-02-29", "2029-01-01", 53)
+        x["income_streams"] = [stream()]
+>       assert by_year(project(x), "income") == {2029: "14400.00"}  # Jan + all of Feb
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert {2029: '14142.86'} == {2029: '14400.00'}
+E         
+E         Differing items:
+E         {2029: '14142.86'} != {2029: '14400.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:83: AssertionError
+________ test_leap_day_birthday_starts_age_income_not_paid_a_day_early _________
+
+    def test_leap_day_birthday_starts_age_income_not_paid_a_day_early():
+        # Payout from age 53 must start 1 Mar 2029, not 28 Feb 2029 (overstatement).
+        x = profile("1976-02-29", "2029-01-01", 54)
+        x["income_streams"] = [stream(starts_age=53)]
+>       assert by_year(project(x), "income") == {2029: "72000.00", 2030: "14400.00"}
+E       AssertionError: assert {2029: '72257...0: '14142.86'} == {2029: '72000...0: '14400.00'}
+E         
+E         Differing items:
+E         {2029: '72257.14'} != {2029: '72000.00'}
+E         {2030: '14142.86'} != {2030: '14400.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:90: AssertionError
+_______ test_leap_day_birthday_retirement_cutoff_keeps_last_working_day ________
+
+    def test_leap_day_birthday_retirement_cutoff_keeps_last_working_day():
+        x = profile("1976-02-29", "2029-01-01", 54, retirement_age=53)
+        x["income_streams"] = [stream(kind="salary")]
+>       assert by_year(project(x), "income") == {2029: "14400.00", 2030: "0.00"}
+E       AssertionError: assert {2029: '14142... 2030: '0.00'} == {2029: '14400... 2030: '0.00'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {2029: '14142.86'} != {2029: '14400.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:96: AssertionError
+_________ test_leap_day_birthday_age_limited_expense_not_dropped_early _________
+
+    def test_leap_day_birthday_age_limited_expense_not_dropped_early():
+        # Expense until P1 is 53 must cover all of Feb 2029; dropping 28 Feb understates
+        # spending and so overstates net cash flow.
+        x = profile("1976-02-29", "2029-01-01", 54)
+        x["expenses"] = [{"id": "E-TEST", "category": "other", "amount_monthly": "2800",
+                          "person_id": "P1", "end_person_age": 53}]
+>       assert by_year(project(x), "spending") == {2029: "5600.00", 2030: "0.00"}
+E       AssertionError: assert {2029: '5500.... 2030: '0.00'} == {2029: '5600.... 2030: '0.00'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {2029: '5500.00'} != {2029: '5600.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:105: AssertionError
+__ test_starts_and_ends_age_flows_match_calendar_days[2026-02-15-1976-02-29] ___
+
+dob = '1976-02-29', as_of = '2026-02-15'
+
+    @pytest.mark.parametrize("dob", ["1976-02-29", "1972-02-29", "1974-05-20", "1974-05-31", "1975-03-01"])
+    @pytest.mark.parametrize("as_of", ["2026-02-15", "2026-11-03", "2028-02-29"])
+    def test_starts_and_ends_age_flows_match_calendar_days(dob, as_of):
+        a = date.fromisoformat(as_of)
+        age = age_on(dob, a)
+        x = profile(dob, as_of, age + 2)
+        x["income_streams"] = [stream(starts_age=age + 1)]
+        x["expenses"] = [{"id": "E-TEST", "category": "other", "amount_monthly": "3100",
+                          "person_id": "P1", "end_person_age": age + 1}]
+        result = project(x)
+        switch, horizon = attains(dob, age + 1), attains(dob, age + 2)
+        exp_income = day_prorated("7200", switch, horizon)
+        exp_spend = day_prorated("3100", a, switch)
+        years = {row["year"] for row in result["rows"]}
+>       assert by_year(result, "income") == {y: exp_income.get(y, "0.00") for y in years}
+E       AssertionError: assert {2026: '72257...7: '14142.86'} == {2026: '72000...7: '14400.00'}
+E         
+E         Differing items:
+E         {2026: '72257.14'} != {2026: '72000.00'}
+E         {2027: '14142.86'} != {2027: '14400.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:129: AssertionError
+__ test_starts_and_ends_age_flows_match_calendar_days[2026-02-15-1972-02-29] ___
+
+dob = '1972-02-29', as_of = '2026-02-15'
+
+    @pytest.mark.parametrize("dob", ["1976-02-29", "1972-02-29", "1974-05-20", "1974-05-31", "1975-03-01"])
+    @pytest.mark.parametrize("as_of", ["2026-02-15", "2026-11-03", "2028-02-29"])
+    def test_starts_and_ends_age_flows_match_calendar_days(dob, as_of):
+        a = date.fromisoformat(as_of)
+        age = age_on(dob, a)
+        x = profile(dob, as_of, age + 2)
+        x["income_streams"] = [stream(starts_age=age + 1)]
+        x["expenses"] = [{"id": "E-TEST", "category": "other", "amount_monthly": "3100",
+                          "person_id": "P1", "end_person_age": age + 1}]
+        result = project(x)
+        switch, horizon = attains(dob, age + 1), attains(dob, age + 2)
+        exp_income = day_prorated("7200", switch, horizon)
+        exp_spend = day_prorated("3100", a, switch)
+        years = {row["year"] for row in result["rows"]}
+>       assert by_year(result, "income") == {y: exp_income.get(y, "0.00") for y in years}
+E       AssertionError: assert {2026: '72257...7: '14142.86'} == {2026: '72000...7: '14400.00'}
+E         
+E         Differing items:
+E         {2026: '72257.14'} != {2026: '72000.00'}
+E         {2027: '14142.86'} != {2027: '14400.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:129: AssertionError
+__ test_starts_and_ends_age_flows_match_calendar_days[2026-11-03-1976-02-29] ___
+
+dob = '1976-02-29', as_of = '2026-11-03'
+
+    @pytest.mark.parametrize("dob", ["1976-02-29", "1972-02-29", "1974-05-20", "1974-05-31", "1975-03-01"])
+    @pytest.mark.parametrize("as_of", ["2026-02-15", "2026-11-03", "2028-02-29"])
+    def test_starts_and_ends_age_flows_match_calendar_days(dob, as_of):
+        a = date.fromisoformat(as_of)
+        age = age_on(dob, a)
+        x = profile(dob, as_of, age + 2)
+        x["income_streams"] = [stream(starts_age=age + 1)]
+        x["expenses"] = [{"id": "E-TEST", "category": "other", "amount_monthly": "3100",
+                          "person_id": "P1", "end_person_age": age + 1}]
+        result = project(x)
+        switch, horizon = attains(dob, age + 1), attains(dob, age + 2)
+        exp_income = day_prorated("7200", switch, horizon)
+        exp_spend = day_prorated("3100", a, switch)
+        years = {row["year"] for row in result["rows"]}
+>       assert by_year(result, "income") == {y: exp_income.get(y, "0.00") for y in years}
+E       AssertionError: assert {2026: '0.00'...8: '14151.72'} == {2026: '0.00'...8: '14151.72'}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {2027: '72257.14'} != {2027: '72000.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:129: AssertionError
+__ test_starts_and_ends_age_flows_match_calendar_days[2026-11-03-1972-02-29] ___
+
+dob = '1972-02-29', as_of = '2026-11-03'
+
+    @pytest.mark.parametrize("dob", ["1976-02-29", "1972-02-29", "1974-05-20", "1974-05-31", "1975-03-01"])
+    @pytest.mark.parametrize("as_of", ["2026-02-15", "2026-11-03", "2028-02-29"])
+    def test_starts_and_ends_age_flows_match_calendar_days(dob, as_of):
+        a = date.fromisoformat(as_of)
+        age = age_on(dob, a)
+        x = profile(dob, as_of, age + 2)
+        x["income_streams"] = [stream(starts_age=age + 1)]
+        x["expenses"] = [{"id": "E-TEST", "category": "other", "amount_monthly": "3100",
+                          "person_id": "P1", "end_person_age": age + 1}]
+        result = project(x)
+        switch, horizon = attains(dob, age + 1), attains(dob, age + 2)
+        exp_income = day_prorated("7200", switch, horizon)
+        exp_spend = day_prorated("3100", a, switch)
+        years = {row["year"] for row in result["rows"]}
+>       assert by_year(result, "income") == {y: exp_income.get(y, "0.00") for y in years}
+E       AssertionError: assert {2026: '0.00'...8: '14151.72'} == {2026: '0.00'...8: '14151.72'}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {2027: '72257.14'} != {2027: '72000.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:129: AssertionError
+__ test_starts_and_ends_age_flows_match_calendar_days[2028-02-29-1976-02-29] ___
+
+dob = '1976-02-29', as_of = '2028-02-29'
+
+    @pytest.mark.parametrize("dob", ["1976-02-29", "1972-02-29", "1974-05-20", "1974-05-31", "1975-03-01"])
+    @pytest.mark.parametrize("as_of", ["2026-02-15", "2026-11-03", "2028-02-29"])
+    def test_starts_and_ends_age_flows_match_calendar_days(dob, as_of):
+        a = date.fromisoformat(as_of)
+        age = age_on(dob, a)
+        x = profile(dob, as_of, age + 2)
+        x["income_streams"] = [stream(starts_age=age + 1)]
+        x["expenses"] = [{"id": "E-TEST", "category": "other", "amount_monthly": "3100",
+                          "person_id": "P1", "end_person_age": age + 1}]
+        result = project(x)
+        switch, horizon = attains(dob, age + 1), attains(dob, age + 2)
+        exp_income = day_prorated("7200", switch, horizon)
+        exp_spend = day_prorated("3100", a, switch)
+        years = {row["year"] for row in result["rows"]}
+>       assert by_year(result, "income") == {y: exp_income.get(y, "0.00") for y in years}
+E       AssertionError: assert {2028: '0.00'...0: '14142.86'} == {2028: '0.00'...0: '14400.00'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {2029: '72257.14'} != {2029: '72000.00'}
+E         {2030: '14142.86'} != {2030: '14400.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:129: AssertionError
+__ test_starts_and_ends_age_flows_match_calendar_days[2028-02-29-1972-02-29] ___
+
+dob = '1972-02-29', as_of = '2028-02-29'
+
+    @pytest.mark.parametrize("dob", ["1976-02-29", "1972-02-29", "1974-05-20", "1974-05-31", "1975-03-01"])
+    @pytest.mark.parametrize("as_of", ["2026-02-15", "2026-11-03", "2028-02-29"])
+    def test_starts_and_ends_age_flows_match_calendar_days(dob, as_of):
+        a = date.fromisoformat(as_of)
+        age = age_on(dob, a)
+        x = profile(dob, as_of, age + 2)
+        x["income_streams"] = [stream(starts_age=age + 1)]
+        x["expenses"] = [{"id": "E-TEST", "category": "other", "amount_monthly": "3100",
+                          "person_id": "P1", "end_person_age": age + 1}]
+        result = project(x)
+        switch, horizon = attains(dob, age + 1), attains(dob, age + 2)
+        exp_income = day_prorated("7200", switch, horizon)
+        exp_spend = day_prorated("3100", a, switch)
+        years = {row["year"] for row in result["rows"]}
+>       assert by_year(result, "income") == {y: exp_income.get(y, "0.00") for y in years}
+E       AssertionError: assert {2028: '0.00'...0: '14142.86'} == {2028: '0.00'...0: '14400.00'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {2029: '72257.14'} != {2029: '72000.00'}
+E         {2030: '14142.86'} != {2030: '14400.00'}
+E         Use -v to get more diff
+
+tests/test_issue9_partial_month.py:129: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_issue9_partial_month.py::test_leap_day_birthday_horizon_includes_28_february_of_common_year
+FAILED tests/test_issue9_partial_month.py::test_leap_day_birthday_starts_age_income_not_paid_a_day_early
+FAILED tests/test_issue9_partial_month.py::test_leap_day_birthday_retirement_cutoff_keeps_last_working_day
+FAILED tests/test_issue9_partial_month.py::test_leap_day_birthday_age_limited_expense_not_dropped_early
+FAILED tests/test_issue9_partial_month.py::test_starts_and_ends_age_flows_match_calendar_days[2026-02-15-1976-02-29]
+FAILED tests/test_issue9_partial_month.py::test_starts_and_ends_age_flows_match_calendar_days[2026-02-15-1972-02-29]
+FAILED tests/test_issue9_partial_month.py::test_starts_and_ends_age_flows_match_calendar_days[2026-11-03-1976-02-29]
+FAILED tests/test_issue9_partial_month.py::test_starts_and_ends_age_flows_match_calendar_days[2026-11-03-1972-02-29]
+FAILED tests/test_issue9_partial_month.py::test_starts_and_ends_age_flows_match_calendar_days[2028-02-29-1976-02-29]
+FAILED tests/test_issue9_partial_month.py::test_starts_and_ends_age_flows_match_calendar_days[2028-02-29-1972-02-29]
+10 failed, 30 passed in 0.12s

@@ -1,0 +1,199 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.7.0 -- /workspace/sweelah-baseline-venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/sweelah-issue-9
+plugins: anyio-4.16.0
+collecting ... collected 46 items
+
+tests/test_s016_browser.py::test_s016_real_browser[success] PASS S016 browser success (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[errors] PASS S016 browser errors (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[server-refusal] PASS S016 browser server-refusal (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[nonmutation] PASS S016 browser nonmutation (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[mobile] PASS S016 browser mobile (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[accessibility] axe unavailable offline; keyboard, ARIA, target sizes and selected color pairs checked, not a full WCAG audit
+PASS S016 browser accessibility (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[precision] PASS S016 browser precision (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[mobile375] PASS S016 browser mobile375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d01] PASS S016 browser cxui-d01 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d02] PASS S016 browser cxui-d02 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d03] PASS S016 browser cxui-d03 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d04] PASS S016 browser cxui-d04 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d05] PASS S016 browser cxui-d05 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d06] PASS S016 browser cxui-d06 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d07] PASS S016 browser cxui-d07 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d08] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxui-d08 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d09] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxui-d09 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d10] PASS S016 browser cxui-d10 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-d11] PASS S016 browser cxui-d11 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-mapping] PASS S016 browser cxui-mapping (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxui-mobile375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxui-mobile375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-rd01] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu-rd01 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-rd01-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu-rd01-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-rd02] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu-rd02 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-rd02-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu-rd02-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-rd03] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu-rd03 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-rd03-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu-rd03-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-exponent] PASS S016 browser cxuifu-exponent (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu-wording] PASS S016 browser cxuifu-wording (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu2-months] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu2-months (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu2-months-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu2-months-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu2-heading] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu2-heading (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu2-heading-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu2-heading-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu2d01-guard] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu2d01-guard (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuifu2d01-guard-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuifu2d01-guard-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[qafu2d01l01-guard] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser qafu2d01l01-guard (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[qafu2d01l01-guard-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser qafu2d01l01-guard-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509-copy] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuid0509-copy (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509-copy-768] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuid0509-copy-768 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509-copy-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuid0509-copy-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509-nav] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuid0509-nav (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509-nav-768] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuid0509-nav-768 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509-nav-375] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuid0509-nav-375 (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509-art] axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit
+PASS S016 browser cxuid0509-art (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509d01-cap] PASS S016 browser cxuid0509d01-cap (Chromium 156.0.8078.47)
+
+PASSED
+tests/test_s016_browser.py::test_s016_real_browser[cxuid0509d01-cap-375] PASS S016 browser cxuid0509d01-cap-375 (Chromium 156.0.8078.47)
+
+PASSED
+
+======================== 46 passed in 65.15s (0:01:05) =========================
