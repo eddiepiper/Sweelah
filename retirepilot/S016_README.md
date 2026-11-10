@@ -130,7 +130,9 @@ prototype, shared scenario arithmetic or dependency change.
 - The amount cap is a prototype typo/plausibility guard, not an affordability or
   entitlement judgement: **S$100,000/month**, inclusive. Months remain **1–120**.
   Over-cap finite decimals and positive exponent overflow (e.g. `1e400`) say
-  “Enter an amount no more than S$100,000.” Infinity/NaN-like amounts get the existing
+  “Enter an amount up to S$100,000 a month.” on the page (CXUI-D05D09-D01; the API
+  `detail` string is unchanged, and the page maps `code: too_large` to its own copy).
+  Infinity/NaN-like amounts get the existing
   numeric message. Both client and endpoint refuse invalid values without a 500.
   Existing precision/positive/months messages are retained. Exponent notation is
   intentionally still accepted **within bounds and the two-place scale rule**,
@@ -336,3 +338,18 @@ Interpretation decisions:
 
 New cases fail against `60c759e` (9 failed) and pass with this change (red-phase log in
 the evidence folder). Evidence (uncommitted): `test-artifacts/cxui-d05-d09/`.
+
+## CXUI-D05D09-D01 cap error copy (Designer G5X on `7eb6508`, t82u)
+
+Status: **Verified** locally by the automated checks below; independent QA (G5) and
+designer (G5X) re-verification are still pending. Branch `fix/cxui-d05d09-d01` from
+`7eb6508`. Only `retirepilot/s016.html`, the S016 tests and this document change.
+`api.py`, `core.py`, `ui.html`, `data/`, `design/` and the dashboard at `/` are unchanged.
+
+| Item | Change (`retirepilot/s016.html`) | Proving case/test |
+|---|---|---|
+| CXUI-D05D09-D01 | `messages.too_large` (shown in `#care-cost-error` and the error-summary link) restored to the previously verified Designer copy: “Enter an amount up to S$100,000 a month.” The cap (S$100,000.00 inclusive), the two-decimal rule, months 1–120 and every other message are unchanged. | `cxuid0509d01-cap`, `-375` (100001, 100000.01 and 999999999999 × 12: exact inline and summary-link text, field-error heading, old string absent, no request sent; a mocked 422 `too_large` whose API detail is the old wording still shows the restored copy; 100000 × 1 still previews); updated `cxui-d07`; `test_cxui_d05d09_d01_cap_copy_restored` |
+
+The API's own `detail` for `too_large` is intentionally left as is (API out of scope); the
+page never displays API `detail` text. The new and updated cases fail against `7eb6508`
+(4 failed) and pass with this change. Evidence (uncommitted): `test-artifacts/cxui-d05d09-d01/`.

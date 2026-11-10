@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const [mode, base] = process.argv.slice(2);
-const output = path.resolve(__dirname, mode.startsWith('cxuid0509-') ? '../../test-artifacts/cxui-d05-d09' : mode.startsWith('qafu2d01l01-') ? '../../test-artifacts/qa-fu2d01-l01' : mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
+const output = path.resolve(__dirname, mode.startsWith('cxuid0509d01-') ? '../../test-artifacts/cxui-d05d09-d01' : mode.startsWith('cxuid0509-') ? '../../test-artifacts/cxui-d05-d09' : mode.startsWith('qafu2d01l01-') ? '../../test-artifacts/qa-fu2d01-l01' : mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
 const monthsLabel = 'For how many months?';
 (async () => {
@@ -69,6 +69,32 @@ const monthsLabel = 'For how many months?';
       assert.equal(await cost.getAttribute('aria-invalid'),'true');
       assert.equal(await page.locator('#care-cost-error').isVisible(),true);
       assert.equal(await page.locator('#care-errors a[href="#care-cost"]').count(),1);
+    } else if (mode==='cxuid0509d01-cap'||mode==='cxuid0509d01-cap-375') {
+      // CXUI-D05D09-D01: restore the Designer-verified cap copy in the inline error and the summary link.
+      if(mode.endsWith('-375')) await page.setViewportSize({width:375,height:844});
+      const capCopy='Enter an amount up to S$100,000 a month.';
+      let requests=0;page.on('request',r=>{if(r.url().endsWith('/api/scenarios/S016/preview')) requests++;});
+      for(const amount of ['100001','100000.01','999999999999']) {
+        await fill(amount,'12');await submit.click();
+        assert.equal(await page.locator('#care-cost-error').innerText(),'Error: '+capCopy);
+        assert.equal(await page.locator('#care-errors a[href="#care-cost"]').innerText(),capCopy);
+        assert.equal(await page.locator('#care-error-heading').innerText(),'Please check these answers');
+        assert.doesNotMatch(await page.locator('body').innerText(),/no more than S\$100,000/);
+        if(amount==='100001') await screenshot('client-cap');
+      }
+      assert.equal(requests,0);
+      // Server 422 too_large (API detail wording unchanged) also maps to the UI copy, not the API detail.
+      await page.route('**/api/scenarios/S016/preview',route=>route.fulfill({status:422,contentType:'application/json',
+        body:JSON.stringify({detail:'Enter an amount no more than S$100,000.',field:'additional_care_cost_monthly',code:'too_large'})}));
+      await fill('1200','12');await submit.click();await page.locator('#care-errors:not([hidden])').waitFor();
+      assert.equal(await page.locator('#care-cost-error').innerText(),'Error: '+capCopy);
+      assert.equal(await page.locator('#care-errors a[href="#care-cost"]').innerText(),capCopy);
+      assert.doesNotMatch(await page.locator('body').innerText(),/no more than S\$100,000/);
+      await screenshot('server-cap');
+      await page.unroute('**/api/scenarios/S016/preview');
+      // Cap boundary unchanged: S$100,000.00 is still accepted.
+      await fill('100000','1');await preview();
+      assert.match(await page.locator('#care-result').innerText(),/S\$100,000\.00 a month for 1 month/);
     } else if (mode==='cxui-d05') {
       assert.doesNotMatch(await page.locator('body').innerText(),/Illustrative scenario setup|household projection|research dashboard|Synthetic-only|Local preview|Single user/i);
       await fill('1200','12');await preview();
@@ -105,7 +131,7 @@ const monthsLabel = 'For how many months?';
       let requests=0;page.on('request',r=>{if(r.url().endsWith('/api/scenarios/S016/preview')) requests++;});
       for(const amount of ['100000.01','999999999999','100001']) {
         await fill(amount,'12');await submit.click();
-        assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount no more than S$100,000.');
+        assert.equal(await page.locator('#care-cost-error').innerText(),'Error: Enter an amount up to S$100,000 a month.');
       }
       for(const amount of ['Infinity','NaN','-Infinity','sNaN','1e12','1e400']) {
         await fill(amount,'12');await submit.click();
