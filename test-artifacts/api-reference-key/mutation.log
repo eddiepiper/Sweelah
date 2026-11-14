@@ -1,0 +1,7 @@
+BASE (fixed handler): exit=0 18 passed, 1 warning in 0.31s
+M1 drop isinstance(kind, str) guard: exit=1 RED :: 2 failed, 16 passed, 1 warning in 0.23s
+M2 drop KeyError from except: exit=1 RED :: 2 failed, 16 passed, 1 warning in 0.29s
+M3 echo str(exc) instead of controlled params message: exit=1 RED :: 5 failed, 13 passed, 1 warning in 0.31s
+M4 drop isinstance(data, dict) check: exit=1 RED :: 5 failed, 13 passed, 1 warning in 0.25s
+M5 revert reference_calculation to 5fe3ec8: exit=1 RED :: 12 failed, 6 passed, 1 warning in 0.27s
+restored api.py byte-identical to the fixed version

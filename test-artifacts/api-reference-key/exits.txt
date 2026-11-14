@@ -1,0 +1,3 @@
+pytest exit=0
+rules exit=0
+api exit=0 (unshare -rn loopback namespace)
