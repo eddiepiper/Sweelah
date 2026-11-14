@@ -1,0 +1,16 @@
+{
+  "title": "RetirePilot 96-Persona Classifier - Synthetic Technical Audit",
+  "version": "1.2.0-prototype",
+  "source_sha256": "91de385a692e69a79c78f131a01a85886c39c9a85a11be9e6c57e01c4a404612",
+  "engine_version": "2.2.0-remediated",
+  "tests_executed": 498,
+  "passed": 498,
+  "failed": 0,
+  "limitations": [
+    "Self-generated positive fixtures test internal consistency, not real-world persona validity",
+    "Input fields are flattened prototype values; real household data and one-to-many income provenance not implemented",
+    "Scores and thresholds are uncalibrated; no statistical representativeness or policy eligibility proof",
+    "Financial calculations are illustrative; independent QA, full consent controls and regulatory review are not completed"
+  ]
+}
+EXIT 0

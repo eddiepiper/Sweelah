@@ -38,6 +38,33 @@ def age_on(dob: str, on: date) -> int:
     born = date.fromisoformat(dob)
     return on.year - born.year - ((on.month,on.day) < (born.month,born.day))
 
+def attained_age_date(born: date, age: int, *, error: type[Exception] = ValidationError) -> date:
+    """First date on which ``age_on(born, d) == age`` (the exclusive age boundary).
+
+    Single shared implementation for statutory_2026, cpf_retirement_v26 and
+    projection_v22 (SWEELAH-ATTAIN-CORE). ``error`` is the exception class each
+    caller already exposes for an unsupported calendar year: ValidationError
+    (default; statutory and projection, mapped to HTTP 422) or
+    cpf_retirement_v26.CPFUnsupportedCase. The year is range-checked before any
+    date is built, so huge ages raise ``error`` rather than OverflowError.
+
+    INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory
+    convention (Phase 7 external review skipped): a 29-Feb person attains the
+    new age on 1 Mar in a common year, matching age_on.
+    """
+    year = born.year + age
+    if year < date.min.year or year > date.max.year:
+        raise error(
+            'Attained-age calendar year is outside the supported date range '
+            f'({date.min.year}-{date.max.year})'
+        )
+    try:
+        return date(year, born.month, born.day)
+    except ValueError:
+        # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
+        # first day the new age is attained.
+        return date(year, 3, 1)
+
 def _id_set(rows, group):
     ids=[r['id'] for r in rows]
     if len(set(ids)) != len(ids): raise ValidationError(f'{group}: duplicate id')

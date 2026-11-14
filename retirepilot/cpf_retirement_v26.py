@@ -8,6 +8,7 @@ premiums, official eligibility, property pledges or payouts from balances.
 from __future__ import annotations
 from datetime import date
 from decimal import Decimal, InvalidOperation
+from . import core as _core
 
 SOURCE_RA='https://www.cpf.gov.sg/service/article/what-happens-to-my-cpf-savings-when-i-turn-55'
 SOURCE_SA='https://www.cpf.gov.sg/service/article/what-is-the-closure-of-special-account-for-members-aged-55-and-above-about'
@@ -37,22 +38,10 @@ def _nonnegative_decimal(value, field):
 def _attained_age_date(born: date, age: int) -> date:
     """First date on which a person born on ``born`` attains ``age``.
 
-    INTERNAL ASSUMPTION, not checked against the CPF Board or any statutory
-    convention (Phase 7 external review skipped): a 29-Feb person attains the
-    new age on 1 Mar in a common year, matching core.age_on.
+    Thin wrapper over core.attained_age_date (INTERNAL ASSUMPTION: 29 Feb ->
+    1 Mar in a common year). Out-of-range years raise CPFUnsupportedCase.
     """
-    year = born.year + age
-    if year < date.min.year or year > date.max.year:
-        raise CPFUnsupportedCase(
-            'Attained-age calendar year is outside the supported date range '
-            f'({date.min.year}-{date.max.year})'
-        )
-    try:
-        return date(year, born.month, born.day)
-    except ValueError:
-        # 29 Feb does not exist in the target year; age_on treats 1 Mar as the
-        # first day the new age is attained.
-        return date(year, 3, 1)
+    return _core.attained_age_date(born, age, error=CPFUnsupportedCase)
 
 def transition_at_55(*, dob:str, as_of:str, oa, sa, ma, existing_ra='0', cpf_membership_confirmed:bool=False, property_pledge:bool=False):
     """Transfers SA first, OA second into a new RA up to cohort FRS.

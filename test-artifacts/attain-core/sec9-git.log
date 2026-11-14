@@ -1,0 +1,29 @@
+$ git merge-base 90112d4 dbc2d84
+823ef724cdcf5dfada91a895a51baa60fd6c41ec
+$ git merge-base 5fe3ec8 dbc2d84
+823ef724cdcf5dfada91a895a51baa60fd6c41ec
+$ git merge-base --is-ancestor 823ef72 5fe3ec8 (exit)
+0
+$ git rev-parse 823ef72
+823ef724cdcf5dfada91a895a51baa60fd6c41ec
+$ git diff -U0 823ef72 dbc2d84 -- retirepilot/core.py | rg "^@@"
+@@ -15,0 +16,3 @@ CENT = Decimal('0.01')
+@@ -95,0 +99,9 @@ def validate(profile: dict) -> list[str]:
+@@ -190,0 +203,3 @@ def validate(profile: dict) -> list[str]:
+$ git diff -U0 5fe3ec8 90112d4 -- retirepilot/core.py | rg "^@@"
+@@ -40,0 +41,27 @@ def age_on(dob: str, on: date) -> int:
+$ git diff 823ef72 5fe3ec8 --stat -- retirepilot/core.py
+$ git merge-tree --write-tree 90112d4 dbc2d84
+78c37ecd1127054a4de9c21be314514eebd8bc67
+exit 0
+$ git show 823ef72:retirepilot/projection_v22.py | sha256sum
+c6889d3a761886d21d3a41046a5ff5344dc64fe87a776efa43363da711a800ed  -
+$ git log --no-merges --format='%h %s' 823ef72..5fe3ec8 -- retirepilot/projection_v22.py
+3f9884f SWEELAH-ISSUE-9: document 1-Mar leap-day rule as internal assumption
+11425e0 SWEELAH-ISSUE-9: align age boundaries with age_on for 29-Feb birthdays
+$ git log --no-merges --format='%h %s' 823ef72..5fe3ec8 -- retirepilot/statutory_2026.py
+339ecea SWEELAH-LEAPDOB-YEARCAP: refuse out-of-range attained-age years.
+22ef888 Fix 29-Feb DOB ValueError in statutory CPF band lookup.
+$ git log --no-merges --format='%h %s' 823ef72..5fe3ec8 -- retirepilot/cpf_retirement_v26.py
+08317d8 SWEELAH-LEAPDOB-YEARCAP: refuse out-of-range attained-age years.
+5452a46 Fix transition_at_55 refusal of valid 29-Feb dates of birth.
