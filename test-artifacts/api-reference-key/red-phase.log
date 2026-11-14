@@ -1,0 +1,101 @@
+...FFFFFFFFFFFF...                                                       [100%]
+=================================== FAILURES ===================================
+___________________ test_kind_list_is_controlled_422_not_500 ___________________
+tests/test_api_reference_bad_key.py:80: in test_kind_list_is_controlled_422_not_500
+    assert_422(post(ref(kind=['resident_tax'], params={})), UNSUPPORTED)
+tests/test_api_reference_bad_key.py:59: in assert_422
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+__________________ test_kind_object_is_controlled_422_not_500 __________________
+tests/test_api_reference_bad_key.py:84: in test_kind_object_is_controlled_422_not_500
+    assert_422(post(ref(kind={'name': 'resident_tax'}, params={})), UNSUPPORTED)
+tests/test_api_reference_bad_key.py:59: in assert_422
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+_________ test_unknown_params_key_is_controlled_422_and_does_not_echo __________
+tests/test_api_reference_bad_key.py:88: in test_unknown_params_key_is_controlled_422_and_does_not_echo
+    assert_422(post(ref(kind='resident_tax', params={PROBE: 1})), BAD_PARAMS)
+tests/test_api_reference_bad_key.py:60: in assert_422
+    assert response.json() == {'detail': detail}
+E   assert {'detail': "r...EY-9f3c2a1b'"} == {'detail': 'I...e parameters'}
+E     
+E     Differing items:
+E     {'detail': "resident_tax_reference() got an unexpected keyword argument 'LEAK-ME-KEY-9f3c2a1b'"} != {'detail': 'Invalid reference parameters'}
+E     Use -v to get more diff
+_______ test_empty_string_params_key_is_controlled_422_and_does_not_echo _______
+tests/test_api_reference_bad_key.py:92: in test_empty_string_params_key_is_controlled_422_and_does_not_echo
+    assert_422(post(ref(kind='resident_tax', params={'': 1})), BAD_PARAMS)
+tests/test_api_reference_bad_key.py:60: in assert_422
+    assert response.json() == {'detail': detail}
+E   assert {'detail': "r... argument ''"} == {'detail': 'I...e parameters'}
+E     
+E     Differing items:
+E     {'detail': "resident_tax_reference() got an unexpected keyword argument ''"} != {'detail': 'Invalid reference parameters'}
+E     Use -v to get more diff
+________________ test_missing_required_params_is_controlled_422 ________________
+tests/test_api_reference_bad_key.py:96: in test_missing_required_params_is_controlled_422
+    assert_422(post(ref(kind='resident_tax', params={})), BAD_PARAMS)
+tests/test_api_reference_bad_key.py:60: in assert_422
+    assert response.json() == {'detail': detail}
+E   assert {'detail': "r...e_confirmed'"} == {'detail': 'I...e parameters'}
+E     
+E     Differing items:
+E     {'detail': "resident_tax_reference() missing 4 required keyword-only arguments: 'chargeable_income', 'year_of_assessment', 'resident_confirmed', and 'chargeable_income_confirmed'"} != {'detail': 'Invalid reference parameters'}
+E     Use -v to get more diff
+___________ test_missing_schedule_item_key_is_controlled_422_not_500 ___________
+tests/test_api_reference_bad_key.py:100: in test_missing_schedule_item_key_is_controlled_422_not_500
+    assert_422(
+tests/test_api_reference_bad_key.py:59: in assert_422
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+______ test_schedule_item_with_only_unknown_key_is_controlled_422_not_500 ______
+tests/test_api_reference_bad_key.py:107: in test_schedule_item_with_only_unknown_key_is_controlled_422_not_500
+    assert_422(
+tests/test_api_reference_bad_key.py:59: in assert_422
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+____________ test_non_object_bodies_are_controlled_422_not_500[[]] _____________
+tests/test_api_reference_bad_key.py:116: in test_non_object_bodies_are_controlled_422_not_500
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+__________ test_non_object_bodies_are_controlled_422_not_500["hello"] __________
+tests/test_api_reference_bad_key.py:116: in test_non_object_bodies_are_controlled_422_not_500
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+___________ test_non_object_bodies_are_controlled_422_not_500[null] ____________
+tests/test_api_reference_bad_key.py:116: in test_non_object_bodies_are_controlled_422_not_500
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+_____________ test_non_object_bodies_are_controlled_422_not_500[1] _____________
+tests/test_api_reference_bad_key.py:116: in test_non_object_bodies_are_controlled_422_not_500
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+___________ test_non_object_bodies_are_controlled_422_not_500[true] ____________
+tests/test_api_reference_bad_key.py:116: in test_non_object_bodies_are_controlled_422_not_500
+    assert response.status_code == 422, response.text
+E   AssertionError: Internal Server Error
+E   assert 500 == 422
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+=============================== warnings summary ===============================
+../sweelah-baseline-venv/lib/python3.13/site-packages/starlette/testclient.py:45
+  /workspace/sweelah-baseline-venv/lib/python3.13/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+12 failed, 6 passed, 1 warning in 0.30s

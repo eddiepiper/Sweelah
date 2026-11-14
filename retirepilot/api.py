@@ -67,13 +67,16 @@ REFERENCE_FUNCTIONS={'resident_tax':resident_tax_reference,'cpf_interest_static'
 async def reference_calculation(req:Request):
     """Synthetic-only, bounded official-source calculations. No raw records retained."""
     data=await body_json(req)
+    if not isinstance(data,dict):raise HTTPException(422,'request must be an object')
     require_synthetic_fixture({'id':data.get('synthetic_profile_id','')})
     kind=data.get('kind')
-    if kind not in REFERENCE_FUNCTIONS:raise HTTPException(422,'Unsupported reference calculation')
+    if not isinstance(kind,str) or kind not in REFERENCE_FUNCTIONS:
+        raise HTTPException(422,'Unsupported reference calculation')
     params=data.get('params')
     if not isinstance(params,dict):raise HTTPException(422,'params must be object')
     try:return REFERENCE_FUNCTIONS[kind](**params)
-    except (ValueError,TypeError) as exc:raise HTTPException(422,str(exc))
+    except ValidationError as exc:raise HTTPException(422,str(exc))
+    except (ValueError,TypeError,KeyError):raise HTTPException(422,'Invalid reference parameters')
 
 @app.post('/api/guide')
 async def guided_assistant(req:Request):
