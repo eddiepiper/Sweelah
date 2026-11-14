@@ -1,0 +1,22 @@
+red-phase targeted exit=1 (5 failed; see red-phase.log)
+green-phase targeted exit=0 (5 passed; see green-phase-targeted.log)
+pytest exit=0
+rules exit=1 without PYTHONPATH (ModuleNotFoundError, see rules-no-pythonpath.log); rules exit=0 with PYTHONPATH=.
+browser exit=0
+api exit=0 (unshare -rn, own :8769 inside namespace; PATH includes /workspace/sweelah-baseline-venv/bin)
+release exit=0
+assets exit=0
+
+# conditions follow-up on 989bb82 (14 Nov 2026, UTC+8)
+mutant-control-new-test exit=0 (1 passed; see mutant-control-new-test.log)
+mutant-site1-old-tests exit=0 (82 passed — silent catch survives; see mutant-site1-old-tests.log)
+mutant-site1-new-test exit=1 (1 failed at line 42; see mutant-site1-new-test.log)
+mutant-site2-old-tests exit=0 (82 passed — silent catch survives; see mutant-site2-old-tests.log)
+mutant-site2-new-test exit=1 (1 failed at line 704; see mutant-site2-new-test.log)
+green-phase targeted g5c exit=0 (83 passed; see green-phase-targeted-g5c.log)
+pytest g5c exit=0 (904 passed; see pytest-g5c.log)
+rules g5c exit=1 without PYTHONPATH (ModuleNotFoundError, see rules-no-pythonpath-g5c.log); rules g5c exit=0 with PYTHONPATH=. (498 passed; see rules-g5c.log)
+browser g5c exit=0 (46 passed; see browser-g5c.log)
+api g5c exit=0 (unshare -rn, own :8769 inside namespace; PATH includes /workspace/sweelah-baseline-venv/bin)
+release g5c exit=0
+assets g5c exit=0

@@ -1,0 +1,43 @@
+FFFFF                                                                    [100%]
+=================================== FAILURES ===================================
+_____________ test_axe_audit_fails_loudly_when_axe_core_is_absent ______________
+tests/test_axe_core_required.py:60: in test_axe_audit_fails_loudly_when_axe_core_is_absent
+    assert 'axe-core is required' in message
+E   assert 'axe-core is required' in "node:internal/modules/cjs/loader:1568\n  throw err;\n  ^\n\nError: Cannot find module '/workspace/sweelah-issue-8-nit... at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.22.1"
+__________ test_axe_audit_fails_loudly_when_axe_core_path_is_missing ___________
+tests/test_axe_core_required.py:73: in test_axe_audit_fails_loudly_when_axe_core_path_is_missing
+    assert 'AXE_CORE_PATH' in message
+E   assert 'AXE_CORE_PATH' in "node:internal/modules/cjs/loader:1568\n  throw err;\n  ^\n\nError: Cannot find module '/workspace/sweelah-issue-8-nit... at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.22.1"
+______________ test_axe_audit_resolves_an_existing_axe_core_path _______________
+tests/test_axe_core_required.py:84: in test_axe_audit_resolves_an_existing_axe_core_path
+    assert result.returncode == 0, result.stdout + result.stderr
+E   AssertionError: node:internal/modules/cjs/loader:1568
+E       throw err;
+E       ^
+E     
+E     Error: Cannot find module '/workspace/sweelah-issue-8-nits/tests/browser/require_axe_core.cjs'
+E         at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+E         at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+E         at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+E         at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+E         at Module._load (node:internal/modules/cjs/loader:1341:5)
+E         at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+E         at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+E         at node:internal/main/run_main_module:33:47 {
+E       code: 'MODULE_NOT_FOUND',
+E       requireStack: []
+E     }
+E     
+E     Node.js v24.22.1
+E     
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['/usr/local/bin/node', '/workspace/sweelah-issue-8-nits/tests/browser/require_axe_core.cjs'], r... node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.22.1\n").returncode
+_____________ test_s016_browser_script_does_not_skip_axe_silently ______________
+tests/test_axe_core_required.py:90: in test_s016_browser_script_does_not_skip_axe_silently
+    assert "require('./require_axe_core.cjs')" in source
+E   assert "require('./require_axe_core.cjs')" in "const assert = require('node:assert/strict');\nconst fs = require('node:fs');\nconst path = require('node:path');\nco...sion()+')');\n  } finally { await browser.close(); }\n})().catch(error=>{console.error(error);process.exitCode=1;});\n"
+_ test_reference_checker_detects_mismatched_and_dangling_facts_and_guardrails __
+tests/test_scenario_mapping_internal_issue8.py:115: in test_reference_checker_detects_mismatched_and_dangling_facts_and_guardrails
+    assert "S025: dangling guardrail 'softened invented guardrail'" in dangling_g_errors
+E   assert "S025: dangling guardrail 'softened invented guardrail'" in 'S025: dangling guardrail'
+5 failed in 0.40s
