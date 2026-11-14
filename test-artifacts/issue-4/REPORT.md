@@ -27,7 +27,7 @@ No application code, UI, API, config, fixture, workflow, or manifest was changed
 
 ## 3. Design summary
 
-Current state (on `823ef72`): a local Fernet-encrypted vault for `RP-SYNTH-*` profiles, purpose-specific synthetic consent that can be withdrawn, and a hard block on `share_household_records`. The API is anonymous and local-only and does not use the vault. The onboarding prototype is in-browser only: its onboarding steps do not collect NRIC, date of birth, email or login, and it does not persist or send amounts. It does have a free-text "Ask Swee" chat box (`#chat-question`) where a user could type an identifier; that text is not sent or stored (design doc §1.4, added in `d23bdc6`). None of this is production identity, tenancy, or verified consent (D-004, gate G4 OPEN).
+Current state (on `823ef72`): a local Fernet-encrypted vault for `RP-SYNTH-*` profiles, purpose-specific synthetic consent that can be withdrawn, and a hard block on `share_household_records`. The API is anonymous and local-only and does not use the vault. The onboarding prototype is in-browser only: its onboarding steps do not collect NRIC, date of birth, email or login, and it does not persist or send amounts. It does have a free-text "Ask Swee" chat box (`#chat-question`) where a user could type an identifier; the same input is also in the Main Dashboard prototypes, and in all six files under `design/sweelah/prototypes/`. That text is not sent or stored (design doc §1.4, added in `d23bdc6`). None of this is production identity, tenancy, or verified consent (D-004, gate G4 OPEN).
 
 ### Recommendation (Proposed)
 
@@ -107,7 +107,8 @@ QA verdict: `qa/issue-4-2d03c9c/VERDICT.md` on `qa/issue-4-2d03c9c-verify` @ `ea
 | Commit | Scope |
 |---|---|
 | `d23bdc6` | Design doc only: the four conditions (NRIC rule not enforced plus a Proposed control; Singpass `sub` "pairwise" removed and the `user.identity` note added; cited or INTERNAL ASSUMPTION glosses; Ask Swee box) and the doc nits. Source excerpts in `sources/G5_SOURCE_EXCERPTS.md`. Changelog in design doc §13. |
-| this commit | Report and env nits: §6 counts recomputed from git; `env.txt` note on base `823ef72` and environment refresh; §3, §4 Q7 and the recommendation wording aligned with the revised doc. |
+| `a377c47` | Report and env nits: §6 counts recomputed from git; `env.txt` note on base `823ef72` and environment refresh; §3, §4 Q7 and the recommendation wording aligned with the revised doc. |
+| this docs-only follow-up | Optional QA wording nits after the `a377c47` re-check (**PASS**, `qa/issue-4-a377c47-verify` @ `32c4a5e`): stale §13 "not edited" rows corrected; `#5` `bdc4fb3` recorded as G5 **FAIL** (`50eb319`) with later candidate `daeb591` under review; §1.2/§5.3 aligned with both `core.validate` consent checks; `#chat-question` noted on the Main Dashboard prototypes; Key Concepts PDF file-name date explained in §12.3. See design doc §13 Revision 3. |
 
-Status: **Implemented but unverified** (QA has not reviewed `d23bdc6` or this commit). Not pushed.
+QA G5 re-check of `a377c47` (includes `d23bdc6`): **PASS**, with the non-gating wording items above. This follow-up is docs and report wording only.
 

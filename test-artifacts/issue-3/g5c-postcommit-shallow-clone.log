@@ -1,0 +1,9 @@
+# depth-1 clone proof of the committed branch, 2026-11-14 09:57:26 +0800
+$ git clone --depth 1 file:///workspace/sweelah-issue-3 -b feat/issue-3-persona-draft-labels
+HEAD=e871aacdc6325aa0c25b563f1f05123c62d5fe67
+rev-list --count HEAD -> 1
+is-shallow -> true
+cat-file -e c32ede1 -> fatal: Not a valid object name c32ede1
+rc=128
+243 passed in 0.36s
+exit=0
