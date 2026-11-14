@@ -13,7 +13,7 @@ Decision 2A: cpf_retirement_situation values describe patterns only;
 no amounts and no entitlement claims.
 Decision 3A: internal only; not for the consumer UI, API or exports
 until reviewed; matching gates, weights and results are unchanged.
-Decision 7A: evidence_level is None (internal design, no research).
+Decision 7A: evidence_level is JSON null (internal design, no research).
 
 Where an age band, work type, CPF situation or household context is
 not clearly stated, the first pass uses varies or spans_stages rather
@@ -31,7 +31,9 @@ ROOT = Path(__file__).resolve().parents[1]
 RULES_PATH = ROOT / "retirepilot/retirepilot_rules_v1.2.json"
 DEFAULT_OUT = ROOT / "data/persona_draft_labels_issue3.json"
 DRAFT_STATUS = "DRAFT_NOT_INDEPENDENTLY_REVIEWED"
-EVIDENCE_NONE = "None"
+# Decision 7A: no evidence yet. Serialised as JSON null (QA G5 on 8e812e0 found
+# the string "None" here, a str(None)-style leak; it was never an enum value).
+EVIDENCE_NONE = None
 
 # Each row: persona_id, life_stage, work_income_type, cpf_retirement_situation,
 # household_context, planning_complexity, planning_complexity_reason, rationale_note.

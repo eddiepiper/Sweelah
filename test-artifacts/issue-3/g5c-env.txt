@@ -1,0 +1,10 @@
+date: 2026-11-14 09:57:15 +0800
+python: Python 3.13.5
+venv: /workspace/sweelah-baseline-venv
+cwd: /workspace/sweelah-issue-3
+HEAD (parent of this commit): 8e812e0d8f9d760225b43fec732707ccfbf68353
+branch: feat/issue-3-persona-draft-labels
+main: 5fe3ec8b6448d94d4a15dc18f1f38c2a58508e76
+git: git version 2.47.3
+AXE_CORE_PATH=/workspace/qa-tools/node_modules/axe-core/axe.min.js
+PYTHONPATH=.

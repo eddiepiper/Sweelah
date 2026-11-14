@@ -1,0 +1,17 @@
+# Value diff 8e812e0 (HoP-signed) -> working tree, 2026-11-14 09:54:02 +0800
+old sha256: c82c5f81b992228f82edf62d573bf58a52c9355e70370f4ec24f9aa6858d27e6
+new sha256: 99fc4dd0c3c21b8b94697a7ae568fddd81d2ac8e8234ca275dd45de4431cdb2b
+
+$ git diff --stat 8e812e0 -- data/persona_draft_labels_issue3.json
+ data/persona_draft_labels_issue3.json | 194 +++++++++++++++++-----------------
+ 1 file changed, 97 insertions(+), 97 deletions(-)
+
+$ changed lines, grouped:
+     96 +      "evidence_level": null,
+      1 +  "evidence_level": null,
+     96 -      "evidence_level": "None",
+      1 -  "evidence_level": "None",
+
+HoP-signed label values compared: 480; changed: 0
+field-level differences by field: {'header.evidence_level': 1, 'evidence_level': 96}
+distinct transitions: ["'None' -> None"]

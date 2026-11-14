@@ -45,7 +45,20 @@ RECORD_KEYS = (
     "planning_complexity_reason", "label_status", "evidence_level", "rationale",
 )
 DRAFT_STATUS = "DRAFT_NOT_INDEPENDENTLY_REVIEWED"
-EVIDENCE_NONE = "None"
+# Decision 7A: no evidence. Stored as JSON null (QA G5 on 8e812e0 found the
+# accidental string "None", a Python str(None) style leak; fixed to null).
+EVIDENCE_NONE = None
+LABEL_VALUE_FIELDS = (
+    "life_stage", "work_income_type", "cpf_retirement_situation",
+    "household_context", "planning_complexity",
+)
+# Canonical SHA-256 of [[persona_id, <5 label values>], ...] for the 96 records
+# at 8e812e0, the file the Head of Product signed off as a Product draft
+# (480 values). Must not move.
+HOP_SIGNED_VALUES_SHA256 = "4ddbbf3bb652574ade18c4b842c91f4c6f55799251162b4b3d57c102fb5d5767"
+# Canonical SHA-256 of the whole 8e812e0 document with every evidence_level key
+# removed. Proves evidence_level is the only field that changed since sign-off.
+HOP_SIGNED_DOC_WITHOUT_EVIDENCE_SHA256 = "324631c63b9120bc0d30b301f128acd4462de54c7d5a03bcd2ef3835883c443b"
 
 # Canonical SHA-256 of classify_household(...) and of evaluate(...)["classification"]
 # for the three shipped synthetic households on origin/main (823ef72), using
@@ -86,10 +99,22 @@ NEEDLES = (
     "persona_draft_labels",
     "DRAFT_NOT_INDEPENDENTLY_REVIEWED",
 )
+# Needles with every non-alphanumeric character removed and lower-cased, so a
+# split or concatenated reference ("persona_draft_" + "labels",
+# "_".join(["persona", "draft", "labels"]), adjacent string literals) is caught.
+COLLAPSED_NEEDLES = tuple(sorted({re.sub(r"[^a-z0-9]", "", n.lower()) for n in NEEDLES}))
+SCANNED_SUFFIXES = {".py", ".html", ".htm", ".js", ".mjs", ".css", ".json", ".txt", ".md", ".toml", ".yaml", ".yml"}
 FORBIDDEN_FIELD_RE = re.compile(
     r"(score|weight|percent|percentage|confidence|probability|match_score|risk_tier|risk-tier)",
     re.I,
 )
+# Applied to keys normalised to lower-case alphanumerics, so camelCase,
+# PascalCase, kebab, dotted and spaced variants ("riskTier", "Risk Tier",
+# "risk.tier", "matchScore") are caught too.
+FORBIDDEN_COLLAPSED_KEY_RE = re.compile(
+    r"(score|weight|percent|confidence|probability|risktier|riskrating|risklevel|riskgrade|riskband)"
+)
+NEEDS_HOP_REVIEW_RE = re.compile(r"needs\s+(head\s+of\s+product|hop)\s+review", re.I)
 BARE_NUMBER_RE = re.compile(r"^[-+]?\d+(\.\d+)?$")
 
 
@@ -109,6 +134,62 @@ def _records():
 
 def _canon(obj) -> bytes:
     return json.dumps(obj, sort_keys=True, separators=(",", ":")).encode()
+
+
+def _collapse(text: str) -> str:
+    """Lower-case and drop every non-alphanumeric character."""
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def _isolation_hits(paths, root=ROOT):
+    """Report files that reference the labels file, literally or split up."""
+    hits = []
+    for path in paths:
+        rel = path.relative_to(root).as_posix()
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for needle in NEEDLES:
+            if needle in text:
+                hits.append(f"{rel} contains {needle!r}")
+        collapsed = _collapse(text)
+        for needle in COLLAPSED_NEEDLES:
+            if needle in collapsed:
+                hits.append(f"{rel} contains a split or concatenated {needle!r}")
+    return hits
+
+
+def _package_files(package_dir: Path):
+    """Every scannable file under package_dir, including subpackages."""
+    return sorted(
+        p for p in package_dir.rglob("*")
+        if p.is_file()
+        and "__pycache__" not in p.parts
+        and p.suffix.lower() in SCANNED_SUFFIXES
+    )
+
+
+def _forbidden_key_paths(obj, path="$"):
+    out = []
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            here = f"{path}.{key}"
+            if FORBIDDEN_COLLAPSED_KEY_RE.search(_collapse(key)):
+                out.append(here)
+            out.extend(_forbidden_key_paths(value, here))
+    elif isinstance(obj, list):
+        for i, value in enumerate(obj):
+            out.extend(_forbidden_key_paths(value, f"{path}[{i}]"))
+    return out
+
+
+def _needs_hop_review_hits(records):
+    hits = []
+    for rec in records:
+        for field, value in rec.items():
+            if isinstance(value, str):
+                flat = " ".join(value.replace("\u00a0", " ").replace("-", " ").split())
+                if NEEDS_HOP_REVIEW_RE.search(flat):
+                    hits.append(f"{rec.get('persona_id')}.{field}")
+    return hits
 
 
 def _allowed_digit_tokens(rules) -> set[str]:
@@ -218,7 +299,7 @@ def test_every_value_is_in_its_enum_and_draft_fields_are_present(pid):
     assert row["household_context"] in HOUSEHOLD_CONTEXTS
     assert row["planning_complexity"] in PLANNING_COMPLEXITIES
     assert row["label_status"] == DRAFT_STATUS
-    assert row["evidence_level"] == EVIDENCE_NONE
+    assert row["evidence_level"] is EVIDENCE_NONE
     assert row["rationale"].strip()
     assert row["planning_complexity_reason"].strip()
     assert "\n" not in row["rationale"]
@@ -361,16 +442,20 @@ ALLOWED_TEXT_EDITS = {
     "K06": {"rationale"},
     "K07": {"rationale"},
 }
-C32EDE1_LABELS = "c32ede1:data/persona_draft_labels_issue3.json"
+# Byte-identical committed copy of c32ede1:data/persona_draft_labels_issue3.json
+# (the file HoP reviewed). Used instead of `git show` so the test does not need
+# git history: CI checks out with depth 1 (QA G5 on 8e812e0, condition 1).
+C32EDE1_SNAPSHOT = ROOT / "tests/fixtures/issue3/persona_draft_labels_issue3_c32ede1.json"
+C32EDE1_SNAPSHOT_SHA256 = "ceec1f434d280d99406cc41e3e3e374042bb3c20cf792b9be22d73d202b11de4"
+# The only value transform allowed on top of the HoP corrections since c32ede1:
+# evidence_level string "None" -> JSON null.
+EVIDENCE_LEVEL_TRANSFORM = ("None", None)
 
 
 def _c32ede1_labels():
-    import subprocess
-    raw = subprocess.check_output(
-        ["git", "-C", str(ROOT), "show", C32EDE1_LABELS],
-        text=True,
-    )
-    return json.loads(raw)
+    raw = C32EDE1_SNAPSHOT.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == C32EDE1_SNAPSHOT_SHA256
+    return json.loads(raw.decode("utf-8"))
 
 
 def _row(pid):
@@ -418,6 +503,8 @@ def test_only_hop_allowed_record_fields_differ_from_c32ede1():
         new = new_by_id[pid]
         assert set(old) == set(new) == set(RECORD_KEYS)
         for field in FROZEN_RECORD_FIELDS:
+            if field == "evidence_level" and (old[field], new[field]) == EVIDENCE_LEVEL_TRANSFORM:
+                continue
             if old[field] != new[field] and (pid, field) not in expected_value_changes:
                 unexpected.append(f"{pid}.{field}: {old[field]!r} -> {new[field]!r}")
         for field in ("planning_complexity_reason", "rationale"):
@@ -450,3 +537,116 @@ def test_planning_complexity_reasons_stay_internal_only():
             if needle and needle in text:
                 hits.append(f"{rel} contains {needle!r}")
     assert hits == [], "complexity reasons or the labels file leaked into a consumer path:\n" + "\n".join(hits)
+
+
+# ---- QA G5 on 8e812e0: conditions (history-free snapshot, evidence_level, test gaps)
+
+
+def test_c32ede1_snapshot_is_committed_and_pinned():
+    assert C32EDE1_SNAPSHOT.is_file(), f"missing {C32EDE1_SNAPSHOT}"
+    assert hashlib.sha256(C32EDE1_SNAPSHOT.read_bytes()).hexdigest() == C32EDE1_SNAPSHOT_SHA256
+    assert len(_c32ede1_labels()["records"]) == 96
+
+
+def test_evidence_level_is_json_null_not_the_string_none():
+    doc = _labels()
+    assert "evidence_level" in doc and doc["evidence_level"] is None
+    assert all("evidence_level" in r and r["evidence_level"] is None for r in doc["records"])
+    raw = LABELS_PATH.read_text(encoding="utf-8")
+    assert '"evidence_level": "None"' not in raw
+    assert raw.count('"evidence_level": null') == 97
+
+
+def test_hop_signed_label_values_unchanged_since_8e812e0():
+    values = [[r["persona_id"]] + [r[f] for f in LABEL_VALUE_FIELDS] for r in _records()]
+    assert sum(len(v) - 1 for v in values) == 480
+    assert hashlib.sha256(_canon(values)).hexdigest() == HOP_SIGNED_VALUES_SHA256
+
+
+def test_only_evidence_level_changed_since_hop_signed_8e812e0():
+    doc = _labels()
+    stripped = {k: v for k, v in doc.items() if k != "evidence_level"}
+    stripped["records"] = [
+        {k: v for k, v in r.items() if k != "evidence_level"} for r in doc["records"]
+    ]
+    assert hashlib.sha256(_canon(stripped)).hexdigest() == HOP_SIGNED_DOC_WITHOUT_EVIDENCE_SHA256
+
+
+def test_labels_not_referenced_anywhere_under_retirepilot_including_subpackages():
+    """C6 + C7: recursive scan, and split or concatenated references."""
+    files = _package_files(ROOT / "retirepilot")
+    assert any(p.name == "api.py" for p in files)
+    hits = _isolation_hits(files)
+    assert hits == [], "draft labels referenced from retirepilot/:\n" + "\n".join(hits)
+
+
+def test_consumer_paths_have_no_split_or_concatenated_labels_reference():
+    """C7 on the explicit consumer list (api, service, ui, assistant, ...)."""
+    hits = _isolation_hits([ROOT / rel for rel in CONSUMER_PATHS])
+    assert hits == [], "draft labels referenced from a consumer path:\n" + "\n".join(hits)
+
+
+@pytest.mark.parametrize("snippet", [
+    'LABELS = "persona_draft_" + "labels_issue3.json"\n',
+    'LABELS = ("persona_draft"\n          "_labels_issue3.json")\n',
+    'LABELS = "_".join(["persona", "draft", "labels"])\n',
+    'const f = `persona_draft_${"labels"}`;\n',
+    'STATUS = "DRAFT_NOT_" + "INDEPENDENTLY_REVIEWED"\n',
+])
+def test_isolation_scan_catches_split_references_in_a_subpackage(tmp_path, snippet):
+    """Guards the scanner itself: a reader in a nested subpackage that splits
+    the filename must be reported."""
+    pkg = tmp_path / "retirepilot" / "plugins" / "nested"
+    pkg.mkdir(parents=True)
+    (tmp_path / "retirepilot" / "__init__.py").write_text("", encoding="utf-8")
+    (pkg / "reader.py").write_text(snippet, encoding="utf-8")
+    hits = _isolation_hits(_package_files(tmp_path / "retirepilot"), root=tmp_path)
+    assert hits, f"scanner missed {snippet!r}"
+    assert all("retirepilot/plugins/nested/reader.py" in h for h in hits)
+
+
+def test_collapsed_needles_do_not_flag_unrelated_text():
+    clean = 'path = "data/personas.json"  # draft labels for UI copy\n'
+    assert _isolation_hits_text(clean) == []
+
+
+def _isolation_hits_text(text: str):
+    collapsed = _collapse(text)
+    return [n for n in NEEDLES if n in text] + [n for n in COLLAPSED_NEEDLES if n in collapsed]
+
+
+def test_no_risk_tier_or_score_key_in_any_case_style():
+    """B4: riskTier, RiskTier, risk.tier, 'risk tier' and similar keys."""
+    doc = _labels()
+    assert _forbidden_key_paths(doc) == []
+    collapsed_blob = _collapse(json.dumps(doc).replace("No risk tier", " "))
+    assert "risktier" not in collapsed_blob
+
+
+@pytest.mark.parametrize("key", [
+    "riskTier", "RiskTier", "risk_tier", "risk-tier", "risk.tier", "Risk Tier",
+    "RISK_TIER", "riskLevel", "riskRating", "matchScore", "confidencePct",
+])
+def test_forbidden_key_check_catches_case_variants(key):
+    record = {"persona_id": "A01", key: "low"}
+    assert _forbidden_key_paths({"records": [record]}) == [f"$.records[0].{key}"]
+
+
+def test_no_record_says_needs_head_of_product_review():
+    """E2/E3: every string field of all 96 records, not only E02/K06/K07."""
+    records = _records()
+    assert len(records) == 96
+    hits = _needs_hop_review_hits(records)
+    assert hits == [], "records still say they need HoP review: " + ", ".join(hits)
+
+
+@pytest.mark.parametrize("text", [
+    "needs Head of Product review",
+    "Needs head of product review.",
+    "needs  Head\u00a0of Product review",
+    "needs Head-of-Product review",
+    "needs HoP review",
+])
+def test_needs_hop_review_check_catches_variants(text):
+    rec = {"persona_id": "A01", "planning_complexity_reason": f"Something; {text}"}
+    assert _needs_hop_review_hits([rec]) == ["A01.planning_complexity_reason"]

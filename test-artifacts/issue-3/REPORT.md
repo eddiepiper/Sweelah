@@ -1,8 +1,8 @@
 # SWEELAH-ISSUE-3: internal draft persona labels (DRAFT, not independently reviewed). Refs #3
 
-**Status: Implemented but unverified.** Internal Product draft. Head of Product reviewed `c32ede1` (Status: Proposed) and accepted 475 of 480 values; the five corrections below are applied on top of that commit. Labels stay `DRAFT_NOT_INDEPENDENTLY_REVIEWED` with `evidence_level: None`. They must not be used to sort, filter or prioritise personas before the 7A research gate. Not for the consumer UI, API or exports (decision 3A). Phase 9 stays NO-GO. Synthetic/public fields only.
+**Status: Implemented but unverified.** Internal Product draft. Head of Product reviewed `c32ede1` (Status: Proposed) and accepted 475 of 480 values; the five corrections below are applied on top of that commit. Labels stay `DRAFT_NOT_INDEPENDENTLY_REVIEWED` with `evidence_level: null` (JSON null; the string `"None"` up to `8e812e0`, see §11.2). They must not be used to sort, filter or prioritise personas before the 7A research gate. Not for the consumer UI, API or exports (decision 3A). Phase 9 stays NO-GO. Synthetic/public fields only.
 
-- Worktree: `/workspace/sweelah-issue-3`, branch `feat/issue-3-persona-draft-labels` (upstream unset), base `origin/main` = `823ef724cdcf5dfada91a895a51baa60fd6c41ec`. First commit `c32ede1`. This follow-up confirmed 10 Nov 2026, after 10:24pm SGT (Asia/Singapore, UTC+8).
+- Worktree: `/workspace/sweelah-issue-3`, branch `feat/issue-3-persona-draft-labels` (upstream unset), branch cut from `823ef724cdcf5dfada91a895a51baa60fd6c41ec` (parent chain unchanged: `823ef72` → `c32ede1` → `8e812e0` → this commit). **Base is now main `5fe3ec8b6448d94d4a15dc18f1f38c2a58508e76`**; a `git merge-tree` trial merge onto it is clean (§11.4). First commit `c32ede1`. This follow-up confirmed 10 Nov 2026, after 10:24pm SGT (Asia/Singapore, UTC+8).
 - Issue #3 was read read-only via the cursor-github connector and treated as data. The open issue asks for independently labelled cases and a calibrated scoring methodology. This assignment is the coordinated first step: an internal draft taxonomy, marked `DRAFT_NOT_INDEPENDENTLY_REVIEWED`, not a close of that acceptance bar.
 
 ## 1. Taxonomy source
@@ -19,7 +19,7 @@ Enum fields:
 - `household_context`: `single` | `couple` | `dependants` | `caregiver` | `multi_generation` | `varies`
 - `planning_complexity`: `standard` | `elevated` | `specialist_review_suggested`, plus `planning_complexity_reason` (one line)
 - No risk tier (decision 1A: that would read like suitability advice)
-- On every record: `label_status: DRAFT_NOT_INDEPENDENTLY_REVIEWED`, `evidence_level: None` (decision 7A: internal design, no research), and `rationale` (one line citing the existing gate, criteria and planning_focus)
+- On every record: `label_status: DRAFT_NOT_INDEPENDENTLY_REVIEWED`, `evidence_level: null` (JSON null; decision 7A: internal design, no research), and `rationale` (one line citing the existing gate, criteria and planning_focus)
 
 Aligned with:
 
@@ -30,7 +30,8 @@ Aligned with:
 ## 2. Method
 
 - **Overlay, not an edit.** Labels live in `data/persona_draft_labels_issue3.json`. The rules file, matcher, API, service, UI, assistant and other engine files were not edited.
-- **Reproducible.** `scripts/build_persona_draft_labels_issue3.py` regenerates the JSON from the rules file plus a fixed derivation table. Re-running produces byte-identical output (SHA-256 `ceec1f434d280d99406cc41e3e3e374042bb3c20cf792b9be22d73d202b11de4`).
+- **Reproducible.** `scripts/build_persona_draft_labels_issue3.py` regenerates the JSON from the rules file plus a fixed derivation table. Re-running produces byte-identical output. Build SHA-256 by commit: `c32ede1` `ceec1f434d280d99406cc41e3e3e374042bb3c20cf792b9be22d73d202b11de4`; `8e812e0` (HoP-signed) `c82c5f81b992228f82edf62d573bf58a52c9355e70370f4ec24f9aa6858d27e6`; this commit (evidence_level null) `99fc4dd0c3c21b8b94697a7ae568fddd81d2ac8e8234ca275dd45de4431cdb2b`. Two clean rebuilds on 14 Nov 2026 gave `99fc4dd0…`, identical to the committed file.
+- **Base.** Branch cut from `823ef72`; main has since moved to **`5fe3ec8`**, which is now the base for review and merge. The parent chain is unchanged (no rebase). `git merge-tree --write-tree 5fe3ec8 <this commit>` is clean (§11.4).
 - **Derivation rule.** Where an age band, work type, CPF situation or household context is not clearly stated in the existing fields, the first pass uses `varies`, `spans_stages` or `not_applicable` rather than guessing. `work_income_type` has no `varies` value, so unknown work type is `not_applicable`.
 - **Internal only.** Nothing under `retirepilot/` imports or mentions the labels file. Tests grep `api.py`, `service.py`, `ui.html`, `assistant.py` and the rest of the consumer package.
 - **Matching unchanged.** Canonical SHA-256 of `classify_household` and of `evaluate(...)['classification']` for the three shipped synthetic households is pinned to the `823ef72` values.
@@ -45,7 +46,7 @@ Aligned with:
 | `household_context` | `varies` 69, `dependants` 10, `couple` 5, `single` 5, `caregiver` 5, `multi_generation` 2 |
 | `planning_complexity` | `elevated` 69, `specialist_review_suggested` 20, `standard` 7 |
 | `label_status` | `DRAFT_NOT_INDEPENDENTLY_REVIEWED` 96 |
-| `evidence_level` | `None` 96 |
+| `evidence_level` | `null` 96 (the string `"None"` at `c32ede1` and `8e812e0`) |
 
 `payout_age_65_plus` (13): B08, F05, F06, F07, F08, G05, G06, G07, G08, I06, J05, J06, L08.
 
@@ -110,7 +111,7 @@ File: `tests/test_persona_draft_labels_issue3.py`, **203 tests**. They check:
 - the rules file hash is unchanged
 - the header marks the file INTERNAL DRAFT, Product-owned, pending Head of Product review, and cites decisions 1A, 2A, 3A and 7A
 - exactly 96 unique ids, in rules-file order, with `family` and `name` identical
-- every value is in its enum; every record has the DRAFT marker, `evidence_level` None, a non-empty one-line rationale and a complexity reason
+- every value is in its enum; every record has the DRAFT marker, `evidence_level` JSON null (was the string "None" before §11), a non-empty one-line rationale and a complexity reason
 - no `risk_tier` field (the header may state the 1A prohibition "No risk tier")
 - no numeric JSON types, no `%`, and no digits used as scores (digits are allowed only in persona ids, taxonomy enums, verbatim rules fields, decision ids and document citations)
 - the labels file is not referenced by `api.py`, `service.py`, `ui.html`, `assistant.py` or any other file under `retirepilot/`
@@ -130,9 +131,9 @@ Run with `/workspace/sweelah-baseline-venv` (Python 3.13.5) on 10 Nov 2026, afte
 
 | Suite | Result | Log |
 |---|---|---|
-| `pytest -q -rs` (full), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js`, `PYTHONPATH=.` | **1024 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 203 new. | `pytest.log` |
+| `pytest -q -rs` (full), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`), `PYTHONPATH=.` | **1024 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 203 new. | `pytest.log` |
 | Rules `PYTHONPATH=. audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `rules.log` |
-| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` | **46 passed**. `grep -c PASSED browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `browser.log` |
+| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`) | **46 passed**. `grep -c PASSED browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `browser.log` |
 | API `audit/run_api_checks.py` under `unshare -rn` (own :8769 inside the namespace after `ip link set lo up`; host previews 8769–8773 untouched, same PIDs) | **PASS 20/20** | `api.log` |
 | Release `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `release.log` |
 | Assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
@@ -155,7 +156,7 @@ No HTML, CSS, JS, API, service, assistant or rules file was changed. **G5X shoul
 | HoP taxonomy applied; first pass derived from existing fields | Implemented but unverified |
 | Not imported by or exposed via consumer UI, API or exports (3A) | Implemented but unverified |
 | Matching gates, weights and results unchanged | Implemented but unverified (hashes pinned to `823ef72`) |
-| No risk tier (1A); CPF fields are patterns only (2A); evidence_level None (7A) | Implemented but unverified |
+| No risk tier (1A); CPF fields are patterns only (2A); evidence_level null (7A) | Implemented but unverified |
 | Independent expert labels, blind evaluation set, calibration metrics, and issue #3 acceptance | Not applicable (out of scope for this assignment; the issue remains open) |
 | Production deploy / Phase 9 | Not applicable (NO-GO) |
 
@@ -163,9 +164,9 @@ No HTML, CSS, JS, API, service, assistant or rules file was changed. **G5X shoul
 
 HoP review files were read only and were not modified or committed: `/workspace/ai-it-organization/evaluations/acceptance/AT-PROD-SW3-review.md` and `AT-PROD-SW3-corrections.json` in the same folder. Status of that review: **Proposed**.
 
-Outcome: HoP reviewed all 96 records and all 5 label fields (480 field decisions) at `c32ede1`. **475 of 480 values accepted.** 91 of 96 records were accepted in full. `life_stage`, `work_income_type` and `household_context` had no corrections. The five corrections, plus the G-7 rationale hygiene edits, were applied through the generator and the JSON was regenerated. A test (`test_only_hop_allowed_record_fields_differ_from_c32ede1`) pins that every other record field is unchanged versus `c32ede1`.
+Outcome: HoP reviewed all 96 records and all 5 label fields (480 field decisions) at `c32ede1`. **475 of 480 values accepted.** 91 of 96 records were accepted in full. `life_stage`, `work_income_type` and `household_context` had no corrections. The five corrections, plus the G-7 rationale hygiene edits, were applied through the generator and the JSON was regenerated. A test (`test_only_hop_allowed_record_fields_differ_from_c32ede1`) pins that every other record field is unchanged versus `c32ede1` (since §11.1 it reads a committed snapshot, not git history).
 
-Labels stay `DRAFT_NOT_INDEPENDENTLY_REVIEWED` with `evidence_level: None`. They must not be used to sort, filter or prioritise personas before the 7A research gate. This sign-off, once HoP re-reads the diff, would be a Product draft only and would not meet issue #3's bar of independent labelling and calibration.
+Labels stay `DRAFT_NOT_INDEPENDENTLY_REVIEWED` with `evidence_level` none (the string `"None"` at this point; JSON null from §11). They must not be used to sort, filter or prioritise personas before the 7A research gate. This sign-off, once HoP re-reads the diff, would be a Product draft only and would not meet issue #3's bar of independent labelling and calibration.
 
 ### 10.1 The five value corrections
 
@@ -232,7 +233,7 @@ HoP upheld the first-pass judgements in REPORT.md §4, except item 14 (A08 CPF),
 | `household_context` | `varies` 69, `dependants` 10, `couple` 5, `single` 5, `caregiver` 5, `multi_generation` 2 |
 | `planning_complexity` | `elevated` 66, `specialist_review_suggested` 21, `standard` 9 |
 | `label_status` | `DRAFT_NOT_INDEPENDENTLY_REVIEWED` 96 |
-| `evidence_level` | `None` 96 |
+| `evidence_level` | `"None"` 96 (string; JSON `null` 96 after §11.2) |
 
 This matches the "after" column in the HoP review §5.
 
@@ -258,11 +259,69 @@ Full suites on this follow-up, run with `/workspace/sweelah-baseline-venv` (Pyth
 
 | Suite | Result | Log |
 |---|---|---|
-| `pytest -q -rs` (full), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js`, `PYTHONPATH=.` | **1034 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 213 issue-3 tests. | `hop-pytest.log` |
+| `pytest -q -rs` (full), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`), `PYTHONPATH=.` | **1034 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 213 issue-3 tests. | `hop-pytest.log` |
 | Rules `PYTHONPATH=. audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `hop-rules.log` |
-| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` | **46 passed**. `grep -c PASSED hop-browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `hop-browser.log` |
+| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`) | **46 passed**. `grep -c PASSED hop-browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `hop-browser.log` |
 | API `audit/run_api_checks.py` under `unshare -rn` (own :8769 inside the namespace after `ip link set lo up`; host previews 8769–8773 untouched, same PIDs) | **PASS 20/20** | `hop-api.log` |
 | Release `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `hop-release.log` |
 | Assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `hop-assets.log` |
 
 No MANIFEST-pinned file was changed. No UI change; G5X should not be needed.
+
+## 11. QA G5 conditions on `8e812e0` (PASS with conditions)
+
+QA VERDICT: `/workspace/qa-sweelah-issue-3-8e812e0/qa/issue-3-8e812e0/VERDICT.md` (QA branch `qa/issue-3-8e812e0-verify` @ `a00af1a`), read as data. CoS decisions (14 Nov 2026): evidence_level becomes JSON null unless that would move a HoP-approved value; close all four test gaps; record the move of the base to `5fe3ec8`. Run 14 Nov 2026 from 09:53 SGT (Asia/Singapore, UTC+8). No CI config was changed. Nothing pushed.
+
+### 11.1 Condition 1 (merge-blocking): history-free c32ede1 comparison
+
+- **Cause.** `test_only_hop_allowed_record_fields_differ_from_c32ede1` ran `git show c32ede1:…`. CI uses `actions/checkout@v4` at depth 1, so `c32ede1` is absent. Reproduced in a depth-1 clone of `8e812e0`: `fatal: invalid object name 'c32ede1'`, **1 failed, 212 passed** (`g5c-shallow-clone-red.log`).
+- **Fix.** `tests/fixtures/issue3/persona_draft_labels_issue3_c32ede1.json` is a byte-identical copy of `c32ede1:data/persona_draft_labels_issue3.json`, SHA-256 `ceec1f434d280d99406cc41e3e3e374042bb3c20cf792b9be22d73d202b11de4`, pinned in the test (`C32EDE1_SNAPSHOT_SHA256`). The test reads the snapshot and checks the hash before using it; no git call remains in the issue-3 tests. `test_c32ede1_snapshot_is_committed_and_pinned` guards the fixture. The comparison also allows exactly one extra transform, `evidence_level` `"None"` → `null` (§11.2).
+- **Proof.** The issue-3 tests in a tree with no `.git` at all (index exported with `git checkout-index`) pass: `g5c-no-history-tree.log`. The depth-1 clone of the committed branch is reported with the commit (it cannot be inside the commit it tests).
+
+### 11.2 Condition: `evidence_level` was the string "None"
+
+- **Finding.** Accidental, not an enum. The generator had `EVIDENCE_NONE = "None"`, and the test mirrored it. No schema, enum or decision document defines an evidence-level vocabulary: `docs/APPROVED_DECISIONS_v2.7.md` D-007/7A only says favourable consumer testing is assumed for development planning. REPORT prose said "evidence_level None", meaning "no evidence". This was a str(None)-style leak of Python's `None` into the JSON as text.
+- **Fix (CoS decision).** `EVIDENCE_NONE = None` in `scripts/build_persona_draft_labels_issue3.py`; regenerated. The header and all 96 records now carry JSON `null`. Prose fields (`decision_7A`, `hop_review`) are unchanged.
+- **Schema.** There is no separate schema file. The field contract lives in this REPORT §1 and in the tests: `evidence_level` is JSON `null`, asserted by `test_every_value_is_in_its_enum_and_draft_fields_are_present` (`is None`) and `test_evidence_level_is_json_null_not_the_string_none` (no `"None"` string; exactly 97 `"evidence_level": null` lines).
+- **HoP-signed values unchanged.** `git diff 8e812e0` on the JSON is 97 lines out and 97 in, all `"evidence_level": "None"` → `"evidence_level": null` (1 header + 96 records). All 480 label values (5 fields × 96) compared: **0 changed** (`g5c-value-diff.log`). Two pins enforce it: `test_hop_signed_label_values_unchanged_since_8e812e0` (SHA-256 of the 480 values, `4ddbbf3b…`) and `test_only_evidence_level_changed_since_hop_signed_8e812e0` (SHA-256 of the whole 8e812e0 document minus every `evidence_level` key, `324631c6…`).
+
+### 11.3 Test gaps C6, C7, B4, E2/E3: all closed
+
+Each new check was proven against a mutant the old check missed (`g5c-gap-mutants.log`: each mutant applied alone to a scratch copy; the old test passes, the new test fails):
+
+| Gap | New test(s) | Mutant: old test → new test |
+|---|---|---|
+| C6 subpackage reader | `test_labels_not_referenced_anywhere_under_retirepilot_including_subpackages` (recursive `rglob`, skips `__pycache__`) | `retirepilot/plugins/reader.py` naming the file: passed → failed |
+| C7 split-string filename | the recursive test above plus `test_consumer_paths_have_no_split_or_concatenated_labels_reference` (needles also matched after dropping every non-alphanumeric character); `test_isolation_scan_catches_split_references_in_a_subpackage` (5 cases); `test_collapsed_needles_do_not_flag_unrelated_text` | `"persona_draft_" + "labels_issue3.json"` in `service.py`: passed → failed; `"_".join(["persona","draft","labels"])` in `api.py`: passed → failed |
+| B4 camelCase `riskTier` | `test_no_risk_tier_or_score_key_in_any_case_style` (keys normalised to lower-case alphanumerics: `risktier`, `risklevel`, `riskrating`, `riskgrade`, `riskband`, `score`, `weight`, `percent`, `confidence`, `probability`); `test_forbidden_key_check_catches_case_variants` (11 cases) | `"riskTier": "low"` on A01: passed → failed |
+| E2/E3 wording, all records | `test_no_record_says_needs_head_of_product_review` (every string field of all 96 records; case, whitespace, NBSP and hyphen tolerant; also "needs HoP review"); `test_needs_hop_review_check_catches_variants` (5 cases) | wording appended to A01 rationale: passed → failed |
+
+None of the new checks found anything in the real data or package; they fail only on the mutants. Known limit: a filename built at runtime from computed pieces (for example `%`-formatting of separate variables, or bytes decoding) is not caught by a static scan.
+
+### 11.4 Base and trial merge
+
+`git merge-tree --write-tree 5fe3ec8 <commit>` (git 2.x, no working-tree change): **clean, no conflicts** on the staged tree of this commit (`g5c-merge-tree.log`). For reference, at `8e812e0` the result was also clean (tree `6494dc27…`, matching QA). Parent chain unchanged; no rebase.
+
+### 11.5 Tests and suites
+
+Issue-3 tests: **243** (213 + 30 new).
+
+| Phase | Result | Log |
+|---|---|---|
+| Red (new tests, data and generator still at `8e812e0`) | **97 failed, 146 passed**: the 96 per-record `evidence_level is None` checks and the JSON-null check. The gap tests pass on clean data and are proven red by the mutants in §11.3. | `g5c-red-phase.log` |
+| Green targeted | **243 passed** | `g5c-green-targeted.log` |
+| No-history tree (no `.git`) | **243 passed** | `g5c-no-history-tree.log` |
+| Full `pytest -q -rs`, venv `/workspace/sweelah-baseline-venv` (Python 3.13.5), `PYTHONPATH=.`, `AXE_CORE_PATH=/workspace/qa-tools/node_modules/axe-core/axe.min.js` (includes the 46 browser tests and the axe check) | **1064 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning. 821 existing + 243 issue-3. | `g5c-pytest.log` |
+| Rules `PYTHONPATH=. audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `g5c-rules.log` |
+
+Environment: `g5c-env.txt`. API, release and asset checks were not re-run (no code, API, UI or release-document change). No MANIFEST-pinned file changed. No UI change; G5X should not be needed.
+
+### 11.6 Status labels
+
+| Item | Status |
+|---|---|
+| Condition 1, history-free snapshot test | Implemented but unverified (QA to re-check; local depth-1 proof attached) |
+| evidence_level JSON null; 480 HoP-signed values unchanged | Implemented but unverified |
+| REPORT §2 hash, base `5fe3ec8`, axe path | Implemented but unverified |
+| Gaps C6, C7, B4, E2/E3 | Implemented but unverified |
+| CI on GitHub | Blocked (nothing pushed) |
