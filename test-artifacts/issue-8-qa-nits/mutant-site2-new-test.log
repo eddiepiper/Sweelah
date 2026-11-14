@@ -1,0 +1,35 @@
+site2: same silent try/catch mutant; new test test_require_axe_core_path_call_sites_are_not_wrapped_in_a_silent_catch
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ test_require_axe_core_path_call_sites_are_not_wrapped_in_a_silent_catch ____
+
+    def test_require_axe_core_path_call_sites_are_not_wrapped_in_a_silent_catch():
+        # Static, Node-free: CI has no Node/Playwright/axe, so only this class of
+        # check (and the existing source-string guard) runs there.
+        source = BROWSER_SCRIPT.read_text()
+        calls = list(re.finditer(r'(?<![\w$])requireAxeCorePath\s*\(', source))
+        assert len(calls) == 2, (
+            f'expected 2 requireAxeCorePath() call sites in {BROWSER_SCRIPT.name}, '
+            f'found {len(calls)}'
+        )
+        silent: list[int] = []
+        ranges = _try_catch_ranges(source)
+        for match in calls:
+            position = match.start()
+            for try_start, try_end, catch_start, catch_end in ranges:
+                if try_start <= position < try_end and _catch_is_silent(source, catch_start, catch_end):
+                    silent.append(source.count('\n', 0, position) + 1)
+                    break
+>       assert not silent, (
+            'requireAxeCorePath() is wrapped in a silent try/catch at line(s) '
+            + ', '.join(str(line) for line in silent)
+            + '; the accessibility audit must fail, not skip, when axe-core is absent'
+        )
+E       AssertionError: requireAxeCorePath() is wrapped in a silent try/catch at line(s) 704; the accessibility audit must fail, not skip, when axe-core is absent
+E       assert not [704]
+
+tests/test_axe_core_required.py:296: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_axe_core_required.py::test_require_axe_core_path_call_sites_are_not_wrapped_in_a_silent_catch
+1 failed in 0.04s
+exit=1
