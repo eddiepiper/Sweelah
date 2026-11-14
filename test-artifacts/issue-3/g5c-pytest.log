@@ -1,0 +1,17 @@
+# full pytest, 2026-11-14 09:54:14 +0800, AXE_CORE_PATH=/workspace/qa-tools/node_modules/axe-core/axe.min.js PYTHONPATH=. venv=/workspace/sweelah-baseline-venv
+........................................................................ [ 54%]
+........................................................................ [ 60%]
+........................................................................ [ 67%]
+........................................................................ [ 74%]
+........................................................................ [ 81%]
+........................................................................ [ 87%]
+........................................................................ [ 94%]
+........................................................                 [100%]
+=============================== warnings summary ===============================
+../sweelah-baseline-venv/lib/python3.13/site-packages/starlette/testclient.py:45
+  /workspace/sweelah-baseline-venv/lib/python3.13/site-packages/starlette/testclient.py:45: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1064 passed, 1 warning in 92.37s (0:01:32)
+PYTEST_EXIT=0

@@ -1,0 +1,5 @@
+LISTEN 0      2048       127.0.0.1:8769       0.0.0.0:*    users:(("python",pid=2811676,fd=6))      
+LISTEN 0      2048       127.0.0.1:8771       0.0.0.0:*    users:(("python",pid=2889452,fd=6))      
+LISTEN 0      2048       127.0.0.1:8770       0.0.0.0:*    users:(("python",pid=2850426,fd=6))      
+LISTEN 0      2048       127.0.0.1:8773       0.0.0.0:*    users:(("python",pid=3016255,fd=6))      
+LISTEN 0      2048       127.0.0.1:8772       0.0.0.0:*    users:(("python",pid=2934021,fd=6))      

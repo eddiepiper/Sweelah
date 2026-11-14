@@ -1,0 +1,8 @@
+# trial merge, 2026-11-14 09:57:16 +0800: staged tree of this commit (temporary unreferenced commit object, parent 8e812e0d8f9d760225b43fec732707ccfbf68353) onto main 5fe3ec8
+$ git merge-tree --write-tree 5fe3ec8 <staged>
+7e7b2ec0f1aebabeffc5cc4b4bc99695383b8409
+exit=0
+$ git merge-base 5fe3ec8 HEAD -> 823ef724cdcf5dfada91a895a51baa60fd6c41ec
+$ git merge-tree --write-tree 5fe3ec8 8e812e0 (reference)
+6494dc2737719750efaf2a179a670500fab6e6e2
+exit=0

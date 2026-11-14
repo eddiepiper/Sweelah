@@ -1,0 +1,21 @@
+# Gap mutants (QA G5 conditions C6, C7, B4, E2/E3). Each mutant is applied alone to a fresh scratch copy of the tracked tree + new tests; the OLD test MISSES it (passes) and the NEW test CATCHES it (fails). 2026-11-14 09:53:43 +0800
+## C6 subpackage reader (scratch copy /tmp/sw3-mut.JGfr/w)
+mutation: mkdir -p retirepilot/plugins && touch retirepilot/plugins/__init__.py && printf "P = \"data/persona_draft_labels_issue3.json\"\n" > retirepilot/plugins/reader.py
+  test_labels_filename_not_imported_under_retirepilot_package -> 1 passed in 0.10s
+  test_labels_not_referenced_anywhere_under_retirepilot_including_subpackages -> 1 failed in 0.09s
+## C7 split-string filename in service.py (scratch copy /tmp/sw3-mut.rdXK/w)
+mutation: printf "\n_P = \"persona_draft_\" + \"labels_issue3.json\"\n" >> retirepilot/service.py
+  test_labels_file_is_not_referenced_by_consumer_paths -> 1 passed in 0.10s
+  test_consumer_paths_have_no_split_or_concatenated_labels_reference -> 1 failed in 0.06s
+## C7 join() filename in top-level api.py (scratch copy /tmp/sw3-mut.w0tl/w)
+mutation: printf "\n_P = \"_\".join([\"persona\", \"draft\", \"labels\"])\n" >> retirepilot/api.py
+  test_labels_filename_not_imported_under_retirepilot_package -> 1 passed in 0.09s
+  test_labels_not_referenced_anywhere_under_retirepilot_including_subpackages -> 1 failed in 0.07s
+## B4 camelCase riskTier key on A01 (scratch copy /tmp/sw3-mut.ybpA/w)
+mutation: /workspace/sweelah-baseline-venv/bin/python -c 'import json;p="data/persona_draft_labels_issue3.json";d=json.load(open(p));d["records"][0]["riskTier"]="low";open(p,"w").write(json.dumps(d,indent=2)+"\n")'
+  test_no_risk_tier_field -> 1 passed in 0.09s
+  test_no_risk_tier_or_score_key_in_any_case_style -> 1 failed in 0.07s
+## E2/E3 wording on A01 (not E02/K06/K07) (scratch copy /tmp/sw3-mut.DBmR/w)
+mutation: /workspace/sweelah-baseline-venv/bin/python -c 'import json;p="data/persona_draft_labels_issue3.json";d=json.load(open(p));d["records"][0]["rationale"]+=" needs Head of Product review";open(p,"w").write(json.dumps(d,indent=2)+"\n")'
+  test_g7_rationales_do_not_say_needs_head_of_product_review -> 1 passed in 0.11s
+  test_no_record_says_needs_head_of_product_review -> 1 failed in 0.05s

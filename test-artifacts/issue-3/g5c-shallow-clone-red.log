@@ -1,0 +1,31 @@
+# shallow-clone RED reproduction at 8e812e0d8f9d760225b43fec732707ccfbf68353, 2026-11-14 09:52:07 +0800
+$ git clone --depth 1 file:///workspace/sweelah-issue-3 -b feat/issue-3-persona-draft-labels
+$ git rev-list --count HEAD -> 1
+$ git cat-file -e c32ede1 -> fatal: Not a valid object name c32ede1
+rc=128
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['git', '-C', '/tmp/sw3-shallow-red.w9lL/repo', 'show', 'c32ede1:data/persona_draft_labels_issue3.json']' returned non-zero exit status 128.
+
+/usr/lib/python3.13/subprocess.py:577: CalledProcessError
+----------------------------- Captured stderr call -----------------------------
+fatal: invalid object name 'c32ede1'.
+=========================== short test summary info ============================
+FAILED tests/test_persona_draft_labels_issue3.py::test_only_hop_allowed_record_fields_differ_from_c32ede1
+1 failed, 212 passed in 0.43s
+pytest exit=1
