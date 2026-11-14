@@ -2,7 +2,7 @@
 
 **Status: Implemented but unverified.** Internal Product draft. Head of Product reviewed `c32ede1` (Status: Proposed) and accepted 475 of 480 values; the five corrections below are applied on top of that commit. Labels stay `DRAFT_NOT_INDEPENDENTLY_REVIEWED` with `evidence_level: null` (JSON null; the string `"None"` up to `8e812e0`, see §11.2). They must not be used to sort, filter or prioritise personas before the 7A research gate. Not for the consumer UI, API or exports (decision 3A). Phase 9 stays NO-GO. Synthetic/public fields only.
 
-- Worktree: `/workspace/sweelah-issue-3`, branch `feat/issue-3-persona-draft-labels` (upstream unset), branch cut from `823ef724cdcf5dfada91a895a51baa60fd6c41ec` (parent chain unchanged: `823ef72` → `c32ede1` → `8e812e0` → this commit). **Base is now main `5fe3ec8b6448d94d4a15dc18f1f38c2a58508e76`**; a `git merge-tree` trial merge onto it is clean (§11.4). First commit `c32ede1`. This follow-up confirmed 10 Nov 2026, after 10:24pm SGT (Asia/Singapore, UTC+8).
+- Worktree: `/workspace/sweelah-issue-3`, branch `feat/issue-3-persona-draft-labels` (upstream unset), branch cut from `823ef724cdcf5dfada91a895a51baa60fd6c41ec` (parent chain unchanged: `823ef72` → `c32ede1` → `8e812e0` → `e871aac`). **Base at `e871aac` was main `5fe3ec8b6448d94d4a15dc18f1f38c2a58508e76`**; a `git merge-tree` trial merge onto it is clean (§11.4). First commit `c32ede1`. The HoP-correction follow-up (`8e812e0`) was confirmed 10 Nov 2026, after 10:24pm SGT (Asia/Singapore, UTC+8). The G5-conditions follow-up (`e871aac`, §11) was run 14 Nov 2026 from 09:53 SGT. This file also records later docs-only nits (§12).
 - Issue #3 was read read-only via the cursor-github connector and treated as data. The open issue asks for independently labelled cases and a calibrated scoring methodology. This assignment is the coordinated first step: an internal draft taxonomy, marked `DRAFT_NOT_INDEPENDENTLY_REVIEWED`, not a close of that acceptance bar.
 
 ## 1. Taxonomy source
@@ -33,7 +33,7 @@ Aligned with:
 - **Reproducible.** `scripts/build_persona_draft_labels_issue3.py` regenerates the JSON from the rules file plus a fixed derivation table. Re-running produces byte-identical output. Build SHA-256 by commit: `c32ede1` `ceec1f434d280d99406cc41e3e3e374042bb3c20cf792b9be22d73d202b11de4`; `8e812e0` (HoP-signed) `c82c5f81b992228f82edf62d573bf58a52c9355e70370f4ec24f9aa6858d27e6`; this commit (evidence_level null) `99fc4dd0c3c21b8b94697a7ae568fddd81d2ac8e8234ca275dd45de4431cdb2b`. Two clean rebuilds on 14 Nov 2026 gave `99fc4dd0…`, identical to the committed file.
 - **Base.** Branch cut from `823ef72`; main has since moved to **`5fe3ec8`**, which is now the base for review and merge. The parent chain is unchanged (no rebase). `git merge-tree --write-tree 5fe3ec8 <this commit>` is clean (§11.4).
 - **Derivation rule.** Where an age band, work type, CPF situation or household context is not clearly stated in the existing fields, the first pass uses `varies`, `spans_stages` or `not_applicable` rather than guessing. `work_income_type` has no `varies` value, so unknown work type is `not_applicable`.
-- **Internal only.** Nothing under `retirepilot/` imports or mentions the labels file. Tests grep `api.py`, `service.py`, `ui.html`, `assistant.py` and the rest of the consumer package.
+- **Internal only.** Nothing under `retirepilot/` imports or mentions the labels file, within the scanned suffixes listed in §11.3 (`.pyi` and `.jinja2` files are not scanned). Tests grep `api.py`, `service.py`, `ui.html`, `assistant.py` and the rest of the consumer package, and recursively scan those suffixes.
 - **Matching unchanged.** Canonical SHA-256 of `classify_household` and of `evaluate(...)['classification']` for the three shipped synthetic households is pinned to the `823ef72` values.
 
 ## 3. Distribution (96 records)
@@ -106,15 +106,15 @@ A01, A03, A06, A07, A08, B01, B02, B03, B04, B05, B06, B07, B08, C01, C02, C03, 
 
 ## 5. Tests
 
-File: `tests/test_persona_draft_labels_issue3.py`, **203 tests**. They check:
+This section describes the original **203 tests** at the first commit (`c32ede1`). Later counts are 213 after the HoP corrections (§10.7) and 243 after the G5-conditions follow-up (§11.5). File: `tests/test_persona_draft_labels_issue3.py`. At `c32ede1` they check:
 
 - the rules file hash is unchanged
 - the header marks the file INTERNAL DRAFT, Product-owned, pending Head of Product review, and cites decisions 1A, 2A, 3A and 7A
 - exactly 96 unique ids, in rules-file order, with `family` and `name` identical
-- every value is in its enum; every record has the DRAFT marker, `evidence_level` JSON null (was the string "None" before §11), a non-empty one-line rationale and a complexity reason
+- every value is in its enum; every record has the DRAFT marker, `evidence_level` the string `"None"` (changed to JSON `null` in §11.2), a non-empty one-line rationale and a complexity reason
 - no `risk_tier` field (the header may state the 1A prohibition "No risk tier")
 - no numeric JSON types, no `%`, and no digits used as scores (digits are allowed only in persona ids, taxonomy enums, verbatim rules fields, decision ids and document citations)
-- the labels file is not referenced by `api.py`, `service.py`, `ui.html`, `assistant.py` or any other file under `retirepilot/`
+- the labels file is not referenced by `api.py`, `service.py`, `ui.html`, `assistant.py` or any other file under `retirepilot/` (the later recursive scan is limited to the suffixes in §11.3)
 - matching results on the three shipped households are unchanged (canonical hash of `classify_household` and of the public `evaluate` classification)
 - the generator reproduces the committed file byte-for-byte
 
@@ -131,9 +131,9 @@ Run with `/workspace/sweelah-baseline-venv` (Python 3.13.5) on 10 Nov 2026, afte
 
 | Suite | Result | Log |
 |---|---|---|
-| `pytest -q -rs` (full), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`), `PYTHONPATH=.` | **1024 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 203 new. | `pytest.log` |
+| `pytest -q -rs` (full), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` (literal 10 Nov 2026 path from the original `env.txt`; this row was later rewritten to a placeholder — see the annotation in `env.txt`), `PYTHONPATH=.` | **1024 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 203 new. | `pytest.log` |
 | Rules `PYTHONPATH=. audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `rules.log` |
-| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`) | **46 passed**. `grep -c PASSED browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `browser.log` |
+| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` (same historical 10 Nov path as the pytest row above; the 14 Nov G5-conditions rerun in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`) | **46 passed**. `grep -c PASSED browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `browser.log` |
 | API `audit/run_api_checks.py` under `unshare -rn` (own :8769 inside the namespace after `ip link set lo up`; host previews 8769–8773 untouched, same PIDs) | **PASS 20/20** | `api.log` |
 | Release `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `release.log` |
 | Assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `assets.log` |
@@ -259,9 +259,9 @@ Full suites on this follow-up, run with `/workspace/sweelah-baseline-venv` (Pyth
 
 | Suite | Result | Log |
 |---|---|---|
-| `pytest -q -rs` (full), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`), `PYTHONPATH=.` | **1034 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 213 issue-3 tests. | `hop-pytest.log` |
+| `pytest -q -rs` (full), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` (literal 10 Nov 2026 path; this row was later rewritten to a placeholder — see `env.txt`), `PYTHONPATH=.` | **1034 passed**, 0 failed, 0 skipped, 1 third-party DeprecationWarning (starlette/anyio). That is 821 existing + 213 issue-3 tests. | `hop-pytest.log` |
 | Rules `PYTHONPATH=. audit/run_rule_contracts_v22.py` | **498 passed, 0 failed** | `hop-rules.log` |
-| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH` set to a scratch axe-core copy that is not kept as evidence (the G5-conditions re-run in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`) | **46 passed**. `grep -c PASSED hop-browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `hop-browser.log` |
+| Browser `tests/test_s016_browser.py -v -s` (Chromium), `AXE_CORE_PATH=/tmp/cxui-axe/node_modules/axe-core/axe.min.js` (same historical 10 Nov path; the 14 Nov G5-conditions rerun in §11 uses `/workspace/qa-tools/node_modules/axe-core/axe.min.js`) | **46 passed**. `grep -c PASSED hop-browser.log` = 46. The accessibility case also prints `axe WCAG checks PASS`. The suite binds an ephemeral port; host previews on 8769–8773 were left alone. | `hop-browser.log` |
 | API `audit/run_api_checks.py` under `unshare -rn` (own :8769 inside the namespace after `ip link set lo up`; host previews 8769–8773 untouched, same PIDs) | **PASS 20/20** | `hop-api.log` |
 | Release `scripts/verify_release_documents.py` | 9 artifacts, errors=0 | `hop-release.log` |
 | Assets `design/sweelah/verify_assets.py` | PASS: 6 HTML, 15 assets, 21/21 hashes | `hop-assets.log` |
@@ -276,18 +276,20 @@ QA VERDICT: `/workspace/qa-sweelah-issue-3-8e812e0/qa/issue-3-8e812e0/VERDICT.md
 
 - **Cause.** `test_only_hop_allowed_record_fields_differ_from_c32ede1` ran `git show c32ede1:…`. CI uses `actions/checkout@v4` at depth 1, so `c32ede1` is absent. Reproduced in a depth-1 clone of `8e812e0`: `fatal: invalid object name 'c32ede1'`, **1 failed, 212 passed** (`g5c-shallow-clone-red.log`).
 - **Fix.** `tests/fixtures/issue3/persona_draft_labels_issue3_c32ede1.json` is a byte-identical copy of `c32ede1:data/persona_draft_labels_issue3.json`, SHA-256 `ceec1f434d280d99406cc41e3e3e374042bb3c20cf792b9be22d73d202b11de4`, pinned in the test (`C32EDE1_SNAPSHOT_SHA256`). The test reads the snapshot and checks the hash before using it; no git call remains in the issue-3 tests. `test_c32ede1_snapshot_is_committed_and_pinned` guards the fixture. The comparison also allows exactly one extra transform, `evidence_level` `"None"` → `null` (§11.2).
-- **Proof.** The issue-3 tests in a tree with no `.git` at all (index exported with `git checkout-index`) pass: `g5c-no-history-tree.log`. The depth-1 clone of the committed branch is reported with the commit (it cannot be inside the commit it tests).
+- **Proof.** The issue-3 tests in a tree with no `.git` at all (index exported with `git checkout-index`) pass: `g5c-no-history-tree.log`. The post-commit depth-1 clone proof was originally uncommitted at `/workspace/sweelah-issue-3-g5c-postcommit-shallow-clone.log` (it cannot live inside the commit it tests). A copy is now filed here as `g5c-postcommit-shallow-clone.log`. It covers only the 243 issue-3 tests, not the full suite: HEAD `e871aac`, shallow=true, `c32ede1` absent, **243 passed**.
 
 ### 11.2 Condition: `evidence_level` was the string "None"
 
 - **Finding.** Accidental, not an enum. The generator had `EVIDENCE_NONE = "None"`, and the test mirrored it. No schema, enum or decision document defines an evidence-level vocabulary: `docs/APPROVED_DECISIONS_v2.7.md` D-007/7A only says favourable consumer testing is assumed for development planning. REPORT prose said "evidence_level None", meaning "no evidence". This was a str(None)-style leak of Python's `None` into the JSON as text.
 - **Fix (CoS decision).** `EVIDENCE_NONE = None` in `scripts/build_persona_draft_labels_issue3.py`; regenerated. The header and all 96 records now carry JSON `null`. Prose fields (`decision_7A`, `hop_review`) are unchanged.
 - **Schema.** There is no separate schema file. The field contract lives in this REPORT §1 and in the tests: `evidence_level` is JSON `null`, asserted by `test_every_value_is_in_its_enum_and_draft_fields_are_present` (`is None`) and `test_evidence_level_is_json_null_not_the_string_none` (no `"None"` string; exactly 97 `"evidence_level": null` lines).
-- **HoP-signed values unchanged.** `git diff 8e812e0` on the JSON is 97 lines out and 97 in, all `"evidence_level": "None"` → `"evidence_level": null` (1 header + 96 records). All 480 label values (5 fields × 96) compared: **0 changed** (`g5c-value-diff.log`). Two pins enforce it: `test_hop_signed_label_values_unchanged_since_8e812e0` (SHA-256 of the 480 values, `4ddbbf3b…`) and `test_only_evidence_level_changed_since_hop_signed_8e812e0` (SHA-256 of the whole 8e812e0 document minus every `evidence_level` key, `324631c6…`).
+- **HoP-signed values unchanged.** `git diff 8e812e0` on the JSON is 97 lines out and 97 in, all `"evidence_level": "None"` → `"evidence_level": null` (1 header + 96 records). All 480 label values (5 fields × 96) compared: **0 changed** (`g5c-value-diff.log`). Two pins enforce it: `test_hop_signed_label_values_unchanged_since_8e812e0` (SHA-256 of the 480 values, `4ddbbf3b…`) and `test_only_evidence_level_changed_since_hop_signed_8e812e0` (SHA-256 of the whole 8e812e0 document minus every `evidence_level` key, `324631c6…`). The header prose field `hop_review` still says "with evidence_level None" while the field itself is JSON `null`. That wording is deliberate and unchanged (it is inside the `324631c6…` pin). This report uses JSON `null`; the pinned header sentence is historical prose, not the field value.
 
 ### 11.3 Test gaps C6, C7, B4, E2/E3: all closed
 
-Each new check was proven against a mutant the old check missed (`g5c-gap-mutants.log`: each mutant applied alone to a scratch copy; the old test passes, the new test fails):
+Each new check was proven against a mutant the old check missed (`g5c-gap-mutants.log`: each mutant was intended to be applied alone to a scratch copy; the old test passes, the new test fails).
+
+**Worktree incident (disclosed).** At 09:53:31 SGT (Asia/Singapore, UTC+8) on 14 Nov 2026, the C7 test-gap mutants briefly modified the real worktree files `retirepilot/api.py` and `retirepilot/service.py` (directory mtime is consistent with a `plugins/` subdirectory being created and then removed). Both files were restored to HEAD before the green runs. Engineering's green-targeted run (09:54:06 SGT) and full pytest (09:54:14 SGT) came after the restore. QA reruns at `e871aac` found no mutant code in any committed hunk, and HEAD matched the tracked tree. The committed log still describes the intended scratch-copy procedure; this paragraph is the disclosure that the live tree was briefly touched and then restored.
 
 | Gap | New test(s) | Mutant: old test → new test |
 |---|---|---|
@@ -296,11 +298,17 @@ Each new check was proven against a mutant the old check missed (`g5c-gap-mutant
 | B4 camelCase `riskTier` | `test_no_risk_tier_or_score_key_in_any_case_style` (keys normalised to lower-case alphanumerics: `risktier`, `risklevel`, `riskrating`, `riskgrade`, `riskband`, `score`, `weight`, `percent`, `confidence`, `probability`); `test_forbidden_key_check_catches_case_variants` (11 cases) | `"riskTier": "low"` on A01: passed → failed |
 | E2/E3 wording, all records | `test_no_record_says_needs_head_of_product_review` (every string field of all 96 records; case, whitespace, NBSP and hyphen tolerant; also "needs HoP review"); `test_needs_hop_review_check_catches_variants` (5 cases) | wording appended to A01 rationale: passed → failed |
 
-None of the new checks found anything in the real data or package; they fail only on the mutants. Known limit: a filename built at runtime from computed pieces (for example `%`-formatting of separate variables, or bytes decoding) is not caught by a static scan.
+None of the new checks found anything in the real data or package; they fail only on the mutants.
+
+Known limits of the recursive label-file scan:
+
+- It reads only the fixed suffixes in `SCANNED_SUFFIXES` (`.py`, `.html`, `.htm`, `.js`, `.mjs`, `.css`, `.json`, `.txt`, `.md`, `.toml`, `.yaml`, `.yml`). A reference in a `.pyi`, `.jinja2`, or other unsuffixed or differently suffixed file under `retirepilot/` is missed (QA survivors C6e/C6f). The §2 claim that nothing under `retirepilot/` mentions the labels file is therefore true only within those suffixes.
+- A filename built at runtime from computed pieces (for example `%`-formatting of separate variables, bytes decoding, `Path.glob('persona_*_issue3.json')`, or a reversed `join`) is not caught by a static scan (C7g/C7h).
+- Three edge cases are pinned only by hash, not by a behaviour test: B4g `suitability_tier`, and E2d/E2e ("requires Head of Product review", "needs Head of Product sign-off").
 
 ### 11.4 Base and trial merge
 
-`git merge-tree --write-tree 5fe3ec8 <commit>` (git 2.x, no working-tree change): **clean, no conflicts** on the staged tree of this commit (`g5c-merge-tree.log`). For reference, at `8e812e0` the result was also clean (tree `6494dc27…`, matching QA). Parent chain unchanged; no rebase.
+`git merge-tree --write-tree 5fe3ec8 e871aac` (git 2.x, no working-tree change): **clean, no conflicts**, tree `431ab8ce66f6725551db55ea931f193ba3897feb`. The committed log `g5c-merge-tree.log` cites `7e7b2ec0f1aebabeffc5cc4b4bc99695383b8409`; that was the *pre-commit staged* tree of a temporary unreferenced commit, recorded before `g5c-merge-tree.log` and `g5c-no-history-tree.log` were added. Those two logs are the only difference between `7e7b2ec0…` and the committed result `431ab8ce…`. For reference, at `8e812e0` the result was also clean (tree `6494dc27…`, matching QA). Parent chain unchanged; no rebase.
 
 ### 11.5 Tests and suites
 
@@ -325,3 +333,16 @@ Environment: `g5c-env.txt`. API, release and asset checks were not re-run (no co
 | REPORT §2 hash, base `5fe3ec8`, axe path | Implemented but unverified |
 | Gaps C6, C7, B4, E2/E3 | Implemented but unverified |
 | CI on GitHub | Blocked (nothing pushed) |
+
+## 12. Docs-only REPORT nits after QA re-check of `e871aac` (PASS)
+
+QA G5 re-check: **PASS** (`/workspace/qa-sweelah-issue-3-e871aac/qa/issue-3-e871aac/VERDICT.md`, QA branch `qa/issue-3-e871aac-verify` @ `aeda785`). The remaining items were non-gating wording. This section records the docs-only follow-up (no code, data, or test changes):
+
+- §11.3 now discloses the 09:53:31 SGT worktree incident and restore.
+- §11.4 now cites the committed merge-tree `431ab8ce…`, and explains the log's `7e7b2ec0…`.
+- The post-commit shallow-clone proof is filed as `g5c-postcommit-shallow-clone.log` (originally uncommitted at `/workspace/sweelah-issue-3-g5c-postcommit-shallow-clone.log`); §11.1 no longer says it is "reported with the commit" without a cited log, and notes that it covers only the 243 issue-3 tests.
+- §11.3 documents the suffix limit (`.pyi`, `.jinja2`), the runtime-built-name limit, and the three hash-only edge pins.
+- Historical `env.txt` and the §6/§10.7 axe-path rows are annotated: the 10 Nov runs used `/tmp/cxui-axe/…`; a later rewrite had replaced that path with a placeholder.
+- The header date now distinguishes the 10 Nov HoP follow-up from the 14 Nov G5-conditions run.
+- §5 is restored to the `c32ede1`-era 203-test / `"None"` description, with pointers to later counts and to §11.2.
+- §11.2 notes that the pinned `hop_review` header prose still says "evidence_level None".

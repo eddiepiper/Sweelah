@@ -47,7 +47,7 @@ Minimal, local to this handler. `body_json` is unchanged (that is the D-1/D-2 su
 
 That generic branch also closes value echoes that were not listed in the first report. On `5fe3ec8`, a bad `dob` such as `"QA-NOT-A-DATE"` returned `Invalid isoformat string: 'QA-NOT-A-DATE'`, and a non-integer `pr_cpf_year` such as `"QA-NOTINT"` returned `invalid literal for int() with base 10: 'QA-NOTINT'`. Both are now the same fixed `Invalid reference parameters` message, with the submitted value absent from the body. The same path also covers an unhashable item `month` and a 5000-digit integer, which previously leaked Python's own text. QA confirmed these on a 190-case fuzz run. Existing `ValidationError` details are unchanged (35/35 byte-identical).
 
-The Chief of Staff has decided to keep the fixed `Invalid reference parameters` message exactly as it is. A proposed follow-up that would list the allowed keys for each `kind` (still without echoing user input) was **not** made.
+The Chief of Staff has decided to keep the fixed `Invalid reference parameters` message exactly as it is. That decision is **reported by an agent** and has not been independently verified from the repository; what the commit itself shows is that no per-kind allowed-keys message was added. A proposed follow-up that would list the allowed keys for each `kind` (still without echoing user input) was **not** made.
 
 `require_synthetic_fixture` still runs before `kind`/`params` checks, so a missing or non-synthetic profile id remains 403.
 
@@ -81,6 +81,8 @@ New file `tests/test_api_reference_bad_key.py` (18 cases, TestClient, `raise_ser
 | Release `scripts/verify_release_documents.py` | **9 artifacts, errors=0** | `release.log` |
 | Assets `design/sweelah/verify_assets.py` | **6 HTML, 15 assets, 21/21** | `assets.log` |
 
+The pytest, rules and API rows above are from the original run at `4bbe97c`. They were not rerun at the report-only follow-up `e75e950`, because the product was byte-identical; QA treated rules and API as Implemented but unverified at that commit. Browser, release and assets were cited in the `e75e950` conditions commit and rerun by QA.
+
 ## 6. Pinned files: sha256 before → after (reported only; no manifest edited)
 
 | File | 5fe3ec8 (before) | This branch (after) | Pins |
@@ -89,7 +91,7 @@ New file `tests/test_api_reference_bad_key.py` (18 cases, TestClient, `raise_ser
 
 No other pinned file changed. The ledger is not refreshed on this branch.
 
-**Correction (QA G5 condition on §6):** `api.py` was **not** already in the pending ledger-refresh *add* list (that list at `fix/manifest-pins` @ 22bb38f is statutory, projection, cpf_retirement_v26, core, assistant). The 22bb38f ledger already has a `retirepilot/api.py` entry whose `current_sha256` is `48a5d5598e37b3101f8bf0a4c161ad079209d6ca31aae1e8bcac98a86f1d1446` (main `5fe3ec8`). That existing entry needs updating to `711686572aef3143d211c868f85a4377e1240fd304fc48e0fe6021effd45e0f6`. If D-1/D-2 `2fc5a03` also lands, the final merged `api.py` hash is provisionally `3289a45204839839ec996cacfcde765298afd43a92b8dce5a72b361c75c1c6aa` (merge-tree `dd4cc32e`); the refresh should use the hash of the landed tree.
+**Correction (QA G5 condition on §6):** `api.py` was **not** already in the pending ledger-refresh *add* list (that list at `fix/manifest-pins` @ 22bb38f is statutory, projection, cpf_retirement_v26, core, assistant). The 22bb38f ledger already has a `retirepilot/api.py` entry whose `current_sha256` is `48a5d5598e37b3101f8bf0a4c161ad079209d6ca31aae1e8bcac98a86f1d1446` (main `5fe3ec8`). That existing entry needs updating to `711686572aef3143d211c868f85a4377e1240fd304fc48e0fe6021effd45e0f6`. If D-1/D-2 `2fc5a03` also lands, the final merged `api.py` hash is provisionally `3289a45204839839ec996cacfcde765298afd43a92b8dce5a72b361c75c1c6aa`. The merge-tree `dd4cc32e` belongs to `4bbe97c`+`2fc5a03`; the tree for `e75e950`+`2fc5a03` is `ea0faa5d`. With the later D-1/D-2 tip `5e9933b` the tree is `24e5b52b`. The `api.py` hash `3289a452…` is the same in all three; the refresh should use the hash of the landed tree.
 
 ## 7. Overlap with D-1/D-2 branch `2fc5a03`
 
@@ -104,10 +106,10 @@ Both branches edit `retirepilot/api.py`. The surfaces do **not** overlap in the 
 
 **Residual pre-existing 500s on `/api/reference` itself** (QA G5 condition 1; identical on parent `5fe3ec8`, so not a regression, and **not fixed here**):
 
-- 7 cases at `'1e40'`-scale decimal amounts, as reproduced by QA: `chargeable_income` `"1e100"`, `1e30` and a 30-digit integer; `sale_price` `"1e40"` and `"1e999999999"`; OA balance `"1e40"`; wages `"1e40"`. These raise `decimal.InvalidOperation` in `money().quantize` or `decimal.Overflow`. Those are `ArithmeticError` subclasses, so they are not caught by `(ValueError, TypeError, KeyError)`.
+- 7 cases at about `1e26` and above (the `'1e40'`-scale label understated the threshold): `chargeable_income` `"1e100"`, the JSON number `1e30`, and a 30-digit numeric **string** (`"1"+"0"*29`); `sale_price` `"1e40"` and `"1e999999999"`; OA balance `"1e40"`; wages `"1e40"`. `1e30` and the 30-digit string already return 500. These raise `decimal.InvalidOperation` in `money().quantize` or `decimal.Overflow`. Those are `ArithmeticError` subclasses, so they are not caught by `(ValueError, TypeError, KeyError)`.
 - 1 case: a JSON body nested 50,000 deep (`[` repeated) hits `RecursionError` in `json.loads` inside `body_json`.
 
-These will be fixed on `fix/input-validation-polish` (C), not on this branch. They are candidates for the same input-polish D-3 work noted in the D-1/D-2 verdict (finite but huge numbers / overflow on the evaluate path).
+A proposed fix is on `fix/input-validation-polish` (C), under QA, and is not on this branch. That branch (`ec93254`) claims 422 for all 8; that claim is **Proposed / Implemented but unverified** until QA confirms it. These are candidates for the same input-polish D-3 work noted in the D-1/D-2 verdict (finite but huge numbers / overflow on the evaluate path).
 
 - Other routes (`/api/evaluate`, `/api/ask`, `/api/guide`) still 500 on a non-object JSON body (`data.get` / `data['profile']`). Out of scope here; `/api/reference` only.
 - TypeError/ValueError details from those other routes may still echo Python messages via `str(exc)`.
