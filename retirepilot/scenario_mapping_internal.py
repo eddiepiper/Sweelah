@@ -117,7 +117,7 @@ def reference_errors(doc: dict | None = None) -> list[str]:
             actual_guardrail = m.get('guardrail')
             if actual_guardrail != spec['Guardrail / refusal']:
                 if actual_guardrail not in all_guardrails:
-                    errors.append(f'{sid}: dangling guardrail')
+                    errors.append(f'{sid}: dangling guardrail {actual_guardrail!r}')
                 else:
                     errors.append(f'{sid}: guardrail does not match research contract')
         reg = registry[sid]

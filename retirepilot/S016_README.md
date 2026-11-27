@@ -98,8 +98,10 @@ the Playwright browser cache. UI assertions cover desktop/mobile, field errors,
 focus, ARIA, retained values, amount normalization, real API refusal/network
 failure, status/limitations and unchanged projection/dashboard values.
 The accessibility case also checks keyboard-only submission, target dimensions
-and selected text/background contrast pairs. It runs axe if an offline `axe-core`
-package or `AXE_CORE_PATH` is supplied; otherwise it explicitly reports the gap.
+and selected text/background contrast pairs. The axe audit requires an offline
+`axe-core` package or `AXE_CORE_PATH` pointing at an existing axe.min.js; if that
+path is unset, unresolvable or missing, the audit fails instead of skipping or
+only reporting the gap.
 Screenshots go to `test-artifacts/s016/` (local artifacts, do not commit).
 An independent WCAG audit, screen-reader review and real-user validation are not
 claimed. Python 3.13 local execution does not replace CI's Python 3.11 verification.

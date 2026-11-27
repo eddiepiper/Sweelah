@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const {requireAxeCorePath} = require('./require_axe_core.cjs');
 const [mode, base] = process.argv.slice(2);
 const output = path.resolve(__dirname, mode.startsWith('cxuid0509d01-') ? '../../test-artifacts/cxui-d05d09-d01' : mode.startsWith('cxuid0509-') ? '../../test-artifacts/cxui-d05-d09' : mode.startsWith('qafu2d01l01-') ? '../../test-artifacts/qa-fu2d01-l01' : mode.startsWith('cxuifu2d01-') ? '../../test-artifacts/cxui-fu2-d01' : mode.startsWith('cxuifu2-') ? '../../test-artifacts/cxui-001-followup2' : mode.startsWith('cxuifu-') ? '../../test-artifacts/cxui-001-followup' : mode.startsWith('cxui-') ? '../../test-artifacts/cxui-001' : '../../test-artifacts/s016');
 const costLabel = 'Extra care cost each month (S$)';
@@ -38,9 +39,7 @@ const monthsLabel = 'For how many months?';
       for (const term of ['subsidies and grants','CareShield LIFE','MediSave','lost pay or unpaid leave','not financial advice']) assert.ok(text.includes(term),term);
     };
     const axe = async state => {
-      let axePath=process.env.AXE_CORE_PATH;
-      if (!axePath) {try {axePath=require.resolve('axe-core/axe.min.js');} catch {}}
-      if (!axePath) {console.log('axe unavailable offline; CXUI geometry and behavior checked, no full accessibility audit');return;}
+      const axePath=requireAxeCorePath();
       await page.addScriptTag({path:axePath});
       const audit=await page.evaluate(()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','best-practice']}}));
       fs.writeFileSync(path.join(output,`axe-${mode}-${state}.json`),JSON.stringify(audit,null,2));
@@ -702,13 +701,10 @@ const monthsLabel = 'For how many months?';
       await page.keyboard.type('12');await page.keyboard.press('Tab');
       assert.equal(await primary.evaluate(el=>el===document.activeElement),true);
       await page.keyboard.press('Enter');await page.locator('#care-result:not([hidden])').waitFor();await focused('#care-result h2');
-      let axePath=process.env.AXE_CORE_PATH;
-      if (!axePath) {try {axePath=require.resolve('axe-core/axe.min.js');} catch {}}
-      if (axePath) {
-        await page.addScriptTag({path:axePath});
-        const audit=await page.evaluate(()=>axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}}));
-        assert.deepEqual(audit.violations,[]); console.log('axe WCAG checks PASS');
-      } else console.log('axe unavailable offline; keyboard, ARIA, target sizes and selected color pairs checked, not a full WCAG audit');
+      const axePath=requireAxeCorePath();
+      await page.addScriptTag({path:axePath});
+      const audit=await page.evaluate(()=>axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}}));
+      assert.deepEqual(audit.violations,[]); console.log('axe WCAG checks PASS');
     } else if (mode==='nonmutation') {
       const dashboard=await browser.newPage();
       await dashboard.goto(base+'/');

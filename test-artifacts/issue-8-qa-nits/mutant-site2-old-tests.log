@@ -1,0 +1,5 @@
+site2: silent try/catch mutant; old targeted tests (test_axe_core_required.py @ 989bb82 + test_scenario_mapping_internal_issue8.py)
+........................................................................ [ 87%]
+..........                                                               [100%]
+82 passed in 0.56s
+exit=0

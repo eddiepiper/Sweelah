@@ -1,0 +1,126 @@
+{
+  "result": "PASS",
+  "total": 20,
+  "checks": [
+    {
+      "case": "sample GET",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "synthetic evaluation",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "non-synthetic profile blocked",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "case": "non-synthetic assistant blocked",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "case": "synthetic assistant",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "negative care expense rejected",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "missing asset rejected",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "missing income blocks projection",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "missing debt blocks projection",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "adult consent enforcement",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "IRAS chargeable-income reference",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "real profile reference rejected",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "case": "synthetic progressive guide",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "S016 synthetic cost preview",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "case": "S016 missing cost refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 zero cost refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 boolean duration refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 real profile refused",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "case": "S016 subcent cost refused",
+      "status": 422,
+      "expected": 422,
+      "pass": true
+    },
+    {
+      "case": "S016 cents displayed consistently",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    }
+  ]
+}
